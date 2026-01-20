@@ -1,18 +1,21 @@
-import { NextStudio } from 'sanity/next-studio'
+import { NextStudio } from 'next-sanity/studio'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
+// تأكد أن هذا المسار يؤدي لملف الأنواع الذي أنشأناه
+import { schemaTypes } from '../../src/sanity/schemaTypes'
 
 const config = defineConfig({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  title: 'Karizma Studio',
+  projectId: 'p8v3hsqn', // معرف مشروعك
+  dataset: 'production',
+  title: 'متجر كاريزما للعطور 🎨',
   basePath: '/studio',
   plugins: [deskTool()],
   schema: {
-    types: [], // سنضيف أنواع العطور هنا لاحقاً
+    types: schemaTypes,
   },
 })
 
+// هذا الجزء هو "المكون" الذي يعرض اللوحة في المتصفح
 export default function StudioPage() {
   return <NextStudio config={config} />
 }
