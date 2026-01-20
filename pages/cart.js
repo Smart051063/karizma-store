@@ -9,7 +9,7 @@ export default function Cart() {
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   const checkoutHandler = () => {
-    const phoneNumber = "201000000000"; 
+    const phoneNumber = "201002410037"; 
     let message = "مرحباً، أود إتمام الطلب التالي من متجر كاريزما:%0a";
     
     cart.forEach(item => {
