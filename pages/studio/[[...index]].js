@@ -1,7 +1,6 @@
 import { NextStudio } from 'next-sanity/studio'
 import { defineConfig } from 'sanity'
-import { deskTool } from 'sanity/desk'
-// تأكد أن هذا المسار يؤدي لملف الأنواع الذي أنشأناه
+import { structureTool } from 'sanity/structure'
 import { schemaTypes } from '../../src/sanity/schemaTypes'
 
 const config = defineConfig({
@@ -9,13 +8,13 @@ const config = defineConfig({
   dataset: 'production',
   title: 'متجر كاريزما للعطور 🎨',
   basePath: '/studio',
-  plugins: [deskTool()],
+  plugins: [structureTool()],
   schema: {
     types: schemaTypes,
   },
 })
 
-// هذا الجزء هو "المكون" الذي يعرض اللوحة في المتصفح
+// هذا هو الجزء الذي ينقصك ويسبب الخطأ الأحمر
 export default function StudioPage() {
   return <NextStudio config={config} />
 }
