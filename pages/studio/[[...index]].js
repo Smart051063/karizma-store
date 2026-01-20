@@ -4,7 +4,7 @@ import { structureTool } from 'sanity/structure'
 import { schemaTypes } from '../../src/sanity/schemaTypes'
 
 const config = defineConfig({
-  projectId: 'qdlep10i', // رقم مشروعك الجديد لضمان صلاحية الدخول
+  projectId: 'qdlep10i', // معرف مشروعك الجديد Karizma-Store
   dataset: 'production',
   title: 'متجر كاريزما للعطور 🎨',
   basePath: '/studio',
