@@ -4,7 +4,7 @@ import { structureTool } from 'sanity/structure'
 import { schemaTypes } from '../../src/sanity/schemaTypes'
 
 const config = defineConfig({
-  projectId: 'p8v3hsqn', // معرف مشروعك
+  projectId: 'qdlep10i', // رقم مشروعك الجديد لضمان صلاحية الدخول
   dataset: 'production',
   title: 'متجر كاريزما للعطور 🎨',
   basePath: '/studio',
@@ -14,7 +14,6 @@ const config = defineConfig({
   },
 })
 
-// هذا هو الجزء الذي ينقصك ويسبب الخطأ الأحمر
 export default function StudioPage() {
   return <NextStudio config={config} />
 }
