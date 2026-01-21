@@ -1,13 +1,8 @@
-export const schemaTypes = [
-  {
-    name: 'perfume',
-    title: 'العطور 🧴',
-    type: 'document',
-    fields: [
-      { name: 'name', title: 'اسم العطر', type: 'string' },
-      { name: 'price', title: 'السعر', type: 'number' },
-      { name: 'description', title: 'وصف العطر', type: 'text' },
-      { name: 'image', title: 'صورة العطر', type: 'image', options: { hotspot: true } },
-    ]
-  }
-]
+import { blockContentType } from './blockContentType'
+import { categoryType } from './categoryType' // (إذا كان لديك ملف للتصنيفات، وإلا احذف هذا السطر)
+import { postType } from './postType' // (نفس الشيء، احذف السطر إذا لم يكن لديك مدونة)
+import product from './product' // 👈 هذا هو السطر الأهم! استيراد ملف المنتج الجديد
+
+export const schema = {
+  types: [product], // 👈 ونضعه هنا في القائمة
+}
