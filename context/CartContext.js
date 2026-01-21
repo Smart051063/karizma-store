@@ -1,38 +1,29 @@
 import { createContext, useContext, useState } from 'react';
 
+// 1. إنشاء الذاكرة
 const CartContext = createContext();
 
+// 2. إنشاء المزود (الذي يغلف الموقع ويعطيه البيانات)
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  // دالة إضافة منتج للسلة
+  // دالة لإضافة منتج للسلة
   const addToCart = (product) => {
-    const existingItem = cart.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-      ));
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+    setCart((prevCart) => [...prevCart, product]);
+    alert(`✅ تم إضافة "${product.name}" إلى السلة!`);
   };
 
-  // 🆕 دالة الحذف الجديدة (تقوم بفلترة المنتج واستبعاده)
-  const removeFromCart = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+  // دالة لمعرفة عدد المنتجات
+  const getCartCount = () => {
+    return cart.length;
   };
-
-  // حساب عدد المنتجات
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    // لاحظ أننا أضفنا removeFromCart هنا لنتمكن من استخدامها في الصفحات
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, cartCount }}>
+    <CartContext.Provider value={{ cart, addToCart, getCartCount }}>
       {children}
     </CartContext.Provider>
   );
 }
 
-export function useCart() {
-  return useContext(CartContext);
-}
+// 3. خطاف بسيط لاستخدام السلة في أي صفحة
+export const useCart = () => useContext(CartContext);
