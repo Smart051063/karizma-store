@@ -68,5 +68,6 @@ export async function getStaticProps() {
   return {
     props: { perfumes },
     revalidate: 10, // تحديث الصفحة تلقائياً عند إضافة عطور جديدة
+    // update).
   }
 }
