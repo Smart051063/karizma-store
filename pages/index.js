@@ -1,6 +1,14 @@
 import { client } from '../src/sanity/lib/client'
 
 // 1. كود الواجهة (Frontend) - يوضع في أعلى الملف
+import { useCart } from '../context/CartContext';
+const { addToCart } = useCart();
+<button
+  onClick={() => addToCart(perfume)}
+  className="..." // (اترك الستايل أو الكلاس كما هو عندك)
+>
+  إضافة للسلة 🛒
+</button>
 export default function PerfumesPage({ perfumes }) {
   return (
     <div style={{ padding: '40px', direction: 'rtl', fontFamily: 'Arial, sans-serif', backgroundColor: '#f9f9f9' }}>
