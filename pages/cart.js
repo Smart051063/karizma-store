@@ -9,6 +9,27 @@ export default function CartPage() {
   // حساب السعر الإجمالي
   const total = cart.reduce((acc, item) => acc + item.price, 0);
 
+  // --- دالة إرسال الطلب عبر واتساب ---
+  const handleCheckout = () => {
+    // 1. تحويل قائمة المنتجات إلى نص مقروء
+    const productsText = cart.map(item => `- ${item.name} (${item.price} جنيه)`).join('\n');
+
+    // 2. تجهيز الرسالة النهائية
+    const message = `مرحباً، أريد طلب العطور التالية:
+${productsText}
+
+💰 الإجمالي: ${total} جنيه`;
+
+    // 3. تشفير الرسالة لتناسب الرابط
+    const encodedMessage = encodeURIComponent(message);
+
+    // 4. فتح واتساب (ضع رقمك هنا بدلاً من الأصفار مع مفتاح الدولة)
+    // مثال لمصر: 201000000000
+    const phoneNumber = "201002410037"; 
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+  };
+  // -----------------------------------
+
   // 1. حالة السلة الفارغة
   if (cart.length === 0) {
     return (
@@ -48,7 +69,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* زر الحذف (سنفعله لاحقاً إذا لم يكن جاهزاً) */}
+            {/* زر الحذف */}
             <button 
                onClick={() => removeFromCart && removeFromCart(item._id)}
                style={{ backgroundColor: '#ff4444', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.9rem' }}
@@ -68,7 +89,12 @@ export default function CartPage() {
                   متابعة التسوق
                 </button>
              </Link>
-             <button style={{ flex: 1, padding: '15px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '8px', fontSize: '18px', cursor: 'pointer' }}>
+             
+             {/* زر إتمام الشراء المربوط بواتساب */}
+             <button 
+                onClick={handleCheckout}
+                style={{ flex: 1, padding: '15px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '8px', fontSize: '18px', cursor: 'pointer' }}
+             >
                 إتمام الشراء ✅
              </button>
           </div>
