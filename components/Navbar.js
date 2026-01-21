@@ -1,32 +1,41 @@
 import Link from 'next/link';
-import { useCart } from '../context/CartContext'; // 1. استدعاء أداة الاتصال بالذاكرة
+import { useCart } from '../context/CartContext';
 
 export default function Navbar() {
-  const { cartCount } = useCart(); // 2. جلب عدد المنتجات الحالي
+  // نستدعي السلة لنعرف عدد المنتجات
+  const { cart } = useCart();
 
   return (
-    <nav className="bg-black border-b border-yellow-600/30 p-4 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* الشعار */}
-        <Link href="/" className="text-2xl font-bold text-yellow-500 font-serif tracking-wider">
-          KARIZMA
-        </Link>
+    <nav style={{ 
+      padding: '15px 40px', 
+      backgroundColor: '#1a1a1a', 
+      color: 'white', 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center', 
+      direction: 'rtl',
+      boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+    }}>
+      {/* رابط الصفحة الرئيسية */}
+      <Link href="/" style={{ textDecoration: 'none', color: 'white', fontSize: '1.5rem', fontWeight: 'bold' }}>
+        ✨ كاريزما للعطور
+      </Link>
 
-        {/* الروابط */}
-        <div className="flex gap-6 text-gray-300 text-sm tracking-wide items-center">
-          <Link href="/perfumes" className="hover:text-yellow-400 transition">العطور</Link>
-          <Link href="/makeup" className="hover:text-yellow-400 transition">التجميل</Link>
-          
-          {/* رابط السلة مع العداد الذكي */}
-          <Link href="/cart" className="hover:text-yellow-400 transition font-bold flex items-center gap-1">
-            <span>🛒</span>
-            <span>السلة</span>
-            <span className="bg-yellow-600 text-black text-xs rounded-full px-2 py-0.5 ml-1">
-              {cartCount}
-            </span>
-          </Link>
-        </div>
-      </div>
+      {/* رابط السلة مع العداد */}
+      <Link href="/cart" style={{ textDecoration: 'none', color: 'white', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <span>السلة</span>
+        🛒 
+        <span style={{ 
+          backgroundColor: '#d4af37', 
+          color: 'black', 
+          borderRadius: '50%', 
+          padding: '2px 8px', 
+          fontSize: '0.9rem',
+          fontWeight: 'bold'
+        }}>
+          {cart.length}
+        </span>
+      </Link>
     </nav>
   );
 }
