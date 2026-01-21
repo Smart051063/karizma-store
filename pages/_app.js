@@ -1,11 +1,13 @@
 import '../styles/globals.css';
 import { CartProvider } from '../context/CartContext';
-import Navbar from '../components/Navbar'; // 1. استدعاء النافبار
+import Navbar from '../components/Navbar';
+import TopBar from '../components/TopBar'; // استيراد الشريط الجديد
 
 export default function App({ Component, pageProps }) {
   return (
     <CartProvider>
-      <Navbar /> {/* 2. وضع النافبار هنا ليظهر في كل الصفحات */}
+      <TopBar /> {/* الشريط التنبيهي في الأعلى */}
+      <Navbar /> {/* شريط التنقل تحته */}
       <Component {...pageProps} />
     </CartProvider>
   );
