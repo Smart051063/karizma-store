@@ -1,5 +1,5 @@
 import React from 'react';
-import { client } from '../lib/client'; // استيراد الاتصال بـ Sanity
+import { client } from '../src/sanity/lib/client';
 import { useCart } from '../context/CartContext'; // استيراد السلة
 import Link from 'next/link';
 
