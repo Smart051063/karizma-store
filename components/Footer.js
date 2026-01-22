@@ -43,9 +43,9 @@ export default function Footer() {
         {/* العمود الثالث: تواصل معنا */}
         <div style={{ flex: '1 1 250px' }}>
           <h3 style={{ color: 'white', marginBottom: '20px', borderBottom: '1px solid #333', paddingBottom: '10px' }}>خدمة العملاء</h3>
-          <p style={{ marginBottom: '10px', color: '#ccc' }}>📍 المملكة العربية السعودية / مصر</p>
-          <p style={{ marginBottom: '10px', color: '#ccc' }}>📞 واتساب: 01000000000</p>
-          <p style={{ marginBottom: '10px', color: '#ccc' }}>✉️ ايميل: info@karizma.com</p>
+          <p style={{ marginBottom: '10px', color: '#ccc' }}>📍  جمهورية مصر العربية</p>
+          <p style={{ marginBottom: '10px', color: '#ccc' }}>📞 واتساب: 01002410037</p>
+          <p style={{ marginBottom: '10px', color: '#ccc' }}>✉️ ايميل: info@karizmaperfumes.com</p>
           
           {/* أيقونات التواصل الاجتماعي (رموز تعبيرية كبديل مؤقت) */}
           <div style={{ marginTop: '20px', fontSize: '1.5rem', display: 'flex', gap: '15px' }}>
