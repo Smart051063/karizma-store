@@ -31,7 +31,7 @@ export default function MenPage() {
       {/* أزرار الفلترة */}
       <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <button onClick={() => setFilter('all')} style={buttonStyle(filter === 'all')}>الكل</button>
-        <button onClick={() => setFilter('gifts')} style={buttonStyle(filter === 'gifts')}>🎁 هدايا رجالية</button>
+        <button onClick={() => setFilter('gifts')} style={buttonStyle(filter === 'gifts')}>🎁 هدايا نسائية</button>
         <button onClick={() => setFilter('wedding')} style={buttonStyle(filter === 'wedding')}>💍 عطور زفاف</button>
       </div>
 
