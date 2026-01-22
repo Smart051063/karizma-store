@@ -3,10 +3,18 @@ export default {
   title: 'Product (المنتجات)',
   type: 'document',
   fields: [
+    // --- البيانات الأساسية ---
     {
       name: 'name',
-      title: 'Name (اسم المنتج)',
+      title: 'اسم المنتج (Arabic Name)',
       type: 'string',
+      validation: Rule => Rule.required()
+    },
+    {
+      name: 'nameEn',
+      title: 'اسم المنتج بالإنجليزية (English Name)',
+      type: 'string',
+      description: 'هذا الاسم سيظهر عند تحويل الموقع للغة الإنجليزية'
     },
     {
       name: 'slug',
@@ -30,6 +38,8 @@ export default {
         hotspot: true,
       },
     },
+    
+    // --- التصنيفات ---
     {
       name: 'category',
       title: 'Category (القسم الرئيسي)',
@@ -38,7 +48,7 @@ export default {
         list: [
           { title: 'عطور (Perfumes)', value: 'perfumes' },
           { title: 'عود وبخور (Oud & Incense)', value: 'oud' },
-          { title: 'معطرات المنزل (Home Scents)', value: 'home' }, // 👈 قسم جديد للفواحات والمعطرات
+          { title: 'معطرات المنزل (Home Scents)', value: 'home' },
         ],
       },
     },
@@ -48,13 +58,10 @@ export default {
       type: 'string',
       options: {
         list: [
-          // الأقسام القديمة
           { title: 'رجالي (Men)', value: 'men' },
           { title: 'نسائي (Women)', value: 'women' },
           { title: 'للجنسين (Unisex)', value: 'unisex' },
           { title: 'خليجي (Gulf)', value: 'gulf' },
-          
-          // 👇 الأقسام الجديدة التي طلبتها
           { title: 'عطور مسك (Musk)', value: 'musk' },
           { title: 'ميكسات عطور (Mixes)', value: 'mixes' },
           { title: 'أعواد شرقية (Oriental Sticks)', value: 'oriental' },
@@ -73,13 +80,20 @@ export default {
           { title: 'استخدام يومي', value: 'daily' },
           { title: 'هدايا (Gifts)', value: 'gifts' },
           { title: 'حفلات زفاف (Wedding)', value: 'wedding' },
-          { title: 'رمضان والأعياد', value: 'ramadan' }, // 👈 إضافة ممتازة للمواسم
+          { title: 'رمضان والأعياد', value: 'ramadan' },
         ],
       },
     },
+
+    // --- الوصف ---
     {
       name: 'description',
-      title: 'Description (وصف المنتج)',
+      title: 'وصف المنتج (Arabic)',
+      type: 'text',
+    },
+    {
+      name: 'descriptionEn',
+      title: 'وصف المنتج بالإنجليزية (English Description)',
       type: 'text',
     }
   ],
