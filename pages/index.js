@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white' }}>
       
-      {/* 1️⃣ قسم البنر (يظهر فقط عند التفعيل) */}
+      {/* 1️⃣ قسم البنر */}
       {banner && (
         <div style={{ backgroundColor: '#f0f0f0', textAlign: 'center' }}>
           <Link href={banner.link || '/search'}>
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* 2️⃣ الشاشة الرئيسية (Hero Section) */}
+      {/* 2️⃣ الشاشة الرئيسية */}
       <div style={{ 
         backgroundImage: 'url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
         height: '70vh', backgroundSize: 'cover', backgroundPosition: 'center',
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ الأقسام (الدوائر) */}
+      {/* 3️⃣ الأقسام */}
       <div style={{ padding: '50px 20px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '40px' }}>الأقسام</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap' }}>
@@ -84,28 +84,31 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ شبكة المنتجات */}
+      {/* 4️⃣ شبكة المنتجات (مع الحماية 🛡️) */}
       <div style={{ padding: '20px 20px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>أحدث العطور</h2>
         
-        <div style={{ 
-          display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' 
-        }}>
-          {products.map((product) => (
-            <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
-              <div style={productCardStyle}>
-                <div style={{ height: '250px', overflow: 'hidden', borderRadius: '10px 10px 0 0' }}>
-                   {product.imageUrl && (
-                     <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                   )}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+          {products.map((product) => {
+            // 🛑 حماية: إذا لم يكن هناك رابط، تخطَ هذا المنتج ولا تعرضه
+            if (!product.slug || !product.slug.current) return null;
+
+            return (
+              <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
+                <div style={productCardStyle}>
+                  <div style={{ height: '250px', overflow: 'hidden', borderRadius: '10px 10px 0 0' }}>
+                     {product.imageUrl && (
+                       <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                     )}
+                  </div>
+                  <div style={{ padding: '15px', textAlign: 'center' }}>
+                    <h3 style={{ fontSize: '1.1rem', color: '#333', margin: '0 0 10px' }}>{product.name}</h3>
+                    <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} جنيه</p>
+                  </div>
                 </div>
-                <div style={{ padding: '15px', textAlign: 'center' }}>
-                  <h3 style={{ fontSize: '1.1rem', color: '#333', margin: '0 0 10px' }}>{product.name}</h3>
-                  <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} جنيه</p>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
 
@@ -114,24 +117,15 @@ export default function Home() {
 }
 
 // --- التنسيقات (Styles) ---
-
 const ctaButtonStyle = {
   padding: '12px 30px', fontSize: '1.1rem', backgroundColor: '#d4af37', color: 'black',
   border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 'bold'
 };
 
 const circleCardStyle = {
-  width: '120px', 
-  height: '120px', 
-  borderRadius: '50%', 
-  backgroundColor: '#f9f9f9',
-  display: 'flex', 
-  flexDirection: 'column', 
-  alignItems: 'center', // ✅ تم التصحيح هنا
-  justifyContent: 'center',
-  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
-  cursor: 'pointer', 
-  transition: 'transform 0.3s'
+  width: '120px', height: '120px', borderRadius: '50%', backgroundColor: '#f9f9f9',
+  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer', transition: 'transform 0.3s'
 };
 
 const productCardStyle = {
