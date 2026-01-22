@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
+import Link from 'next/link'; // 👈 استدعينا مكتبة الروابط
 
 export default function MenPage() {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    // 1. منطق الفلترة (اللوجيك) - لا تضع أي كود عرض هنا
     let occasionCondition = "";
     if (filter !== 'all') {
       occasionCondition = `&& occasion == "${filter}"`;
     }
 
-    // 2. الاستعلام
+    // 👇 لاحظ أننا أضفنا slug هنا لكي نستخدمه في الرابط
     const query = `*[_type == "product" && subCategory == "men" ${occasionCondition}]{
       _id,
       name,
       price,
-      "imageUrl": image.asset->url 
+      "imageUrl": image.asset->url,
+      slug 
     }`;
 
-    // 3. تنفيذ الاستعلام
     client.fetch(query).then((data) => setProducts(data));
   }, [filter]);
 
@@ -38,20 +38,26 @@ export default function MenPage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
         {products.length > 0 ? (
           products.map((product) => (
-            <div key={product._id} style={cardStyle}>
-               {/* ✅✅✅ هنا المكان الصحيح للصورة: داخل كرت المنتج */}
-               {product.imageUrl && (
-                 <img 
-                    src={product.imageUrl} 
-                    alt={product.name} 
-                    style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
-                 />
-               )}
-               
-               <h3>{product.name}</h3>
-               <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} جنيه</p>
-               <button style={cartButtonStyle}>إضافة للسلة 🛒</button>
-            </div>
+            // 👇 هنا السحر! جعلنا الكرت بالكامل رابطاً ينقلك للتفاصيل
+            <Link key={product._id} href={`/product/${product.slug?.current}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={cardStyle}>
+                 {product.imageUrl && (
+                   <img 
+                      src={product.imageUrl} 
+                      alt={product.name} 
+                      style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
+                   />
+                 )}
+                 
+                 <h3>{product.name}</h3>
+                 <p style={{ color: '#d4af37', fontWeight: 'bold' }}>
+                    {product.price ? product.price : '---'} جنيه
+                 </p>
+                 
+                 {/* غيرنا الزر ليصبح "عرض التفاصيل" لأنه سينقلنا لصفحة جديدة */}
+                 <button style={detailsButtonStyle}>عرض التفاصيل 📄</button>
+              </div>
+            </Link>
           ))
         ) : (
           <p>لا توجد عطور متوفرة لهذا التصنيف حالياً.. 🕵️‍♂️</p>
@@ -61,7 +67,7 @@ export default function MenPage() {
   );
 }
 
-// التنسيقات (Styles) - اجعلها في أسفل الملف دائماً
+// --- التنسيقات ---
 const buttonStyle = (isActive) => ({
   padding: '10px 20px',
   borderRadius: '20px',
@@ -79,11 +85,14 @@ const cardStyle = {
   borderRadius: '10px',
   width: '250px',
   textAlign: 'center',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  cursor: 'pointer', // يضيف شكل اليد عند المرور
+  transition: 'transform 0.2s',
+  backgroundColor: 'white'
 };
 
-const cartButtonStyle = {
-  backgroundColor: 'black',
+const detailsButtonStyle = {
+  backgroundColor: '#1a1a1a',
   color: 'white',
   border: 'none',
   padding: '10px 15px',

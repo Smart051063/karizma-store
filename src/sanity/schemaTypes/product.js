@@ -8,13 +8,12 @@ export default {
       title: 'Name (اسم المنتج)',
       type: 'string',
     },
-    // 👇 هذا هو الحقل الجديد الذي أضفناه
     {
       name: 'slug',
       title: 'Slug (الرابط الخاص)',
       type: 'slug',
       options: {
-        source: 'name', // سيقوم بتوليد الرابط تلقائياً من اسم المنتج
+        source: 'name',
         maxLength: 90,
       }
     },
@@ -37,8 +36,9 @@ export default {
       type: 'string',
       options: {
         list: [
-          { title: 'عطور', value: 'perfumes' },
-          { title: 'عود وبخور', value: 'oud' },
+          { title: 'عطور (Perfumes)', value: 'perfumes' },
+          { title: 'عود وبخور (Oud & Incense)', value: 'oud' },
+          { title: 'معطرات المنزل (Home Scents)', value: 'home' }, // 👈 قسم جديد للفواحات والمعطرات
         ],
       },
     },
@@ -48,10 +48,19 @@ export default {
       type: 'string',
       options: {
         list: [
+          // الأقسام القديمة
           { title: 'رجالي (Men)', value: 'men' },
           { title: 'نسائي (Women)', value: 'women' },
           { title: 'للجنسين (Unisex)', value: 'unisex' },
           { title: 'خليجي (Gulf)', value: 'gulf' },
+          
+          // 👇 الأقسام الجديدة التي طلبتها
+          { title: 'عطور مسك (Musk)', value: 'musk' },
+          { title: 'ميكسات عطور (Mixes)', value: 'mixes' },
+          { title: 'أعواد شرقية (Oriental Sticks)', value: 'oriental' },
+          { title: 'بخور (Incense)', value: 'incense' },
+          { title: 'فواحات ومباخر (Burners)', value: 'burners' },
+          { title: 'معطرات (Fresheners)', value: 'fresheners' },
         ],
       },
     },
@@ -64,6 +73,7 @@ export default {
           { title: 'استخدام يومي', value: 'daily' },
           { title: 'هدايا (Gifts)', value: 'gifts' },
           { title: 'حفلات زفاف (Wedding)', value: 'wedding' },
+          { title: 'رمضان والأعياد', value: 'ramadan' }, // 👈 إضافة ممتازة للمواسم
         ],
       },
     },
