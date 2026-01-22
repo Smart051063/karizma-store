@@ -6,13 +6,13 @@ export default function MenPage() {
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    // 1. منطق الفلترة (اللوجيك)
+    // 1. منطق الفلترة (اللوجيك) - لا تضع أي كود عرض هنا
     let occasionCondition = "";
     if (filter !== 'all') {
       occasionCondition = `&& occasion == "${filter}"`;
     }
 
-    // 2. الاستعلام (تأكدنا هنا من جلب رابط الصورة بشكل صحيح)
+    // 2. الاستعلام
     const query = `*[_type == "product" && subCategory == "men" ${occasionCondition}]{
       _id,
       name,
@@ -39,12 +39,14 @@ export default function MenPage() {
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product._id} style={cardStyle}>
-               {/* ✅✅✅ المكان الصحيح للصورة هو هنا داخل العرض */}
-               <img 
-                  src={product.imageUrl} 
-                  alt={product.name} 
-                  style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
-               />
+               {/* ✅✅✅ هنا المكان الصحيح للصورة: داخل كرت المنتج */}
+               {product.imageUrl && (
+                 <img 
+                    src={product.imageUrl} 
+                    alt={product.name} 
+                    style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
+                 />
+               )}
                
                <h3>{product.name}</h3>
                <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} جنيه</p>
@@ -59,7 +61,7 @@ export default function MenPage() {
   );
 }
 
-// التنسيقات (Styles)
+// التنسيقات (Styles) - اجعلها في أسفل الملف دائماً
 const buttonStyle = (isActive) => ({
   padding: '10px 20px',
   borderRadius: '20px',
