@@ -1,20 +1,17 @@
-import '../styles/globals.css';
-import { CartProvider } from '../context/CartContext';
-import Navbar from '../components/Navbar';
-import TopBar from '../components/TopBar';
-import Footer from '../components/Footer'; // 1. استيراد الفوتر
+import '../styles/globals.css'; // تأكد أن هذا السطر موجود إذا كان لديك ملف CSS
+import TopBar from '../components/TopBar'; // تأكد من مسار التوب بار
+import { CartProvider } from '../src/context/CartContext';
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
+    // غلفنا التطبيق كله بمزود السلة
     <CartProvider>
-      <TopBar />   {/* في الأعلى: شريط التنبيه */}
-      <Navbar />   {/* تحته: القائمة */}
-      
-      <div style={{ minHeight: '80vh' }}> {/* حيلة صغيرة لضمان عدم صعود الفوتر للأعلى إذا كانت الصفحة فارغة */}
-        <Component {...pageProps} /> {/* هنا يظهر محتوى الصفحات (المنتجات، السلة، إلخ) */}
-      </div>
-
-      <Footer />   {/* 2. في الأسفل: التذييل */}
+      {/* التوب بار سيظهر الآن تلقائياً في كل الصفحات، لا داعي لتكراره */}
+      <TopBar />
+      <Component {...pageProps} />
+      {/* يمكنك إضافة Footer هنا لاحقاً ليظهر في كل الصفحات */}
     </CartProvider>
   );
 }
+
+export default MyApp;
