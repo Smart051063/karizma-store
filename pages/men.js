@@ -3,30 +3,32 @@ import { client } from '../src/sanity/lib/client';
 
 export default function MenPage() {
   const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState('all'); // الحالة الافتراضية: عرض الكل
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    // بناء الاستعلام بناءً على الزر المضغوط
+    // 1. منطق الفلترة (اللوجيك)
     let occasionCondition = "";
     if (filter !== 'all') {
       occasionCondition = `&& occasion == "${filter}"`;
     }
 
+    // 2. الاستعلام (تأكدنا هنا من جلب رابط الصورة بشكل صحيح)
     const query = `*[_type == "product" && subCategory == "men" ${occasionCondition}]{
       _id,
       name,
       price,
-      "imageUrl": image.asset->url
+      "imageUrl": image.asset->url 
     }`;
 
+    // 3. تنفيذ الاستعلام
     client.fetch(query).then((data) => setProducts(data));
-  }, [filter]); // إعادة التشغيل كلما تغير الفلتر
+  }, [filter]);
 
   return (
     <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
       <h1 style={{ color: '#d4af37' }}>👔 قسم العطور الرجالية</h1>
 
-      {/* أزرار الفلترة الذكية */}
+      {/* أزرار الفلترة */}
       <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <button onClick={() => setFilter('all')} style={buttonStyle(filter === 'all')}>الكل</button>
         <button onClick={() => setFilter('gifts')} style={buttonStyle(filter === 'gifts')}>🎁 هدايا رجالية</button>
@@ -37,7 +39,13 @@ export default function MenPage() {
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product._id} style={cardStyle}>
-               <img src={product.imageUrl} alt={product.name} style={{ width: '100%', borderRadius: '8px' }} />
+               {/* ✅✅✅ المكان الصحيح للصورة هو هنا داخل العرض */}
+               <img 
+                  src={product.imageUrl} 
+                  alt={product.name} 
+                  style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
+               />
+               
                <h3>{product.name}</h3>
                <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} جنيه</p>
                <button style={cartButtonStyle}>إضافة للسلة 🛒</button>
@@ -51,7 +59,7 @@ export default function MenPage() {
   );
 }
 
-// تنسيقات بسيطة للأزرار والكروت
+// التنسيقات (Styles)
 const buttonStyle = (isActive) => ({
   padding: '10px 20px',
   borderRadius: '20px',
