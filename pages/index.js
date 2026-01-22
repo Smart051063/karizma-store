@@ -29,10 +29,9 @@ export default function Home() {
           <p style={{ fontSize: '1.5rem', color: 'white', marginBottom: '30px' }}>
             عطرك.. بصمتك التي لا تُنسى ✨
           </p>
-          <Link href="/men">
-            <button style={ctaButtonStyle}>تسوق الآن</button>
-          </Link>
-        </div>
+<Link href="/oriental"> {/* 👈 غيرنا الوجهة إلى صفحة الروائح الشرقية */}
+  <button style={ctaButtonStyle}>تسوق الآن</button>
+</Link>        </div>
       </div>
 
       {/* 2. قسم تصفح الأقسام (Categories) */}
