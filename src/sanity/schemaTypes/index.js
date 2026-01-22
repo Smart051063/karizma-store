@@ -1,5 +1,6 @@
-import { blockContentType } from './blockContentType'
-import product from './product'
+import { product } from './product'
+import banner from './banner' // تأكد أنك أنشأت ملف banner.js بجانبه
 
-// لاحظ أننا غيرنا الاسم هنا ليصبح schemaTypes ليتوافق مع ملف الإعدادات
-export const schemaTypes = [blockContentType, product]
+export const schema = {
+  types: [product, banner],
+}
