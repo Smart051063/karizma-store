@@ -1,42 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
-import Link from 'next/link';
 
 export default function MenPage() {
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    // 💡 السر كله هنا!
-    // طلبنا منه إحضار المنتجات التي نوعها "product" 
-    // AND (&&)
-    // تصنيفها الفرعي هو "women"
-    const query = `*[_type == "product" && subCategory == "women"]{
+    // 1. منطق الفلترة (اللوجيك) - لا تضع أي كود عرض هنا
+    let occasionCondition = "";
+    if (filter !== 'all') {
+      occasionCondition = `&& occasion == "${filter}"`;
+    }
+
+    // 2. الاستعلام
+    const query = `*[_type == "product" && subCategory == "women" ${occasionCondition}]{
       _id,
       name,
       price,
-      image
+      "imageUrl": image.asset->url 
     }`;
 
+    // 3. تنفيذ الاستعلام
     client.fetch(query).then((data) => setProducts(data));
-  }, []);
+  }, [filter]);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl' }}>
-      <h1 style={{ textAlign: 'center', color: '#d4af37' }}>👔 قسم العطور النسائية</h1>
-      
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+      <h1 style={{ color: '#d4af37' }}>👔 قسم العطورالنسائية </h1>
+
+      {/* أزرار الفلترة */}
+      <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <button onClick={() => setFilter('all')} style={buttonStyle(filter === 'all')}>الكل</button>
+        <button onClick={() => setFilter('gifts')} style={buttonStyle(filter === 'gifts')}>🎁 هدايا رجالية</button>
+        <button onClick={() => setFilter('wedding')} style={buttonStyle(filter === 'wedding')}>💍 عطور زفاف</button>
+      </div>
+
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
         {products.length > 0 ? (
           products.map((product) => (
-            <div key={product._id} style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '10px', width: '250px', textAlign: 'center' }}>
-               {/* عرض الصورة والاسم والسعر هنا بنفس طريقة الصفحة الرئيسية */}
+            <div key={product._id} style={cardStyle}>
+               {/* ✅✅✅ هنا المكان الصحيح للصورة: داخل كرت المنتج */}
+               {product.imageUrl && (
+                 <img 
+                    src={product.imageUrl} 
+                    alt={product.name} 
+                    style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
+                 />
+               )}
+               
                <h3>{product.name}</h3>
                <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} جنيه</p>
+               <button style={cartButtonStyle}>إضافة للسلة 🛒</button>
             </div>
           ))
         ) : (
-          <p>جاري تحميل العطور الرجالية الفخمة... ⏳</p>
+          <p>لا توجد عطور متوفرة لهذا التصنيف حالياً.. 🕵️‍♂️</p>
         )}
       </div>
     </div>
   );
 }
+
+// التنسيقات (Styles) - اجعلها في أسفل الملف دائماً
+const buttonStyle = (isActive) => ({
+  padding: '10px 20px',
+  borderRadius: '20px',
+  border: '1px solid #d4af37',
+  backgroundColor: isActive ? '#d4af37' : 'transparent',
+  color: isActive ? 'black' : '#d4af37',
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  transition: '0.3s'
+});
+
+const cardStyle = {
+  border: '1px solid #ddd',
+  padding: '15px',
+  borderRadius: '10px',
+  width: '250px',
+  textAlign: 'center',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+};
+
+const cartButtonStyle = {
+  backgroundColor: 'black',
+  color: 'white',
+  border: 'none',
+  padding: '10px 15px',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  width: '100%'
+};
