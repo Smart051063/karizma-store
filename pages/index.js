@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا */}
+      {/* 3️⃣ تصفح مجموعاتنا (تم توضيح الإطارات هنا ✨) */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -54,10 +54,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ وصلنا حديثاً (Micro Mode ✨) */}
+      {/* 4️⃣ وصلنا حديثاً */}
       <div style={{ padding: '10px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', fontSize: '1.6rem' }}>وصلنا حديثاً ✨</h2>
-        
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
           {products.map((product) => {
             if (!product.slug || !product.slug.current) return null;
@@ -81,7 +80,7 @@ export default function Home() {
   );
 }
 
-// ✅ مكون الدوائر
+// مكون الدوائر
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
@@ -93,22 +92,19 @@ function CategoryCircle({ href, emoji, label }) {
   );
 }
 
-// --- التنسيقات (تم تصحيح الخطأ هنا 👇) ---
+// --- التنسيقات (Styles) ---
 const ctaButtonStyle = { 
-  padding: '10px 25px', 
-  fontSize: '0.9rem', 
-  backgroundColor: '#d4af37', 
-  color: 'black', // ✅ تمت إضافة الفاصلة العلوية الناقصة هنا
-  border: 'none', 
-  borderRadius: '20px', 
-  cursor: 'pointer', 
-  fontWeight: 'bold' 
+  padding: '10px 25px', fontSize: '0.9rem', backgroundColor: '#d4af37', color: 'black', 
+  border: 'none', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' 
 };
 
+// 👇 هنا التعديل: جعلنا الإطار ذهبياً وواضحاً (2px solid #d4af37)
 const circleStyle = { 
   width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-  boxShadow: '0 3px 8px rgba(0,0,0,0.04)', border: '1px solid #f0f0f0', cursor: 'pointer'
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', // ظل أقوى قليلاً للبروز
+  border: '2px solid #d4af37', // 👈 إطار ذهبي واضح
+  cursor: 'pointer', transition: 'transform 0.2s'
 };
 
 const productCardStyle = { 
