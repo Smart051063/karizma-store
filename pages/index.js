@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 1️⃣ قسم البنر العلوي الذكي */}
+      {/* 1️⃣ قسم البنر العلوي */}
       {banner && (
         <div style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
           <Link href={banner.link || '/search'}>
@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* 2️⃣ الشاشة الرئيسية (Hero Section) */}
+      {/* 2️⃣ الشاشة الرئيسية */}
       <div style={{ 
         backgroundImage: 'url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
         height: '60vh', backgroundSize: 'cover', backgroundPosition: 'center',
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا (7 دوائر أنيقة ورشيقة) */}
+      {/* 3️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -54,18 +54,16 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ وصلنا حديثاً (النسخة فائقة الصغر - Micro Mode ✨) */}
+      {/* 4️⃣ وصلنا حديثاً (Micro Mode ✨) */}
       <div style={{ padding: '10px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', fontSize: '1.6rem' }}>وصلنا حديثاً ✨</h2>
         
-        {/* تقليل الفجوة (gap) لأقل درجة لزيادة الانسيابية */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
           {products.map((product) => {
             if (!product.slug || !product.slug.current) return null;
             return (
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div style={productCardStyle}>
-                  {/* 👇 ارتفاع الصورة 90 بكسل فقط ليكون "ميني" تماماً */}
                   <div style={{ height: '90px', overflow: 'hidden', borderRadius: '8px 8px 0 0' }}>
                      {product.imageUrl && <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                   </div>
@@ -83,7 +81,7 @@ export default function Home() {
   );
 }
 
-// ✅ مكون الدوائر (CategoryCircle) مدمج لمنع أخطاء التعريف
+// ✅ مكون الدوائر
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
@@ -95,5 +93,32 @@ function CategoryCircle({ href, emoji, label }) {
   );
 }
 
-// --- التنسيقات الفائقة الرشاقة (The Ultimate Micro Styles) ---
-const ctaButtonStyle = { padding: '10px 25px', fontSize: '0.9rem', backgroundColor: '#d4af37', color: 'black
+// --- التنسيقات (تم تصحيح الخطأ هنا 👇) ---
+const ctaButtonStyle = { 
+  padding: '10px 25px', 
+  fontSize: '0.9rem', 
+  backgroundColor: '#d4af37', 
+  color: 'black', // ✅ تمت إضافة الفاصلة العلوية الناقصة هنا
+  border: 'none', 
+  borderRadius: '20px', 
+  cursor: 'pointer', 
+  fontWeight: 'bold' 
+};
+
+const circleStyle = { 
+  width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
+  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+  boxShadow: '0 3px 8px rgba(0,0,0,0.04)', border: '1px solid #f0f0f0', cursor: 'pointer'
+};
+
+const productCardStyle = { 
+  width: '110px', backgroundColor: 'white', borderRadius: '8px', 
+  boxShadow: '0 2px 8px rgba(0,0,0,0.03)', border: '1px solid #f5f5f5', cursor: 'pointer' 
+};
+
+const productNameStyle = { 
+  fontSize: '0.7rem', color: '#1a1a1a', margin: '0 0 3px', fontWeight: '600',
+  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' 
+};
+
+const productPriceStyle = { color: '#d4af37', fontWeight: 'bold', fontSize: '0.8rem', margin: 0 };
