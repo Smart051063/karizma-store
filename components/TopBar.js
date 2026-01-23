@@ -4,21 +4,21 @@ import { useLanguage } from '../src/context/LanguageContext';
 
 export default function TopBar() {
   const { cartItems } = useCart();
-  const { language, switchLanguage, t } = useLanguage();
+  const { language, switchLanguage } = useLanguage(); // لم نعد نحتاج t هنا
   
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
       
-      {/* 1️⃣ الشريط التنبيهي (تم تكبير الخط وتحسين الوضوح) ✨ */}
+      {/* 1️⃣ الشريط التنبيهي (كما هو) */}
       <div className="top-alert-bar">
         <span style={{ fontSize: '1.3rem' }}>✨ </span>
           جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها
         <span style={{ fontSize: '1.3rem' }}> ✨</span>
       </div>
 
-      {/* 2️⃣ القائمة الرئيسية */}
+      {/* 2️⃣ القائمة الرئيسية (تم تنظيفها) */}
       <nav style={{
         backgroundColor: 'black', color: 'white', padding: '10px 20px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -31,14 +31,9 @@ export default function TopBar() {
           ✨ Karizma
         </Link>
 
-        {/* الروابط */}
-        <div className="hide-on-mobile" style={{ display: 'flex', gap: '20px', fontSize: '1rem' }}>
-          <Link href="/men" style={linkStyle}>{t.men}</Link>
-          <Link href="/women" style={linkStyle}>{t.women}</Link>
-          <Link href="/oriental" style={{...linkStyle, color: '#d4af37'}}>{t.oriental}</Link>
-        </div>
+        {/* ❌ (تم حذف الروابط من هنا: رجالي - نسائي - شرقي) لتخفيف الزحام */}
 
-        {/* الأيقونات */}
+        {/* الأيقونات (اللغة - البحث - السلة) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           
           <button 
@@ -72,27 +67,22 @@ export default function TopBar() {
         </div>
       </nav>
 
-      {/* تنسيقات CSS (لضبط الأحجام بدقة) */}
+      {/* تنسيقات CSS */}
       <style jsx>{`
-        /* تنسيق الشريط التنبيهي للكمبيوتر */
         .top-alert-bar {
           background-color: #000;
           color: #d4af37;
           text-align: center;
-          padding: 12px 10px; /* زيادة الحشوة لراحة العين */
-          font-size: 1.2rem;  /* 👈 تكبير الخط هنا (حوالي 19px) */
+          padding: 12px 10px;
+          font-size: 1.2rem;
           font-weight: bold;
           border-bottom: 1px solid #222;
           line-height: 1.4;
         }
 
-        /* تنسيق الموبايل (أصغر قليلاً لكن واضح) */
         @media (max-width: 768px) {
-          .hide-on-mobile {
-            display: none !important;
-          }
           .top-alert-bar {
-            font-size: 0.9rem; /* خط واضح للموبايل دون أن يملأ الشاشة */
+            font-size: 0.9rem;
             padding: 8px 5px;
           }
         }
@@ -100,5 +90,3 @@ export default function TopBar() {
     </div>
   );
 }
-
-const linkStyle = { textDecoration: 'none', color: 'white', fontWeight: '500', cursor: 'pointer' };
