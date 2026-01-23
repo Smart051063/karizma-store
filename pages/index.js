@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا (تم توضيح الإطارات هنا ✨) */}
+      {/* 3️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -54,10 +54,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ وصلنا حديثاً */}
+      {/* 4️⃣ وصلنا حديثاً (بإطارات ذهبية مميزة ✨) */}
       <div style={{ padding: '10px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', fontSize: '1.6rem' }}>وصلنا حديثاً ✨</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
           {products.map((product) => {
             if (!product.slug || !product.slug.current) return null;
             return (
@@ -98,18 +98,23 @@ const ctaButtonStyle = {
   border: 'none', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' 
 };
 
-// 👇 هنا التعديل: جعلنا الإطار ذهبياً وواضحاً (2px solid #d4af37)
 const circleStyle = { 
   width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', // ظل أقوى قليلاً للبروز
-  border: '2px solid #d4af37', // 👈 إطار ذهبي واضح
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+  border: '2px solid #d4af37', // إطار ذهبي للدوائر
   cursor: 'pointer', transition: 'transform 0.2s'
 };
 
+// 👇 هنا التعديل: أضفنا إطاراً ذهبياً للكروت (border: 1px solid #d4af37)
 const productCardStyle = { 
-  width: '110px', backgroundColor: 'white', borderRadius: '8px', 
-  boxShadow: '0 2px 8px rgba(0,0,0,0.03)', border: '1px solid #f5f5f5', cursor: 'pointer' 
+  width: '110px', 
+  backgroundColor: 'white', 
+  borderRadius: '8px', 
+  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', // ظل أقوى قليلاً للبروز
+  border: '1px solid #d4af37', // 👈 الإطار الذهبي الجديد
+  cursor: 'pointer',
+  transition: 'transform 0.2s'
 };
 
 const productNameStyle = { 
