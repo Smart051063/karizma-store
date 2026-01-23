@@ -45,7 +45,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا (تم إضافة قسم التجميل والعناية 💄) */}
+      {/* 3️⃣ تصفح مجموعاتنا (تم تعديل "ميكسات" ⚗️) */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -56,8 +56,10 @@ export default function Home() {
           <CategoryCircle href="/niche" emoji="💎" label="نيش" />
           <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
           <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
-          <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
-          {/* 👇 القسم الجديد */}
+          
+          {/* 👇 التعديل هنا: الاسم والأيقونة */}
+          <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات" />
+          
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل وعناية" />
 
         </div>
