@@ -11,22 +11,14 @@ export default function TopBar() {
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
       
-      {/* 1️⃣ الشريط التنبيهي الذهبي الجديد (يظهر في كل الصفحات) ✨ */}
-      <div style={{
-        backgroundColor: '#000', // خلفية سوداء فخمة
-        color: '#d4af37',       // كتابة ذهبية
-        textAlign: 'center',
-        padding: '8px',
-        fontSize: '0.9rem',     // خط مناسب
-        borderBottom: '1px solid #222',
-        fontWeight: 'bold'
-      }}>
-        <span style={{ fontSize: '1rem' }}>✨ </span>
+      {/* 1️⃣ الشريط التنبيهي (تم تكبير الخط وتحسين الوضوح) ✨ */}
+      <div className="top-alert-bar">
+        <span style={{ fontSize: '1.3rem' }}>✨ </span>
           جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها
-        <span style={{ fontSize: '1rem' }}> ✨</span>
+        <span style={{ fontSize: '1.3rem' }}> ✨</span>
       </div>
 
-      {/* 2️⃣ القائمة الرئيسية (القديمة كما هي) */}
+      {/* 2️⃣ القائمة الرئيسية */}
       <nav style={{
         backgroundColor: 'black', color: 'white', padding: '10px 20px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -39,7 +31,7 @@ export default function TopBar() {
           ✨ Karizma
         </Link>
 
-        {/* الروابط (تختفي في الموبايل) */}
+        {/* الروابط */}
         <div className="hide-on-mobile" style={{ display: 'flex', gap: '20px', fontSize: '1rem' }}>
           <Link href="/men" style={linkStyle}>{t.men}</Link>
           <Link href="/women" style={linkStyle}>{t.women}</Link>
@@ -80,16 +72,28 @@ export default function TopBar() {
         </div>
       </nav>
 
-      {/* تنسيقات الموبايل (لتصغير خط التنبيه قليلاً في الشاشات الصغيرة) */}
+      {/* تنسيقات CSS (لضبط الأحجام بدقة) */}
       <style jsx>{`
+        /* تنسيق الشريط التنبيهي للكمبيوتر */
+        .top-alert-bar {
+          background-color: #000;
+          color: #d4af37;
+          text-align: center;
+          padding: 12px 10px; /* زيادة الحشوة لراحة العين */
+          font-size: 1.2rem;  /* 👈 تكبير الخط هنا (حوالي 19px) */
+          font-weight: bold;
+          border-bottom: 1px solid #222;
+          line-height: 1.4;
+        }
+
+        /* تنسيق الموبايل (أصغر قليلاً لكن واضح) */
         @media (max-width: 768px) {
           .hide-on-mobile {
             display: none !important;
           }
-          /* تصغير خط الشريط التنبيهي في الموبايل ليكون أنيقاً */
-          div[style*="padding: 8px"] {
-            font-size: 0.75rem !important; 
-            padding: 6px !important;
+          .top-alert-bar {
+            font-size: 0.9rem; /* خط واضح للموبايل دون أن يملأ الشاشة */
+            padding: 8px 5px;
           }
         }
       `}</style>
