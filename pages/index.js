@@ -16,23 +16,15 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 1️⃣ قسم البنر العلوي (صورة ثابتة للعرض فقط - بدون رابط 🛑) */}
+      {/* 1️⃣ قسم البنر العلوي (ثابت) */}
       {banner && (
-        <div style={{ 
-          backgroundColor: '#fff', 
-          textAlign: 'center', 
-          borderBottom: '1px solid #eee', 
-          boxShadow: '0 4px 8px rgba(0,0,0,0.05)' 
-        }}>
+        <div style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
           <img 
             src={banner.imageUrl} 
             alt={banner.title} 
             style={{ 
-              width: '100%', 
-              height: 'auto', 
-              maxHeight: '350px', 
-              objectFit: 'cover', 
-              cursor: 'default' // 👈 المؤشر عادي (لا يوحي بالضغط)
+              width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover', 
+              cursor: 'default' 
             }} 
           />
         </div>
@@ -53,10 +45,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا (بإطار ذهبي ✨) */}
+      {/* 3️⃣ تصفح مجموعاتنا (تم إضافة قسم التجميل والعناية 💄) */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
           <CategoryCircle href="/women" emoji="💃" label="نسائي" />
           <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
@@ -64,10 +57,13 @@ export default function Home() {
           <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
           <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
           <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
+          {/* 👇 القسم الجديد */}
+          <CategoryCircle href="/makeup" emoji="💄" label="تجميل وعناية" />
+
         </div>
       </div>
 
-      {/* 4️⃣ وصلنا حديثاً (كروت صغيرة بإطار ذهبي ✨) */}
+      {/* 4️⃣ وصلنا حديثاً */}
       <div style={{ padding: '10px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', fontSize: '1.6rem' }}>وصلنا حديثاً ✨</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
@@ -114,15 +110,13 @@ const ctaButtonStyle = {
 const circleStyle = { 
   width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
-  border: '2px solid #d4af37', // إطار ذهبي
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37',
   cursor: 'pointer', transition: 'transform 0.2s'
 };
 
 const productCardStyle = { 
   width: '110px', backgroundColor: 'white', borderRadius: '8px', 
-  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', 
-  border: '1px solid #d4af37', // إطار ذهبي للكروت
+  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid #d4af37', 
   cursor: 'pointer', transition: 'transform 0.2s'
 };
 
