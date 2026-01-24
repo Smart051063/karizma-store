@@ -8,12 +8,11 @@ export default function Cart() {
   // حساب الإجمالي
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
-  // 👇 دالة إرسال الطلب عبر واتساب
+  // دالة إرسال الطلب عبر واتساب
   const handleCheckout = () => {
-    // 1️⃣ ضع رقم هاتفك هنا (مع مفتاح الدولة 20 لمصر) بدون فواصل أو علامة +
-    const phoneNumber = "201002410037"; // ⚠️ استبدل هذا الرقم برقمك الحقيقي!
+    // ⚠️ استبدل هذا الرقم برقمك الحقيقي
+    const phoneNumber = "201000000000"; 
 
-    // 2️⃣ تجهيز نص الرسالة
     let message = `مرحباً كاريزما للعطور 👋\nأريد إتمام الطلب التالي:\n\n`;
 
     cartItems.forEach((item, index) => {
@@ -22,7 +21,6 @@ export default function Cart() {
 
     message += `\n💰 الإجمالي النهائي: ${totalPrice} ج.م\n\nشكراً لكم! ✨`;
 
-    // 3️⃣ فتح واتساب
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -64,8 +62,8 @@ export default function Cart() {
                 <button onClick={() => updateQty(item._id, item.qty + 1)} style={qtyBtnStyle}>+</button>
               </div>
 
-              {/* زر الحذف */}
-              <button onClick={() => removeFromCart(item._id)} style={deleteBtnStyle}>🗑️</button>
+              {/* زر الحذف (تم تصحيحه ✅) */}
+              <button onClick={() => removeFromCart(item)} style={deleteBtnStyle}>🗑️</button>
             </div>
           ))}
 
@@ -76,11 +74,10 @@ export default function Cart() {
               <span style={{ color: '#e74c3c' }}>{totalPrice} ج.م</span>
             </div>
 
-            {/* 👇 زر إتمام الطلب */}
             <button 
               onClick={handleCheckout}
               style={{
-                width: '100%', padding: '15px', backgroundColor: '#25D366', color: 'white', // لون واتساب الأخضر
+                width: '100%', padding: '15px', backgroundColor: '#25D366', color: 'white', 
                 border: 'none', borderRadius: '10px', fontSize: '1.2rem', fontWeight: 'bold',
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px'
               }}
