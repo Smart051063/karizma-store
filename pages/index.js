@@ -10,14 +10,14 @@ export default function Home() {
     // 1. جلب البنر
     client.fetch(`*[_type == "banner" && isActive == true][0]{title, "imageUrl": image.asset->url}`).then(setBanner);
     
-    // 2. جلب المنتجات (مع حقل الخصم الجديد discount)
+    // 2. جلب المنتجات (مع حقل الخصم discount)
     client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 1️⃣ قسم البنر العلوي */}
+      {/* 1️⃣ قسم البنر العلوي (ثابت) */}
       {banner && (
         <div style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
           <img 
@@ -49,11 +49,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا */}
+      {/* 3️⃣ تصفح مجموعاتنا (تم إضافة زر العروض 🔥) */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
           
+          {/* 👇 زر العروض الجديد في البداية ليكون ملفتاً */}
+          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
+
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
           <CategoryCircle href="/women" emoji="💃" label="نسائي" />
           <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
@@ -65,19 +68,21 @@ export default function Home() {
           <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
           <CategoryCircle href="/burners" emoji="♨️" label="فوحات ومباخر" />
           <CategoryCircle href="/fresheners" emoji="🌬️" label="معطرات" />
+          
+          {/* تجميل وعناية في النهاية */}
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل وعناية" />
 
         </div>
       </div>
 
-      {/* 4️⃣ وصلنا حديثاً (مع حساب الخصومات والعروض 🔥) */}
+      {/* 4️⃣ وصلنا حديثاً (مع حساب الخصومات) */}
       <div style={{ padding: '10px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', fontSize: '1.6rem' }}>وصلنا حديثاً ✨</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
           {products.map((product) => {
             if (!product.slug || !product.slug.current) return null;
             
-            // 🔥 معادلة حساب السعر الجديد
+            // حساب السعر
             const hasDiscount = product.discount > 0;
             const originalPrice = product.price;
             const discountedPrice = hasDiscount 
@@ -88,9 +93,8 @@ export default function Home() {
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div style={productCardStyle}>
                   
-                  {/* حاوية الصورة + شريط الخصم */}
                   <div style={{ height: '90px', overflow: 'hidden', borderRadius: '8px 8px 0 0', position: 'relative' }}>
-                     {/* شريط الخصم الأحمر يظهر فقط لو فيه خصم */}
+                     {/* شريط الخصم */}
                      {hasDiscount && (
                        <div style={{ 
                          position: 'absolute', top: 0, left: 0, 
@@ -108,7 +112,6 @@ export default function Home() {
                   <div style={{ padding: '5px', textAlign: 'center' }}>
                     <h3 style={productNameStyle}>{product.name}</h3>
                     
-                    {/* عرض السعر: لو فيه خصم نعرض القديم مشطوب والجديد */}
                     {hasDiscount ? (
                       <div style={{ display: 'flex', justifyContent: 'center', gap: '5px', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.7rem', color: '#999', textDecoration: 'line-through' }}>{originalPrice}</span>
@@ -166,5 +169,3 @@ const productNameStyle = {
 };
 
 const productPriceStyle = { color: '#d4af37', fontWeight: 'bold', fontSize: '0.8rem', margin: 0 };
-{/* 👇 زر العروض الجديد (بلون مميز) */}
-<CategoryCircle href="/offers" emoji="🔥" label="العروض" />
