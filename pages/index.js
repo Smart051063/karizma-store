@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Head from 'next/head'; // استيراد مكتبة الرأس (Header)
+import Head from 'next/head'; // مكتبة هامة جداً للسيو
 import { client } from '../src/sanity/lib/client';
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
         
-        {/* ✅ كود التحقق الخاص بك (تمت إضافته بنجاح) */}
+        {/* ✅ كود التحقق من جوجل (تم تثبيته بنجاح) */}
         <meta name="google-site-verification" content="OP6x0i1bX9xy4ooN7YYcZY5MObr575koRd7SlhR_L-o" />
 
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية. عطور رجالية، نسائية، ميكسات خاصة، ومسك فاخر. التوصيل لجميع المحافظات." />
@@ -30,7 +30,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        {/* إعدادات السوشيال ميديا (Open Graph) */}
+        {/* إعدادات المشاركة على السوشيال ميديا (فيسبوك وواتساب) */}
         <meta property="og:title" content="كاريزما للعطور | خصومات هائلة" />
         <meta property="og:description" content="اكتشف مجموعتنا الفاخرة من العطور والميكسات. جودة نراهن عليها." />
         <meta property="og:type" content="website" />
@@ -125,7 +125,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* التنسيقات والأنيميشن */}
+      {/* التنسيقات */}
       <style jsx global>{`
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
