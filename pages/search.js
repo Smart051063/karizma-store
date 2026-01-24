@@ -8,20 +8,20 @@ export default function Search() {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    // جلب المنتجات (مع حقل الخصم discount)
+    // جلب المنتجات
     client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then((data) => {
       setProducts(data);
       setFilteredProducts(data);
     });
   }, []);
 
-  // دالة البحث الفوري
+  // دالة البحث
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     
     const filtered = products.filter(product => 
-      product.name.toLowerCase().includes(term)
+      product.name && product.name.toLowerCase().includes(term)
     );
     setFilteredProducts(filtered);
   };
@@ -50,6 +50,9 @@ export default function Search() {
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
             
+            // 🛑 فحص أمان هام جداً: إذا لم يكن للمنتج رابط، لا تعرضه
+            if (!product.slug || !product.slug.current) return null;
+
             // حساب السعر والخصم
             const hasDiscount = product.discount > 0;
             const originalPrice = product.price;
@@ -105,10 +108,10 @@ export default function Search() {
   );
 }
 
-// --- التنسيقات (مطابقة لتصميم الموقع الفخم) ---
+// --- التنسيقات ---
 const productCardStyle = { 
   width: '180px', backgroundColor: 'white', borderRadius: '10px', 
-  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid #d4af37', // الإطار الذهبي
+  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid #d4af37', 
   cursor: 'pointer', transition: 'transform 0.2s', margin: '10px'
 };
 
