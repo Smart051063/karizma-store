@@ -7,16 +7,14 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 1. جلب البنر
     client.fetch(`*[_type == "banner" && isActive == true][0]{title, "imageUrl": image.asset->url}`).then(setBanner);
-    // 2. جلب المنتجات
     client.fetch(`*[_type == "product"]{_id, name, price, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 1️⃣ قسم البنر العلوي (ثابت) */}
+      {/* 1️⃣ قسم البنر العلوي */}
       {banner && (
         <div style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
           <img 
@@ -41,11 +39,15 @@ export default function Home() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
           <p style={{ fontSize: '1rem', marginBottom: '20px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
-          <Link href="/oriental"><button style={ctaButtonStyle}>تسوق الآن</button></Link>
+          
+          {/* 👇 زر تسوق الآن: وجهته مؤقتاً للميكسات كما طلبت سابقاً حتى نقرر لاحقاً */}
+          <Link href="/mixes">
+            <button style={ctaButtonStyle}>تسوق الآن</button>
+          </Link>
         </div>
       </div>
 
-      {/* 3️⃣ تصفح مجموعاتنا (تم تعديل "ميكسات" ⚗️) */}
+      {/* 3️⃣ تصفح مجموعاتنا (القائمة النظيفة والجديدة ✨) */}
       <div style={{ padding: '40px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.6rem' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -56,10 +58,14 @@ export default function Home() {
           <CategoryCircle href="/niche" emoji="💎" label="نيش" />
           <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
           <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
-          
-          {/* 👇 التعديل هنا: الاسم والأيقونة */}
           <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات" />
           
+          {/* 👇 هذا هو القسم الجديد الذي نقلنا له الكود */}
+          <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
+          
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات ومباخر" />
+          <CategoryCircle href="/fresheners" emoji="🌬️" label="معطرات" />
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل وعناية" />
 
         </div>
