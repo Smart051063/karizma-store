@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Head from 'next/head'; // 👈 هام جداً: استيراد مكتبة السيو
+import Head from 'next/head'; // استيراد مكتبة الرأس (Header)
 import { client } from '../src/sanity/lib/client';
 
 export default function Home() {
@@ -18,23 +18,25 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 👇 بداية قسم السيو (SEO) - بطاقة تعريف الموقع */}
+      {/* 👇 منطقة إعدادات جوجل والسيو (SEO) */}
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
+        
+        {/* 🔴 هام جداً: امسح الجملة العربية بالأسفل وضع مكانها الكود الذي نسخته من جوجل */}
+        <meta name="google-site-verification" content="ضع_كود_التحقق_من_جوجل_هنا_بدلا_من_هذه_الكلمات" />
+
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية. عطور رجالية، نسائية، ميكسات خاصة، ومسك فاخر. التوصيل لجميع المحافظات." />
         <meta name="keywords" content="عطور, كاريزما, عطور تركيب, برفيوم, مدينة نصر, عطور رجالي, عطور حريمي, مسك, Karizma Perfumes" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        {/* 👇 إعدادات الظهور على السوشيال ميديا (فيسبوك وواتساب) */}
+        {/* إعدادات السوشيال ميديا */}
         <meta property="og:title" content="كاريزما للعطور | خصومات هائلة" />
         <meta property="og:description" content="اكتشف مجموعتنا الفاخرة من العطور والميكسات. جودة نراهن عليها." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.karizmaperfumes.com/" />
-        {/* يفضل وضع رابط صورة اللوجو هنا بدلاً من الرابط الفارغ لكي تظهر عند المشاركة */}
         <meta property="og:image" content="https://www.karizmaperfumes.com/logo.png" />
       </Head>
-      {/* 👆 نهاية قسم السيو */}
 
       {/* 1️⃣ الأشرطة المتحركة */}
       <div className="ticker-container first-ticker">
@@ -72,7 +74,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ تصفح مجموعاتنا (بإطار ذهبي) */}
+      {/* 4️⃣ تصفح مجموعاتنا (الدوائر الذهبية) */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.8rem' }} className="fade-in">تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
