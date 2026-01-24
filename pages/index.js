@@ -106,8 +106,7 @@ export default function Home() {
           <video 
             width="100%" 
             height="auto" 
-            controls 
-            poster={banner?.imageUrl} 
+            controls  
             loop 
           >
             <source src="/promo.mp4" type="video/mp4" />
