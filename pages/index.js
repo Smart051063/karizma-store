@@ -11,18 +11,28 @@ export default function Home() {
     client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
-  const tickerText = "✨ أهلاً بكم في كاريزما للعطور - خصومات تصل إلى 20% على الميكسات والمسك - شحن سريع لجميع المحافظات 🚚 - اطلب الآن عبر واتساب ";
+  // النص المراد تكراره
+  const text = " ✨ أهلاً بكم في كاريزما للعطور - خصومات تصل إلى 20% على الميكسات والمسك - شحن سريع لجميع المحافظات 🚚 - اطلب الآن عبر واتساب ";
+  
+  // نكرر النص عدة مرات داخل "وحدة واحدة"
+  const tickerContent = (
+    <>
+      <span className="ticker-item">{text}</span>
+      <span className="ticker-item">{text}</span>
+      <span className="ticker-item">{text}</span>
+    </>
+  );
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 1️⃣ شريط الأخبار المتحرك */}
-      <div className="ticker-wrap">
-        <div className="ticker">
-          <span className="ticker-item">{tickerText}</span>
-          <span className="ticker-item">{tickerText}</span>
-          <span className="ticker-item">{tickerText}</span>
-          <span className="ticker-item">{tickerText}</span>
+      {/* 1️⃣ شريط الأخبار المتحرك (بدون فواصل نهائياً) */}
+      <div className="ticker-container">
+        <div className="ticker-track">
+          {/* نكرر الوحدة 3 مرات لضمان التلاحم التام */}
+          <div className="ticker-block">{tickerContent}</div>
+          <div className="ticker-block">{tickerContent}</div>
+          <div className="ticker-block">{tickerContent}</div>
         </div>
       </div>
 
@@ -135,12 +145,36 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CSS للأنيميشن */}
+      {/* 👇 الأنماط (CSS) الجديدة للأنيميشن المتصل */}
       <style jsx global>{`
-        .ticker-wrap { width: 100%; overflow: hidden; background-color: #d4af37; padding: 8px 0; white-space: nowrap; }
-        .ticker { display: inline-block; animation: marquee 40s linear infinite; }
-        .ticker-item { display: inline-block; padding-left: 50px; font-weight: bold; color: black; font-size: 1rem; }
-        @keyframes marquee { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .ticker-container {
+          width: 100%;
+          overflow: hidden;
+          background-color: #d4af37;
+          padding: 8px 0;
+          white-space: nowrap;
+          direction: ltr; /* مهم جداً للحركة السلسة */
+        }
+        .ticker-track {
+          display: inline-flex;
+          animation: scroll 30s linear infinite; /* سرعة الشريط */
+        }
+        .ticker-block {
+          display: flex; /* لضمان بقاء العناصر بجانب بعضها */
+        }
+        .ticker-item {
+          padding: 0 2rem;
+          font-weight: bold;
+          color: black;
+          font-size: 1rem;
+        }
+
+        /* الحركة السحرية: نتحرك ثلث المسافة فقط ثم نعيد الكرة */
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); } 
+        }
+
         .category-circle, .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .category-circle:hover, .product-card:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2) !important; }
         .hover-btn { transition: transform 0.2s, background-color 0.2s; }
