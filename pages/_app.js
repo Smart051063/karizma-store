@@ -1,26 +1,24 @@
 import React, { useEffect } from 'react';
-import Script from 'next/script'; // استيراد مكون السكربت من Next.js
+import Script from 'next/script';
 import { useRouter } from 'next/router';
 import '../styles/globals.css';
 import { CartProvider } from '../src/context/CartContext';
 import TopBar from '../src/components/TopBar';
 import Footer from '../src/components/Footer';
 
-// 👇 ضع رقم البيكسل الخاص بك هنا بدلاً من الأصفار
-const FB_PIXEL_ID = '1418587233195999'; 
+// ✅ رقم البيكسل الخاص بك
+const FB_PIXEL_ID = '1418587233195999';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-    // تتبع تغيير الصفحات (لأن Next.js لا يعيد تحميل الصفحة بالكامل)
+    // تتبع تغيير الصفحات عند التنقل داخل الموقع
     const handleRouteChange = () => {
-      import('react-facebook-pixel')
-        .then((x) => x.default)
-        .then((ReactPixel) => {
-          ReactPixel.init(FB_PIXEL_ID);
-          ReactPixel.pageView();
-        });
+      // نستخدم الكود المباشر بدلاً من المكتبة الخارجية لتجنب الأخطاء
+      if (window.fbq) {
+        window.fbq('track', 'PageView');
+      }
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -31,7 +29,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      {/* 1️⃣ كود فيسبوك بيكسل الرئيسي */}
+      {/* 1️⃣ كود فيسبوك بيكسل الأصلي */}
       <Script
         id="fb-pixel"
         strategy="afterInteractive"
@@ -45,13 +43,14 @@ function MyApp({ Component, pageProps }) {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
+            
             fbq('init', '${FB_PIXEL_ID}');
             fbq('track', 'PageView');
           `,
         }}
       />
 
-      {/* 2️⃣ باقي الموقع */}
+      {/* 2️⃣ مكونات الموقع */}
       <CartProvider>
         <TopBar />
         <Component {...pageProps} />
