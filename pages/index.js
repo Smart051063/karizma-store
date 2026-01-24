@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Head from 'next/head'; // 👈 هام جداً: استيراد مكتبة السيو
 import { client } from '../src/sanity/lib/client';
 
 export default function Home() {
@@ -17,6 +18,24 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
+      {/* 👇 بداية قسم السيو (SEO) - بطاقة تعريف الموقع */}
+      <Head>
+        <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
+        <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية. عطور رجالية، نسائية، ميكسات خاصة، ومسك فاخر. التوصيل لجميع المحافظات." />
+        <meta name="keywords" content="عطور, كاريزما, عطور تركيب, برفيوم, مدينة نصر, عطور رجالي, عطور حريمي, مسك, Karizma Perfumes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+
+        {/* 👇 إعدادات الظهور على السوشيال ميديا (فيسبوك وواتساب) */}
+        <meta property="og:title" content="كاريزما للعطور | خصومات هائلة" />
+        <meta property="og:description" content="اكتشف مجموعتنا الفاخرة من العطور والميكسات. جودة نراهن عليها." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.karizmaperfumes.com/" />
+        {/* يفضل وضع رابط صورة اللوجو هنا بدلاً من الرابط الفارغ لكي تظهر عند المشاركة */}
+        <meta property="og:image" content="https://www.karizmaperfumes.com/logo.png" />
+      </Head>
+      {/* 👆 نهاية قسم السيو */}
+
       {/* 1️⃣ الأشرطة المتحركة */}
       <div className="ticker-container first-ticker">
         <div className="ticker-track">
@@ -53,7 +72,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 🆕 4️⃣ تصفح مجموعاتنا (تمت إعادة الأزرار بإطار ذهبي) */}
+      {/* 4️⃣ تصفح مجموعاتنا (بإطار ذهبي) */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.8rem' }} className="fade-in">تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
@@ -76,7 +95,6 @@ export default function Home() {
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          {/* تأكد من وجود ملف promo.mp4 في مجلد public */}
           <video width="100%" height="auto" controls poster={banner?.imageUrl}>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
@@ -134,7 +152,7 @@ function CategoryCircle({ href, emoji, label }) {
         width: '110px', height: '110px', borderRadius: '50%', backgroundColor: 'white',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
-        border: '2px solid #d4af37', // 👈 الإطار الذهبي هنا
+        border: '2px solid #d4af37', 
         cursor: 'pointer'
       }}>
         <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
