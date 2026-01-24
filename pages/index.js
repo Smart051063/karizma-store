@@ -18,19 +18,19 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 👇 منطقة إعدادات جوجل والسيو (SEO) */}
+      {/* 👇 إعدادات جوجل والسيو (SEO) */}
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
         
-        {/* 🔴 هام جداً: امسح الجملة العربية بالأسفل وضع مكانها الكود الذي نسخته من جوجل */}
-        <meta name="google-site-verification" content="ضع_كود_التحقق_من_جوجل_هنا_بدلا_من_هذه_الكلمات" />
+        {/* ✅ كود التحقق الخاص بك (تمت إضافته بنجاح) */}
+        <meta name="google-site-verification" content="OP6x0i1bX9xy4ooN7YYcZY5MObr575koRd7SlhR_L-o" />
 
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية. عطور رجالية، نسائية، ميكسات خاصة، ومسك فاخر. التوصيل لجميع المحافظات." />
         <meta name="keywords" content="عطور, كاريزما, عطور تركيب, برفيوم, مدينة نصر, عطور رجالي, عطور حريمي, مسك, Karizma Perfumes" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        {/* إعدادات السوشيال ميديا */}
+        {/* إعدادات السوشيال ميديا (Open Graph) */}
         <meta property="og:title" content="كاريزما للعطور | خصومات هائلة" />
         <meta property="og:description" content="اكتشف مجموعتنا الفاخرة من العطور والميكسات. جودة نراهن عليها." />
         <meta property="og:type" content="website" />
@@ -74,7 +74,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4️⃣ تصفح مجموعاتنا (الدوائر الذهبية) */}
+      {/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.8rem' }} className="fade-in">تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
@@ -103,7 +103,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات (وصلنا حديثاً) */}
+      {/* 6️⃣ قسم المنتجات */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>وصلنا حديثاً ✨</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
@@ -146,7 +146,6 @@ export default function Home() {
   );
 }
 
-// مكون الدائرة الذهبية
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
