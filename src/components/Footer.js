@@ -2,8 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function Footer() {
-  // 👇 رابط عنوانك على جوجل ماب (يمكنك تغييره بأي رابط آخر)
-  const mapLink = "https://www.google.com/maps/search/?api=1&query=10+El+Sherif+St.,+El+manyal,+Cairo";
+  // 👇 رابط البحث المباشر عن عنوانك الجديد في خرائط جوجل
+  // استخدمنا رابط البحث لضمان ظهور المؤشر في المكان الصحيح
+  const mapLink = "https://www.google.com/maps/search/?api=1&query=25+شارع+ابن+الرومى+مدينة+نصر+الحى+السابع";
 
   return (
     <footer style={{ backgroundColor: '#111', color: '#fff', padding: '60px 20px 20px', direction: 'rtl', fontFamily: 'Arial, sans-serif', borderTop: '4px solid #d4af37' }}>
@@ -39,18 +40,18 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* 3️⃣ العمود الثالث: تواصل معنا (تم إضافة العنوان والزر) */}
+        {/* 3️⃣ العمود الثالث: تواصل معنا (تم تحديث العنوان) */}
         <div style={{ flex: '1 1 250px' }}>
           <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>خدمة العملاء</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#bbb', fontSize: '0.95rem' }}>
             
-            {/* 📍 العنوان وزر الخريطة */}
+            {/* 📍 العنوان الجديد وزر الخريطة */}
             <li style={{ marginBottom: '20px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
               <span style={{ fontSize: '1.2rem', marginTop: '2px' }}>📍</span>
               <div>
                 <span style={{ display: 'block', marginBottom: '8px', lineHeight: '1.4' }}>
-                  25 شارع ابن الرومى مدينة نصر بالقرب من الحديقة الدولية الحى السابع
-                  <br/> (الفرع الرئيسي)
+                  25 شارع ابن الرومى، الحي السابع
+                  <br/> مدينة نصر (بجوار الحديقة الدولية)
                 </span>
                 <a 
                   href={mapLink} 
@@ -92,7 +93,7 @@ export default function Footer() {
   );
 }
 
-// --- مكونات مساعدة (كما هي) ---
+// --- المكونات المساعدة (كما هي) ---
 function FooterLink({ href, text }) {
   return (
     <li style={{ marginBottom: '12px' }}>
