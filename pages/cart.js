@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { useCart } from '../src/context/CartContext';
-import { FaTrash, FaWhatsapp, FaArrowRight } from 'react-icons/fa';
 
 export default function Cart() {
-  // 👇 لاحظ هنا: استخدمنا الأسماء الصحيحة كما هي في ملف Context
   const { cartItems, totalPrice, removeFromCart, updateQuantity, checkout } = useCart();
 
+  // إذا كانت السلة فارغة
   if (cartItems.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh' }}>
@@ -56,7 +55,6 @@ export default function Cart() {
             {/* التحكم في الكمية */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: '#f5f5f5', padding: '5px 10px', borderRadius: '20px' }}>
               <button 
-                // 👇 التصحيح هنا: استخدام updateQuantity بدلاً من updateQty
                 onClick={() => updateQuantity(item._id, (item.quantity || 1) + 1)} 
                 style={btnStyle}>+</button>
               
@@ -68,8 +66,8 @@ export default function Cart() {
             </div>
 
             {/* زر الحذف */}
-            <button onClick={() => removeFromCart(item._id)} style={{ color: '#ff4d4d', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}>
-              <FaTrash />
+            <button onClick={() => removeFromCart(item._id)} style={{ color: '#ff4d4d', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem' }} title="حذف من السلة">
+              🗑️
             </button>
           </div>
         ))}
@@ -79,7 +77,6 @@ export default function Cart() {
       <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#fff', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h3 style={{ margin: 0 }}>المجموع الكلي:</h3>
-          {/* 👇 التصحيح: حماية الرقم من NaN */}
           <h2 style={{ margin: 0, color: '#d4af37' }}>{totalPrice ? totalPrice.toFixed(0) : 0} ج.م</h2>
         </div>
 
@@ -88,7 +85,7 @@ export default function Cart() {
           border: 'none', borderRadius: '10px', fontSize: '1.1rem', fontWeight: 'bold', 
           cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' 
         }}>
-          <FaWhatsapp size={24} /> إتمام الطلب عبر واتساب
+          📱 إتمام الطلب عبر واتساب
         </button>
       </div>
 
