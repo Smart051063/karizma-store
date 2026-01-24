@@ -1,9 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { useCart } from '../context/CartContext'; // تأكد أن المسار صحيح لملف الكونتكست
+// 👇 تم تعديل المسار هنا ليكون أكثر دقة
+import { useCart } from '../src/context/CartContext'; 
 
 export default function TopBar() {
-  const { totalQty } = useCart();
+  // استخدام خطاف السلة بأمان (مع قيمة افتراضية لتجنب الخطأ)
+  const cartData = useCart();
+  const totalQty = cartData ? cartData.totalQty : 0;
 
   return (
     <div style={topBarStyle}>
@@ -14,12 +17,12 @@ export default function TopBar() {
           <h1 style={logoStyle}>Karizma ✨</h1>
         </Link>
 
-        {/* 2️⃣ روابط التنقل (القائمة) */}
+        {/* 2️⃣ روابط التنقل */}
         <div style={navLinksStyle}>
           <Link href="/" style={linkStyle}>الرئيسية</Link>
           <Link href="/mixes" style={linkStyle}>ميكسات</Link>
           
-          {/* 👇 رابط العروض الجديد والمميز */}
+          {/* رابط العروض */}
           <Link href="/offers" style={{ ...linkStyle, color: '#e74c3c', fontWeight: 'bold' }}>
             العروض 🔥
           </Link>
@@ -42,10 +45,10 @@ export default function TopBar() {
   );
 }
 
-// --- التنسيقات (Styles) ---
+// --- التنسيقات ---
 const topBarStyle = {
-  backgroundColor: '#1a1a1a', // لون خلفية أسود فخم
-  color: '#d4af37', // لون ذهبي
+  backgroundColor: '#1a1a1a', 
+  color: '#d4af37', 
   padding: '15px 0',
   position: 'sticky', top: 0, zIndex: 1000,
   boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
