@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-// 👇 تم تعديل المسار هنا ليكون أكثر دقة
+// 👇 مسار السلة الصحيح
 import { useCart } from '../src/context/CartContext'; 
 
 export default function TopBar() {
-  // استخدام خطاف السلة بأمان (مع قيمة افتراضية لتجنب الخطأ)
   const cartData = useCart();
   const totalQty = cartData ? cartData.totalQty : 0;
 
@@ -17,12 +16,11 @@ export default function TopBar() {
           <h1 style={logoStyle}>Karizma ✨</h1>
         </Link>
 
-        {/* 2️⃣ روابط التنقل */}
+        {/* 2️⃣ روابط التنقل (بدون ميكسات) */}
         <div style={navLinksStyle}>
           <Link href="/" style={linkStyle}>الرئيسية</Link>
-          <Link href="/mixes" style={linkStyle}>ميكسات</Link>
           
-          {/* رابط العروض */}
+          {/* رابط العروض المميز */}
           <Link href="/offers" style={{ ...linkStyle, color: '#e74c3c', fontWeight: 'bold' }}>
             العروض 🔥
           </Link>
