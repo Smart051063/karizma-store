@@ -166,3 +166,5 @@ const productNameStyle = {
 };
 
 const productPriceStyle = { color: '#d4af37', fontWeight: 'bold', fontSize: '0.8rem', margin: 0 };
+{/* 👇 زر العروض الجديد (بلون مميز) */}
+<CategoryCircle href="/offers" emoji="🔥" label="العروض" />

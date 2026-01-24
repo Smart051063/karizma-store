@@ -1,107 +1,86 @@
 export default {
   name: 'product',
-  title: 'Product (المنتجات)',
+  title: 'المنتجات (Products)',
   type: 'document',
   fields: [
-    // --- البيانات الأساسية ---
+    // 1️⃣ اسم المنتج
+    {
+      name: 'name',
+      title: 'اسم المنتج (Name)',
+      type: 'string',
+      validation: Rule => Rule.required().error('يجب إدخال اسم المنتج')
+    },
+    
+    // 2️⃣ الرابط (Slug) - يتم توليده تلقائياً من الاسم
+    {
+      name: 'slug',
+      title: 'رابط المنتج (Slug)',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required()
+    },
+
+    // 3️⃣ السعر
+    {
+      name: 'price',
+      title: 'السعر (Price)',
+      type: 'number',
+      validation: Rule => Rule.required().min(0)
+    },
+
+    // 4️⃣ نسبة الخصم (المكان المثالي هنا 👇)
     {
       name: 'discount',
       title: 'نسبة الخصم (%)',
       type: 'number',
-      description: 'اكتب نسبة الخصم هنا (مثلاً: 10 أو 20). اتركه 0 إذا لم يكن هناك خصم.',
-      validation: Rule => Rule.min(0).max(100) // لضمان أن الرقم بين 0 و 100
+      description: 'اكتب نسبة الخصم فقط (مثلاً: 10 أو 20). اتركه فارغاً أو 0 إذا لم يكن هناك عرض.',
+      validation: Rule => Rule.min(0).max(100)
     },
-    {
-      name: 'name',
-      title: 'اسم المنتج (Arabic Name)',
-      type: 'string',
-      validation: Rule => Rule.required()
-    },
-    {
-      name: 'nameEn',
-      title: 'اسم المنتج بالإنجليزية (English Name)',
-      type: 'string',
-      description: 'هذا الاسم سيظهر عند تحويل الموقع للغة الإنجليزية'
-    },
-    {
-      name: 'slug',
-      title: 'Slug (الرابط الخاص)',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 90,
-      }
-    },
-    {
-      name: 'price',
-      title: 'Price (السعر)',
-      type: 'number',
-    },
-    {
-      name: 'image',
-      title: 'Image (صورة المنتج)',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    },
-    
-    // --- التصنيفات ---
+
+    // 5️⃣ التصنيف (قائمة منسدلة لتسهيل الاختيار)
     {
       name: 'category',
-      title: 'Category (القسم الرئيسي)',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'عطور (Perfumes)', value: 'perfumes' },
-          { title: 'عود وبخور (Oud & Incense)', value: 'oud' },
-          { title: 'معطرات المنزل (Home Scents)', value: 'home' },
-        ],
-      },
-    },
-    {
-      name: 'subCategory',
-      title: 'Sub Category (التصنيف الفرعي)',
+      title: 'القسم (Category)',
       type: 'string',
       options: {
         list: [
           { title: 'رجالي (Men)', value: 'men' },
           { title: 'نسائي (Women)', value: 'women' },
           { title: 'للجنسين (Unisex)', value: 'unisex' },
+          { title: 'نيش (Niche)', value: 'niche' },
+          { title: 'أعواد (Oud)', value: 'oud' },
           { title: 'خليجي (Gulf)', value: 'gulf' },
-          { title: 'عطور مسك (Musk)', value: 'musk' },
-          { title: 'ميكسات عطور (Mixes)', value: 'mixes' },
-          { title: 'أعواد شرقية (Oriental Sticks)', value: 'oriental' },
-          { title: 'بخور (Incense)', value: 'incense' },
-          { title: 'فواحات ومباخر (Burners)', value: 'burners' },
-          { title: 'معطرات (Fresheners)', value: 'fresheners' },
+          { title: 'ميكسات (Mixes)', value: 'mixes' },       // ⚗️
+          { title: 'مسكات (Musks)', value: 'musks' },       // 🧴
+          { title: 'بخور (Bakhoor)', value: 'bakhoor' },     // 🪔
+          { title: 'فوحات ومباخر (Burners)', value: 'burners' }, // ♨️
+          { title: 'معطرات (Fresheners)', value: 'fresheners' }, // 🌬️
+          { title: 'تجميل وعناية (Makeup)', value: 'makeup' },   // 💄
         ],
       },
-    },
-    {
-      name: 'occasion',
-      title: 'Occasion (المناسبة)',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'استخدام يومي', value: 'daily' },
-          { title: 'هدايا (Gifts)', value: 'gifts' },
-          { title: 'حفلات زفاف (Wedding)', value: 'wedding' },
-          { title: 'رمضان والأعياد', value: 'ramadan' },
-        ],
-      },
+      validation: Rule => Rule.required()
     },
 
-    // --- الوصف ---
+    // 6️⃣ صورة المنتج
+    {
+      name: 'image',
+      title: 'صورة المنتج',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      validation: Rule => Rule.required()
+    },
+
+    // 7️⃣ الوصف
     {
       name: 'description',
-      title: 'وصف المنتج (Arabic)',
-      type: 'text',
-    },
-    {
-      name: 'descriptionEn',
-      title: 'وصف المنتج بالإنجليزية (English Description)',
-      type: 'text',
+      title: 'وصف المنتج',
+      type: 'text', 
+      rows: 3
     }
-  ],
-};
+  ]
+}
