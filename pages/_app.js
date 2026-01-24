@@ -1,39 +1,63 @@
-import React from 'react';
-import Script from 'next/script'; // استيراد أداة السكريبت
+import React, { useEffect } from 'react';
+import Script from 'next/script'; // استيراد مكون السكربت من Next.js
+import { useRouter } from 'next/router';
 import '../styles/globals.css';
 import { CartProvider } from '../src/context/CartContext';
 import TopBar from '../src/components/TopBar';
 import Footer from '../src/components/Footer';
 
+// 👇 ضع رقم البيكسل الخاص بك هنا بدلاً من الأصفار
+const FB_PIXEL_ID = '1418587233195999'; 
+
 function MyApp({ Component, pageProps }) {
-  // 👇 ضع الكود الذي نسخته هنا بدلاً من الكلمة الإنجليزية
-  const GA_MEASUREMENT_ID = 'G-8MBK7Y702C'; 
+  const router = useRouter();
+
+  useEffect(() => {
+    // تتبع تغيير الصفحات (لأن Next.js لا يعيد تحميل الصفحة بالكامل)
+    const handleRouteChange = () => {
+      import('react-facebook-pixel')
+        .then((x) => x.default)
+        .then((ReactPixel) => {
+          ReactPixel.init(FB_PIXEL_ID);
+          ReactPixel.pageView();
+        });
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
-    <CartProvider>
-      
-      {/* 1️⃣ تحميل مكتبة جوجل أناليتكس */}
-      <Script 
-        strategy="afterInteractive" 
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} 
+    <>
+      {/* 1️⃣ كود فيسبوك بيكسل الرئيسي */}
+      <Script
+        id="fb-pixel"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${FB_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `,
+        }}
       />
-      
-      {/* 2️⃣ تشغيل التتبع */}
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}', {
-            page_path: window.location.pathname,
-          });
-        `}
-      </Script>
 
-      <TopBar />
-      <Component {...pageProps} />
-      <Footer />
-    </CartProvider>
+      {/* 2️⃣ باقي الموقع */}
+      <CartProvider>
+        <TopBar />
+        <Component {...pageProps} />
+        <Footer />
+      </CartProvider>
+    </>
   );
 }
 
