@@ -101,9 +101,18 @@ export default function Home() {
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          <video width="100%" height="auto" controls poster={banner?.imageUrl}>
+          
+          {/* 👇 تم التعديل هنا بإضافة loop */}
+          <video 
+            width="100%" 
+            height="auto" 
+            controls 
+            poster={banner?.imageUrl} 
+            loop 
+          >
             <source src="/promo.mp4" type="video/mp4" />
           </video>
+
         </div>
       </div>
 
