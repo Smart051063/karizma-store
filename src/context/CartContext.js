@@ -4,22 +4,49 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
 
-  // 1️⃣ استرجاع السلة عند فتح الموقع
+  // 1️⃣ الشفاء الذاتي للسلة (Self-Healing) عند فتح الموقع
   useEffect(() => {
     const savedCart = localStorage.getItem('karizma_cart');
     if (savedCart) {
       try {
-        setCartItems(JSON.parse(savedCart));
+        const parsedCart = JSON.parse(savedCart);
+        
+        // عملية تنظيف إجبارية لكل البيانات
+        const cleanCart = parsedCart.map(item => ({
+          ...item,
+          // إذا كانت الكمية غير موجودة أو ليست رقمًا، اجعلها 1
+          quantity: (item.quantity && !isNaN(item.quantity) && item.quantity > 0) ? Number(item.quantity) : 1,
+          // تأكد أن السعر رقم
+          price: Number(item.price) || 0,
+          // تأكد أن الخصم رقم
+          discount: Number(item.discount) || 0
+        }));
+
+        setCartItems(cleanCart);
       } catch (error) {
-        console.error("Error parsing cart data:", error);
+        // إذا كانت البيانات تالفة تماماً، احذفها وابدأ من جديد
+        console.error("Cart data corrupted, resetting...", error);
+        localStorage.removeItem('karizma_cart');
+        setCartItems([]);
       }
     }
   }, []);
 
-  // 2️⃣ حفظ السلة عند أي تغيير
+  // 2️⃣ حفظ السلة وتحديث العداد
   useEffect(() => {
-    localStorage.setItem('karizma_cart', JSON.stringify(cartItems));
+    if (cartItems.length > 0) {
+      localStorage.setItem('karizma_cart', JSON.stringify(cartItems));
+    }
+    
+    // حساب العداد (الأيقونة الحمراء) بشكل آمن
+    const count = cartItems.reduce((acc, item) => {
+      const qty = item.quantity ? Number(item.quantity) : 1;
+      return acc + qty;
+    }, 0);
+    setCartCount(count);
+
   }, [cartItems]);
 
   const addToCart = (product) => {
@@ -27,7 +54,9 @@ export function CartProvider({ children }) {
       const existingItem = prevItems.find((item) => item._id === product._id);
       if (existingItem) {
         return prevItems.map((item) =>
-          item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+          item._id === product._id 
+            ? { ...item, quantity: (item.quantity || 1) + 1 } 
+            : item
         );
       }
       return [...prevItems, { ...product, quantity: 1 }];
@@ -35,52 +64,58 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item._id !== id));
+    const newCart = cartItems.filter((item) => item._id !== id);
+    setCartItems(newCart);
+    if (newCart.length === 0) {
+      localStorage.removeItem('karizma_cart');
+    }
   };
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
     setCartItems((prevItems) =>
-      prevItems.map((item) => (item._id === id ? { ...item, quantity: newQuantity } : item))
+      prevItems.map((item) => (item._id === id ? { ...item, quantity: Number(newQuantity) } : item))
     );
   };
 
-  // حساب الإجمالي النهائي
+  // 3️⃣ حساب الإجمالي (محصن ضد NaN)
   const totalPrice = cartItems.reduce((total, item) => {
-    const price = (item.discount && item.discount > 0)
-      ? item.price - (item.price * item.discount / 100) 
-      : item.price;
-    return total + price * item.quantity;
+    const qty = (item.quantity && !isNaN(item.quantity)) ? Number(item.quantity) : 1;
+    const itemPrice = Number(item.price) || 0;
+    const itemDiscount = Number(item.discount) || 0;
+
+    const finalPrice = itemDiscount > 0
+      ? itemPrice - (itemPrice * itemDiscount / 100) 
+      : itemPrice;
+
+    return total + (finalPrice * qty);
   }, 0);
 
-  // 🟢 دالة الشراء (تم تعديل شكل الرسالة هنا)
   const checkout = () => {
-    const phoneNumber = "201002410037"; // رقمك
-    
+    const phoneNumber = "201002410037";
     let message = `👋 مرحباً كاريزما، أريد إتمام الطلب التالي:\n\n`;
 
     cartItems.forEach((item, index) => {
-      // حساب السعر بعد الخصم (للعرض فقط)
-      const hasDiscount = item.discount && item.discount > 0;
-      const originalPrice = item.price;
-      const finalPrice = hasDiscount 
-        ? originalPrice - (originalPrice * item.discount / 100) 
+      const qty = item.quantity || 1;
+      const originalPrice = Number(item.price);
+      const discount = Number(item.discount) || 0;
+      
+      const finalPrice = discount > 0 
+        ? originalPrice - (originalPrice * discount / 100) 
         : originalPrice;
 
-      message += `${index + 1}. *${item.name}* (الكمية: ${item.quantity})\n`;
+      message += `${index + 1}. *${item.name}* (الكمية: ${qty})\n`;
       
-      if (hasDiscount) {
-        // إذا كان هناك خصم: اشطب القديم واظهر الجديد والنسبة
+      if (discount > 0) {
         message += `   🏷️ السعر: ~${originalPrice} ج.م~ ➡️ *${finalPrice} ج.م*\n`;
-        message += `   🔥 (خصم ${item.discount}%)\n`;
+        message += `   🔥 (خصم ${discount}%)\n`;
       } else {
-        // سعر عادي بدون خصم
         message += `   💰 السعر: *${originalPrice} ج.م*\n`;
       }
       message += `--------------------\n`;
     });
 
-    message += `\n💰 *الإجمالي النهائي المطلوب: ${totalPrice} ج.م*`;
+    message += `\n💰 *الإجمالي النهائي: ${totalPrice.toFixed(0)} ج.م*`;
     message += `\n📍 يرجى تأكيد الطلب والعنوان.`;
 
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -88,7 +123,7 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, totalPrice, checkout }}>
+    <CartContext.Provider value={{ cartItems, cartCount, addToCart, removeFromCart, updateQuantity, totalPrice, checkout }}>
       {children}
     </CartContext.Provider>
   );
