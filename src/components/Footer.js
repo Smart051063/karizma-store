@@ -18,7 +18,7 @@ export default function Footer() {
           {/* أيقونات السوشيال ميديا (SVG احترافية) */}
           <div style={{ display: 'flex', gap: '15px' }}>
             <SocialIcon href="https://www.facebook.com/people/Karizma-Fragrances-%D9%83%D8%A7%D8%B1%D9%8A%D8%B2%D9%85%D8%A7-%D9%84%D9%84%D8%B9%D8%B7%D9%88%D8%B1/61561267272083/?rdid=KTA90WOLVXNozkgG&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2Fcebook.com" path={icons.facebook} color="#1877F2" />
-            <SocialIcon href="https://wwwc:\Users\dell\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\LocalState\sessions\3EA0E34C4ACC9AC8E09F1FF31BE1167CB2605DAE\transfers\2026-04\WhatsApp Image 2026-01-24 at 2.50.53 PM.jpeg.instagram.com" path={icons.instagram} color="#E4405F" />
+            <SocialIcon href="httpshttps://www.instagram.com/karizma.fragrances?utm_source=qr&igsh=MWJhbzk0czJ6M2Qzag%3D%3D://wwwc:\Users\dell\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\LocalState\sessions\3EA0E34C4ACC9AC8E09F1FF31BE1167CB2605DAE\transfers\2026-04\WhatsApp Image 2026-01-24 at 2.50.53 PM.jpeg.instagram.com" path={icons.instagram} color="#E4405F" />
             <SocialIcon href="https://www.tiktok.com/@karizma.fragrance?is_from_webapp=1&sender_device=pc" path={icons.tiktok} color="#000000" hoverColor="#fff" />
             <SocialIcon href="https://wa.me/201002410037" path={icons.whatsapp} color="#25D366" />
           </div>
