@@ -11,7 +11,7 @@ export default function Home() {
     client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
-  // النص الذي نريد تكراره
+  // النص المكرر للشريط لضمان عدم وجود فجوات
   const tickerText = "✨ أهلاً بكم في كاريزما للعطور - خصومات تصل إلى 20% على الميكسات والمسك - شحن سريع لجميع المحافظات 🚚 - اطلب الآن عبر واتساب ";
 
   return (
@@ -20,7 +20,7 @@ export default function Home() {
       {/* 1️⃣ شريط الأخبار المتحرك (المتلاحم - Infinite Loop) */}
       <div className="ticker-wrap">
         <div className="ticker">
-          {/* نكرر النص عدة مرات لضمان التلاحم */}
+          {/* تكرار النص عدة مرات لضمان التلاحم */}
           <span className="ticker-item">{tickerText}</span>
           <span className="ticker-item">{tickerText}</span>
           <span className="ticker-item">{tickerText}</span>
@@ -80,4 +80,18 @@ export default function Home() {
       </div>
 
       {/* 5️⃣ قسم الفيديو */}
-      <div style={{ backgroundColor: '#1a1a1a',
+      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
+        <h2 style={{ color: '#d4af37', marginBottom: '10px', fontSize: '2rem' }}>🎥 اكتشف عالم كاريزما</h2>
+        <p style={{ marginBottom: '40px', color: '#ccc' }}>شاهد كيف نصنع السحر في كل قطرة عطر</p>
+        <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(212, 175, 55, 0.3)', border: '2px solid #d4af37' }}>
+          <video width="100%" height="auto" controls poster="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4" />
+            متصفحك لا يدعم الفيديو.
+          </video>
+        </div>
+      </div>
+
+      {/* 6️⃣ وصلنا حديثاً */}
+      <div style={{ padding: '60px 10px 80px', maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333', fontSize: '1.8rem' }}>وصلنا حديثاً ✨</h2>
+        <div style={{ display: 'flex', flexWrap: '
