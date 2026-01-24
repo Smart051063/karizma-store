@@ -5,6 +5,13 @@ export default {
   fields: [
     // --- البيانات الأساسية ---
     {
+      name: 'discount',
+      title: 'نسبة الخصم (%)',
+      type: 'number',
+      description: 'اكتب نسبة الخصم هنا (مثلاً: 10 أو 20). اتركه 0 إذا لم يكن هناك خصم.',
+      validation: Rule => Rule.min(0).max(100) // لضمان أن الرقم بين 0 و 100
+    },
+    {
       name: 'name',
       title: 'اسم المنتج (Arabic Name)',
       type: 'string',
