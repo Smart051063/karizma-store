@@ -1,6 +1,18 @@
+import Head from 'next/head'
 import { NextStudio } from 'next-sanity/studio'
-import config from '../../sanity.config'
+import { metadata } from 'next-sanity/studio/metadata'
+// هذا السطر يفترض أن ملف الإعدادات موجود في المجلد الرئيسي للمشروع
+import config from '../../sanity.config' 
 
 export default function StudioPage() {
-  return <NextStudio config={config} />
+  return (
+    <>
+      <Head>
+        {Object.entries(metadata).map(([key, value]) => (
+          <meta key={key} name={key} content={value} />
+        ))}
+      </Head>
+      <NextStudio config={config} />
+    </>
+  )
 }
