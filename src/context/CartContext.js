@@ -1,73 +1,103 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+رimport React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
+export function CartProvider({ children }) {
+  // 1️⃣ محاولة استرجاع السلة من التخزين المحلي عند البدء
   const [cartItems, setCartItems] = useState([]);
 
-  // 1️⃣ استرجاع السلة من ذاكرة المتصفح عند فتح الموقع (لكي لا تضيع المنتجات)
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
+    const savedCart = localStorage.getItem('karizma_cart');
+    if (savedCart) {
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (error) {
+        console.error("Error parsing cart data:", error);
+      }
     }
   }, []);
 
-  // 2️⃣ حفظ السلة في ذاكرة المتصفح عند أي تغيير
+  // 2️⃣ حفظ السلة في التخزين المحلي عند أي تغيير
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem('karizma_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // 3️⃣ 🔥 حساب إجمالي عدد القطع (هذا ما كان ينقصك للعداد الأحمر!)
-  const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
-
-  // دالة إضافة منتج
-  const addToCart = (product, quantity) => {
-    const checkProductInCart = cartItems.find((item) => item._id === product._id);
-
-    if (checkProductInCart) {
-      // لو المنتج موجود، زود عدده
-      const updatedCartItems = cartItems.map((cartProduct) => {
-        if (cartProduct._id === product._id) return {
-          ...cartProduct,
-          qty: cartProduct.qty + quantity
-        }
-        return cartProduct;
-      });
-      setCartItems(updatedCartItems);
-    } else {
-      // لو جديد، ضيفه للسلة
-      product.qty = quantity;
-      setCartItems([...cartItems, { ...product }]);
-    }
+  // دالة إضافة منتج للسلة
+  const addToCart = (product) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item._id === product._id);
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
   };
 
   // دالة حذف منتج
-  const removeFromCart = (product) => {
-    const newCartItems = cartItems.filter((item) => item._id !== product._id);
-    setCartItems(newCartItems);
+  const removeFromCart = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item._id !== id));
   };
 
-  // دالة تعديل الكمية
-  const updateQty = (id, newQty) => {
-    if (newQty < 1) return; // منع الكمية صفر
-    const updatedCartItems = cartItems.map((item) => 
-      item._id === id ? { ...item, qty: newQty } : item
+  // دالة تغيير الكمية
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity < 1) return;
+    setCartItems((prevItems) =>
+      prevItems.map((item) => (item._id === id ? { ...item, quantity: newQuantity } : item))
     );
-    setCartItems(updatedCartItems);
+  };
+
+  // حساب الإجمالي (مع مراعاة الخصم)
+  const totalPrice = cartItems.reduce((total, item) => {
+    const price = item.discount 
+      ? item.price - (item.price * item.discount / 100) 
+      : item.price;
+    return total + price * item.quantity;
+  }, 0);
+
+  // 🟢 دالة إرسال الطلب عبر واتساب (تم التعديل هنا)
+  const checkout = () => {
+    const phoneNumber = "201002410037"; // رقمك
+    
+    let message = `👋 مرحباً كاريزما، أريد إتمام الطلب التالي:\n\n`;
+
+    cartItems.forEach((item, index) => {
+      // حساب السعر النهائي للقطعة الواحدة
+      const originalPrice = item.price;
+      const hasDiscount = item.discount && item.discount > 0;
+      const finalPrice = hasDiscount 
+        ? originalPrice - (originalPrice * item.discount / 100) 
+        : originalPrice;
+
+      // تنسيق السطر لكل منتج
+      message += `${index + 1}. *${item.name}* (الكمية: ${item.quantity})\n`;
+      
+      if (hasDiscount) {
+        // إذا كان هناك خصم: اظهر القديم مشطوب + الجديد + نسبة الخصم
+        message += `   🏷️ السعر: ~${originalPrice} ج.م~ ➡️ *${finalPrice} ج.م*\n`;
+        message += `   🔥 (خصم خاص ${item.discount}%)\n`;
+      } else {
+        // إذا لم يوجد خصم
+        message += `   💰 السعر: *${originalPrice} ج.م*\n`;
+      }
+      message += `--------------------\n`;
+    });
+
+    message += `\n💰 *الإجمالي النهائي المطلوب: ${totalPrice} ج.م*`;
+    message += `\n📍 يرجى تأكيد الطلب والعنوان.`;
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   };
 
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      removeFromCart, 
-      updateQty, 
-      totalQty // 👈 قمنا بتمرير الإجمالي هنا ليستقبله TopBar
-    }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, totalPrice, checkout }}>
       {children}
     </CartContext.Provider>
   );
-};
+}
 
-export const useCart = () => useContext(CartContext);
+export function useCart() {
+  return useContext(CartContext);
+}
