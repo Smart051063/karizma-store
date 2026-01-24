@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Head from 'next/head'; // مكتبة هامة جداً للسيو
+import Head from 'next/head';
 import { client } from '../src/sanity/lib/client';
 
 export default function Home() {
@@ -8,8 +8,13 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    // جلب البنر
     client.fetch(`*[_type == "banner" && isActive == true][0]{title, "imageUrl": image.asset->url}`).then(setBanner);
-    client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
+
+    // 👇 التعديل هنا: جلب أحدث 6 منتجات فقط
+    // order(_createdAt desc): ترتيب تنازلي حسب تاريخ الإنشاء (الأحدث أولاً)
+    // [0..5]: أول 6 عناصر فقط (من 0 إلى 5)
+    client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..5] {_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
   const text1 = " ✨ أهلاً بكم في كاريزما للعطور - خصومات تصل إلى 20% على الميكسات والمسك - شحن سريع لجميع المحافظات 🚚 ";
@@ -18,11 +23,11 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* 👇 إعدادات جوجل والسيو (SEO) */}
+      {/* إعدادات السيو وجوجل */}
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
         
-        {/* ✅ كود التحقق من جوجل (تم تثبيته بنجاح) */}
+        {/* ✅ كود التحقق من جوجل (احتفظنا به كما هو) */}
         <meta name="google-site-verification" content="OP6x0i1bX9xy4ooN7YYcZY5MObr575koRd7SlhR_L-o" />
 
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية. عطور رجالية، نسائية، ميكسات خاصة، ومسك فاخر. التوصيل لجميع المحافظات." />
@@ -30,7 +35,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        {/* إعدادات المشاركة على السوشيال ميديا (فيسبوك وواتساب) */}
         <meta property="og:title" content="كاريزما للعطور | خصومات هائلة" />
         <meta property="og:description" content="اكتشف مجموعتنا الفاخرة من العطور والميكسات. جودة نراهن عليها." />
         <meta property="og:type" content="website" />
@@ -103,7 +107,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات */}
+      {/* 6️⃣ قسم المنتجات (أحدث 6 منتجات فقط) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>وصلنا حديثاً ✨</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
@@ -122,6 +126,15 @@ export default function Home() {
               </Link>
             )
           ))}
+        </div>
+        
+        {/* زر "عرض الكل" لإرسال الزائر لصفحة المتجر */}
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <Link href="/shop">
+            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>
+              🛍️ عرض كل المنتجات
+            </button>
+          </Link>
         </div>
       </div>
 
