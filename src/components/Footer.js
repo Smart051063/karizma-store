@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function Footer() {
+  // 👇 رابط عنوانك على جوجل ماب (يمكنك تغييره بأي رابط آخر)
+  const mapLink = "https://www.google.com/maps/search/?api=1&query=10+El+Sherif+St.,+El+manyal,+Cairo";
+
   return (
     <footer style={{ backgroundColor: '#111', color: '#fff', padding: '60px 20px 20px', direction: 'rtl', fontFamily: 'Arial, sans-serif', borderTop: '4px solid #d4af37' }}>
       
@@ -15,11 +18,11 @@ export default function Footer() {
             نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة من أرقى الماركات العالمية.
           </p>
           
-          {/* أيقونات السوشيال ميديا (SVG احترافية) */}
+          {/* أيقونات السوشيال ميديا */}
           <div style={{ display: 'flex', gap: '15px' }}>
-            <SocialIcon href="https://www.facebook.com/people/Karizma-Fragrances-%D9%83%D8%A7%D8%B1%D9%8A%D8%B2%D9%85%D8%A7-%D9%84%D9%84%D8%B9%D8%B7%D9%88%D8%B1/61561267272083/?rdid=KTA90WOLVXNozkgG&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2Fcebook.com" path={icons.facebook} color="#1877F2" />
-            <SocialIcon href="https://www.instagram.com/karizma.fragrances?utm_source=qr&igsh=MWJhbzk0czJ6M2Qzag%3D%3D://wwwc:\Users\dell\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\LocalState\sessions\3EA0E34C4ACC9AC8E09F1FF31BE1167CB2605DAE\transfers\2026-04\WhatsApp Image 2026-01-24 at 2.50.53 PM.jpeg.instagram.com" path={icons.instagram} color="#E4405F" />
-            <SocialIcon href="https://www.tiktok.com/@karizma.fragrance?is_from_webapp=1&sender_device=pc" path={icons.tiktok} color="#000000" hoverColor="#fff" />
+            <SocialIcon href="https://www.facebook.com" path={icons.facebook} color="#1877F2" />
+            <SocialIcon href="https://www.instagram.com" path={icons.instagram} color="#E4405F" />
+            <SocialIcon href="https://www.tiktok.com" path={icons.tiktok} color="#000000" hoverColor="#fff" />
             <SocialIcon href="https://wa.me/201002410037" path={icons.whatsapp} color="#25D366" />
           </div>
         </div>
@@ -32,31 +35,56 @@ export default function Footer() {
             <FooterLink href="/mixes" text="⚗️ ميكسات كاريزما" />
             <FooterLink href="/men" text="🤵 عطور رجالية" />
             <FooterLink href="/women" text="💃 عطور نسائية" />
-            <FooterLink href="/makeup" text="💄 تجميل وعناية" />
+            <FooterLink href="/shop" text="🛍️ كل المنتجات" />
           </ul>
         </div>
 
-        {/* 3️⃣ العمود الثالث: تواصل معنا */}
+        {/* 3️⃣ العمود الثالث: تواصل معنا (تم إضافة العنوان والزر) */}
         <div style={{ flex: '1 1 250px' }}>
           <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>خدمة العملاء</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#bbb', fontSize: '0.95rem' }}>
-            <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '1.2rem' }}>📍</span> جمهورية مصر العربية
+            
+            {/* 📍 العنوان وزر الخريطة */}
+            <li style={{ marginBottom: '20px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              <span style={{ fontSize: '1.2rem', marginTop: '2px' }}>📍</span>
+              <div>
+                <span style={{ display: 'block', marginBottom: '8px', lineHeight: '1.4' }}>
+                  25 شارع ابن الرومى مدينة نصر بالقرب من الحديقة الدولية الحى السابع
+                  <br/> (الفرع الرئيسي)
+                </span>
+                <a 
+                  href={mapLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: 'inline-block', padding: '6px 12px', backgroundColor: '#222', 
+                    color: '#d4af37', textDecoration: 'none', borderRadius: '5px', 
+                    fontSize: '0.8rem', border: '1px solid #d4af37', transition: '0.3s'
+                  }}
+                  onMouseOver={(e) => { e.target.style.backgroundColor = '#d4af37'; e.target.style.color = '#000'; }}
+                  onMouseOut={(e) => { e.target.style.backgroundColor = '#222'; e.target.style.color = '#d4af37'; }}
+                >
+                  🗺️ عرض الموقع على الخريطة
+                </a>
+              </div>
             </li>
+
             <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '1.2rem' }}>📞</span> 
               <a href="tel:01002410037" style={{ color: '#bbb', textDecoration: 'none' }}>01002410037</a>
             </li>
+            
             <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '1.2rem' }}>📧</span> 
               <a href="mailto:info@karizmaperfumes.com" style={{ color: '#bbb', textDecoration: 'none' }}>info@karizmaperfumes.com</a>
             </li>
+
           </ul>
         </div>
 
       </div>
 
-      {/* الخط السفلي والحقوق */}
+      {/* الحقوق */}
       <div style={{ borderTop: '1px solid #333', marginTop: '50px', paddingTop: '20px', textAlign: 'center', color: '#777', fontSize: '0.9rem' }}>
         <p>© 2026 جميع الحقوق محفوظة لـ <span style={{ color: '#d4af37' }}>كاريزما للعطور</span>.</p>
       </div>
@@ -64,7 +92,7 @@ export default function Footer() {
   );
 }
 
-// --- مكون رابط القائمة ---
+// --- مكونات مساعدة (كما هي) ---
 function FooterLink({ href, text }) {
   return (
     <li style={{ marginBottom: '12px' }}>
@@ -77,7 +105,6 @@ function FooterLink({ href, text }) {
   );
 }
 
-// --- مكون أيقونة السوشيال ميديا ---
 function SocialIcon({ href, path, color, hoverColor }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" 
@@ -96,7 +123,6 @@ function SocialIcon({ href, path, color, hoverColor }) {
   );
 }
 
-// --- مسارات الأيقونات (SVG Paths) ---
 const icons = {
   facebook: "M18.77,7.46H14.5v-1.9c0-.9.6-1.1,1-1.1h3V.5h-4.33C10.24.5,9.5,3.44,9.5,5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4Z",
   instagram: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z",

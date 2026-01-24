@@ -59,7 +59,7 @@ export default function Home() {
           <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}>كاريزما للعطور</h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px', textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
           
-          <Link href="/mixes">
+          <Link href="/shop">
             <button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button>
           </Link>
         </div>
