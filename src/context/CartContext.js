@@ -1,11 +1,11 @@
-رimport React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  // 1️⃣ محاولة استرجاع السلة من التخزين المحلي عند البدء
   const [cartItems, setCartItems] = useState([]);
 
+  // 1️⃣ استرجاع السلة عند فتح الموقع
   useEffect(() => {
     const savedCart = localStorage.getItem('karizma_cart');
     if (savedCart) {
@@ -17,12 +17,11 @@ export function CartProvider({ children }) {
     }
   }, []);
 
-  // 2️⃣ حفظ السلة في التخزين المحلي عند أي تغيير
+  // 2️⃣ حفظ السلة عند أي تغيير
   useEffect(() => {
     localStorage.setItem('karizma_cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // دالة إضافة منتج للسلة
   const addToCart = (product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item._id === product._id);
@@ -35,12 +34,10 @@ export function CartProvider({ children }) {
     });
   };
 
-  // دالة حذف منتج
   const removeFromCart = (id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item._id !== id));
   };
 
-  // دالة تغيير الكمية
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
     setCartItems((prevItems) =>
@@ -48,37 +45,36 @@ export function CartProvider({ children }) {
     );
   };
 
-  // حساب الإجمالي (مع مراعاة الخصم)
+  // حساب الإجمالي النهائي
   const totalPrice = cartItems.reduce((total, item) => {
-    const price = item.discount 
+    const price = (item.discount && item.discount > 0)
       ? item.price - (item.price * item.discount / 100) 
       : item.price;
     return total + price * item.quantity;
   }, 0);
 
-  // 🟢 دالة إرسال الطلب عبر واتساب (تم التعديل هنا)
+  // 🟢 دالة الشراء (تم تعديل شكل الرسالة هنا)
   const checkout = () => {
     const phoneNumber = "201002410037"; // رقمك
     
     let message = `👋 مرحباً كاريزما، أريد إتمام الطلب التالي:\n\n`;
 
     cartItems.forEach((item, index) => {
-      // حساب السعر النهائي للقطعة الواحدة
-      const originalPrice = item.price;
+      // حساب السعر بعد الخصم (للعرض فقط)
       const hasDiscount = item.discount && item.discount > 0;
+      const originalPrice = item.price;
       const finalPrice = hasDiscount 
         ? originalPrice - (originalPrice * item.discount / 100) 
         : originalPrice;
 
-      // تنسيق السطر لكل منتج
       message += `${index + 1}. *${item.name}* (الكمية: ${item.quantity})\n`;
       
       if (hasDiscount) {
-        // إذا كان هناك خصم: اظهر القديم مشطوب + الجديد + نسبة الخصم
+        // إذا كان هناك خصم: اشطب القديم واظهر الجديد والنسبة
         message += `   🏷️ السعر: ~${originalPrice} ج.م~ ➡️ *${finalPrice} ج.م*\n`;
-        message += `   🔥 (خصم خاص ${item.discount}%)\n`;
+        message += `   🔥 (خصم ${item.discount}%)\n`;
       } else {
-        // إذا لم يوجد خصم
+        // سعر عادي بدون خصم
         message += `   💰 السعر: *${originalPrice} ج.م*\n`;
       }
       message += `--------------------\n`;
