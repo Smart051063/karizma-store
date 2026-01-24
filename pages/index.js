@@ -16,29 +16,76 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
-      {/* الأشرطة المتحركة */}
-      <div className="ticker-container first-ticker"><div className="ticker-track">
+      
+      {/* 1️⃣ الأشرطة المتحركة */}
+      <div className="ticker-container first-ticker">
+        <div className="ticker-track">
           <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
           <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
-      </div></div>
-      <div className="ticker-container second-ticker"><div className="ticker-track-reverse">
+        </div>
+      </div>
+      <div className="ticker-container second-ticker">
+        <div className="ticker-track-reverse">
           <div className="ticker-block"><span className="ticker-item-white">{text2}</span><span className="ticker-item-white">{text2}</span></div>
           <div className="ticker-block"><span className="ticker-item-white">{text2}</span><span className="ticker-item-white">{text2}</span></div>
-      </div></div>
+        </div>
+      </div>
 
-      {/* قسم الفيديو المصحح */}
+      {/* 2️⃣ قسم البنر العلوي */}
+      {banner && (
+        <div className="fade-in" style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee' }}>
+          <img src={banner.imageUrl} alt={banner.title} style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }} />
+        </div>
+      )}
+
+      {/* 3️⃣ الشاشة الترحيبية */}
+      <div style={{ 
+        backgroundImage: 'url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
+        height: '60vh', backgroundSize: 'cover', backgroundPosition: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
+        position: 'relative', color: 'white', textAlign: 'center'
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.4)' }}></div>
+        <div style={{ position: 'relative', zIndex: 1 }} className="fade-in-up">
+          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
+          <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
+          <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
+        </div>
+      </div>
+
+      {/* 🆕 4️⃣ تصفح مجموعاتنا (تمت إعادة الأزرار بإطار ذهبي) */}
+      <div style={{ padding: '50px 10px', textAlign: 'center' }}>
+        <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '1.8rem' }} className="fade-in">تصفح مجموعاتنا</h2>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
+          <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
+          <CategoryCircle href="/women" emoji="💃" label="نسائي" />
+          <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
+          <CategoryCircle href="/niche" emoji="💎" label="نيش" />
+          <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
+          <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
+          <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات" />
+          <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
+          <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
+        </div>
+      </div>
+
+      {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
+          {/* تأكد من وجود ملف promo.mp4 في مجلد public */}
           <video width="100%" height="auto" controls poster={banner?.imageUrl}>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      {/* قسم المنتجات مع فحص الأمان للصور والروابط */}
+      {/* 6️⃣ قسم المنتجات (وصلنا حديثاً) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>وصلنا حديثاً ✨</h2>
+        <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>وصلنا حديثاً ✨</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
           {products.map((product) => (
             product.slug?.current && (
@@ -58,6 +105,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* التنسيقات والأنيميشن */}
       <style jsx global>{`
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
@@ -69,11 +117,32 @@ export default function Home() {
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        .product-card { width: 150px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; }
-        .product-card:hover { transform: translateY(-5px); }
+        .product-card, .category-circle { transition: 0.3s; }
+        .product-card:hover, .category-circle:hover { transform: translateY(-5px); }
+        .fade-in { animation: fadeIn 1.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       `}</style>
     </div>
   );
 }
 
-const productCardStyle = { cursor: 'pointer' };
+// مكون الدائرة الذهبية
+function CategoryCircle({ href, emoji, label }) {
+  return (
+    <Link href={href} style={{ textDecoration: 'none' }}>
+      <div className="category-circle" style={{
+        width: '110px', height: '110px', borderRadius: '50%', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+        border: '2px solid #d4af37', // 👈 الإطار الذهبي هنا
+        cursor: 'pointer'
+      }}>
+        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
+        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
+      </div>
+    </Link>
+  );
+}
+
+const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
+const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' };
