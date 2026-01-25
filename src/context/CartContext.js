@@ -16,17 +16,13 @@ export function CartProvider({ children }) {
         // عملية تنظيف إجبارية لكل البيانات
         const cleanCart = parsedCart.map(item => ({
           ...item,
-          // إذا كانت الكمية غير موجودة أو ليست رقمًا، اجعلها 1
           quantity: (item.quantity && !isNaN(item.quantity) && item.quantity > 0) ? Number(item.quantity) : 1,
-          // تأكد أن السعر رقم
           price: Number(item.price) || 0,
-          // تأكد أن الخصم رقم
           discount: Number(item.discount) || 0
         }));
 
         setCartItems(cleanCart);
       } catch (error) {
-        // إذا كانت البيانات تالفة تماماً، احذفها وابدأ من جديد
         console.error("Cart data corrupted, resetting...", error);
         localStorage.removeItem('karizma_cart');
         setCartItems([]);
@@ -91,6 +87,7 @@ export function CartProvider({ children }) {
     return total + (finalPrice * qty);
   }, 0);
 
+  // 4️⃣ دالة إتمام الطلب (مع تتبع تيك توك)
   const checkout = () => {
     const phoneNumber = "201002410037";
     let message = `👋 مرحباً كاريزما، أريد إتمام الطلب التالي:\n\n`;
@@ -118,6 +115,18 @@ export function CartProvider({ children }) {
     message += `\n💰 *الإجمالي النهائي: ${totalPrice.toFixed(0)} ج.م*`;
     message += `\n📍 يرجى تأكيد الطلب والعنوان.`;
 
+    // 👇🔥 دمج كود تيك توك هنا
+    // عندما يضغط العميل على الزر، نرسل حدث "CompletePayment" لتيك توك
+    if (typeof window !== 'undefined' && window.ttq) {
+      window.ttq.track('CompletePayment', {
+        content_type: 'product',
+        value: Number(totalPrice.toFixed(2)), // إرسال القيمة كرقم
+        currency: 'EGP', // العملة
+      });
+      console.log("✅ TikTok Pixel: Purchase Event Sent!"); // للتأكد في الكونسول
+    }
+
+    // فتح الواتساب
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
