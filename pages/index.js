@@ -79,8 +79,6 @@ export default function Home() {
           <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات" />
           <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
           <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
-          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
-          <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
           <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
           {/* ... الأزرار السابقة ... */}
           
