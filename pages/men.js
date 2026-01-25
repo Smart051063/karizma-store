@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
-import Link from 'next/link'; // 👈 استدعينا مكتبة الروابط
+import Link from 'next/link';
 
 export default function MenPage() {
   const [products, setProducts] = useState([]);
@@ -12,8 +12,9 @@ export default function MenPage() {
       occasionCondition = `&& occasion == "${filter}"`;
     }
 
-    // 👇 لاحظ أننا أضفنا slug هنا لكي نستخدمه في الرابط
-    const query = `*[_type == "product" && subCategory == "men" ${occasionCondition}]{
+    // 👇 التعديل هنا: غيرنا subCategory إلى category
+    // وتأكدنا أنه يبحث عن كلمة "men"
+    const query = `*[_type == "product" && category == "men" ${occasionCondition}]{
       _id,
       name,
       price,
@@ -21,14 +22,16 @@ export default function MenPage() {
       slug 
     }`;
 
-    client.fetch(query).then((data) => setProducts(data));
+    client.fetch(query).then((data) => {
+        console.log("البيانات القادمة:", data); // هذا السطر سيساعدنا نرى هل وصلت البيانات أم لا في الكونسول
+        setProducts(data);
+    });
   }, [filter]);
 
   return (
     <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
       <h1 style={{ color: '#d4af37' }}>👔 قسم العطور الرجالية</h1>
 
-      {/* أزرار الفلترة */}
       <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <button onClick={() => setFilter('all')} style={buttonStyle(filter === 'all')}>الكل</button>
         <button onClick={() => setFilter('gifts')} style={buttonStyle(filter === 'gifts')}>🎁 هدايا رجالية</button>
@@ -38,7 +41,6 @@ export default function MenPage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
         {products.length > 0 ? (
           products.map((product) => (
-            // 👇 هنا السحر! جعلنا الكرت بالكامل رابطاً ينقلك للتفاصيل
             <Link key={product._id} href={`/product/${product.slug?.current}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <div style={cardStyle}>
                  {product.imageUrl && (
@@ -54,7 +56,6 @@ export default function MenPage() {
                     {product.price ? product.price : '---'} جنيه
                  </p>
                  
-                 {/* غيرنا الزر ليصبح "عرض التفاصيل" لأنه سينقلنا لصفحة جديدة */}
                  <button style={detailsButtonStyle}>عرض التفاصيل 📄</button>
               </div>
             </Link>
@@ -86,7 +87,7 @@ const cardStyle = {
   width: '250px',
   textAlign: 'center',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer', // يضيف شكل اليد عند المرور
+  cursor: 'pointer',
   transition: 'transform 0.2s',
   backgroundColor: 'white'
 };
