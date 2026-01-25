@@ -6,7 +6,7 @@ export default function FreshenersPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 نبحث عن المنتجات في قسم "fresheners"
+    // 👇 استعلام لجلب منتجات قسم "fresheners" أو "Fresheners"
     const query = `*[_type == "product" && (category == "fresheners" || category == "Fresheners")]{
       _id,
       name,
@@ -53,6 +53,7 @@ export default function FreshenersPage() {
   );
 }
 
+// --- التنسيقات ---
 const cardStyle = {
   border: '1px solid #ddd',
   padding: '15px',
