@@ -120,7 +120,8 @@ export default function Home() {
 
       {/* 6️⃣ قسم المنتجات (أحدث 6 منتجات فقط) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '50px', color: '#333' }}>وصلنا حديثاً ✨</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
           {products.map((product) => (
             product.slug?.current && (
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
