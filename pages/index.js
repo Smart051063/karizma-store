@@ -81,6 +81,17 @@ export default function Home() {
           <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
           <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+          {/* ... الأزرار السابقة ... */}
+          
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
+
+          {/* 👇 أضف هذا السطر الجديد هنا */}
+          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" />
+          
+          <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
+        </div>
         </div>
       </div>
 
