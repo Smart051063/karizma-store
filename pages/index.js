@@ -86,7 +86,6 @@ export default function Home() {
 
       {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
-        {/* ✅ تم تكبير الخط هنا (35px) */}
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>
           🎥 اكتشف عالم كاريزما
         </h2>
@@ -105,7 +104,6 @@ export default function Home() {
       {/* 6️⃣ قسم المنتجات (أحدث 6 منتجات فقط) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         
-        {/* 👇 تم إضافة العنوان المفقود وتكبير الخط ليكون 35px مثل الفيديو */}
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>
           🌟 وصلنا حديثاً
         </h2>
@@ -128,7 +126,6 @@ export default function Home() {
           ))}
         </div>
         
-        {/* زر "عرض الكل" */}
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
           <Link href="/shop">
             <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>
@@ -138,7 +135,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* التنسيقات */}
       <style jsx global>{`
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
@@ -164,4 +160,17 @@ function CategoryCircle({ href, emoji, label }) {
     <Link href={href} style={{ textDecoration: 'none' }}>
       <div className="category-circle" style={{
         width: '110px', height: '110px', borderRadius: '50%', backgroundColor: 'white',
-        display: 'flex',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
+        border: '2px solid #d4af37', 
+        cursor: 'pointer'
+      }}>
+        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
+        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
+      </div>
+    </Link>
+  );
+}
+
+const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
+const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' };
