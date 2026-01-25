@@ -99,7 +99,10 @@ export default function Home() {
 
       {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
-        <h2 style={{ color: '#d4af37', marginBottom: '20px' }}>🎥 اكتشف عالم كاريزما</h2>
+        {/* 👇 تم إضافة fontSize: '35px' لتكبير الخط */}
+        <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>
+          🎥 اكتشف عالم كاريزما
+        </h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
           
           {/* 👇 تم التعديل هنا بإضافة loop */}
