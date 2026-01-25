@@ -14,7 +14,7 @@ export default function ProductDetails({ product }) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>عذراً، المنتج غير متاح حالياً 😕</div>;
   }
 
-  // حساب السعر للعرض فقط في الصفحة (للمشاهدة)
+  // حساب السعر للعرض فقط في الصفحة
   const price = product.price;
   const discount = product.discount || 0;
   const finalPrice = discount ? price - (price * discount / 100) : price;
@@ -23,19 +23,18 @@ export default function ProductDetails({ product }) {
   const incQty = () => setQuantity((prev) => prev + 1);
   const decQty = () => setQuantity((prev) => (prev - 1 < 1 ? 1 : prev - 1));
 
-  // ✅ دالة الإضافة للسلة (مصححة لمنع الخصم المزدوج)
+  // دالة الإضافة للسلة
   const handleAddToCart = () => {
     addToCart({ 
       _id: product._id,
       name: product.name,
-      price: product.price, // 👈 هام: نرسل السعر الأصلي (780) والسلة ستخصم النسبة تلقائياً
-      discount: product.discount, // نرسل نسبة الخصم
+      price: product.price, // نرسل السعر الأصلي والسلة تخصم
+      discount: product.discount,
       image: product.imageUrl,
       slug: product.slug.current,
       quantity: quantity 
     });
 
-    // إظهار إشعار النجاح
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 3000);
   };
@@ -94,8 +93,15 @@ export default function ProductDetails({ product }) {
             )}
           </div>
 
-          <p style={{ lineHeight: '1.8', color: '#666', marginBottom: '30px', fontSize: '1.1rem' }}>
-            {product.details ? product.details : 'وصف العطر ومكوناته المميزة ستجدها هنا قريباً...'}
+          {/* 👇 تم التعديل هنا: استخدام description وإضافة تنسيق الأسطر */}
+          <p style={{ 
+            lineHeight: '1.8', 
+            color: '#666', 
+            marginBottom: '30px', 
+            fontSize: '1.1rem',
+            whiteSpace: 'pre-line' // ✅ هام جداً: يحافظ على الأسطر الجديدة كما كتبتها
+          }}>
+            {product.description ? product.description : 'وصف العطر ومكوناته المميزة ستجدها هنا قريباً...'}
           </p>
 
           {/* التحكم بالكمية */}
@@ -131,7 +137,7 @@ export default function ProductDetails({ product }) {
   );
 }
 
-// 👇 دالة السيرفر (مهمة جداً لجلب البيانات)
+// 👇 دالة السيرفر: تم تعديلها لجلب description
 export const getServerSideProps = async ({ params: { slug } }) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]{
     _id,
@@ -139,7 +145,7 @@ export const getServerSideProps = async ({ params: { slug } }) => {
     image,
     price,
     discount,
-    details,
+    description, // ✅ تم التعديل: جلب حقل الوصف الصحيح
     slug,
     "imageUrl": image.asset->url
   }`;
