@@ -68,6 +68,8 @@ export default function Home() {
       {/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '35px', fontWeight: 'bold' }} className="fade-in">تصفح مجموعاتنا</h2>
+        
+        {/* 👇 تم إصلاح التداخل هنا: حاوية واحدة لكل الأزرار */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
           <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
@@ -79,14 +81,9 @@ export default function Home() {
           <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات" />
           <CategoryCircle href="/musks" emoji="🧴" label="مسكات" />
           <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
-          {/* ... الأزرار السابقة ... */}
-                  <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
-          {/* 👇 أضف هذا السطر الجديد هنا */}
-          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" />
-          
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
+          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
-        </div>
         </div>
       </div>
 

@@ -1,63 +1,39 @@
-import React, { useEffect } from 'react';
-import Script from 'next/script';
-import { useRouter } from 'next/router';
-import '../styles/globals.css';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import { CartProvider } from '../src/context/CartContext';
-import TopBar from '../src/components/TopBar';
-import Footer from '../src/components/Footer';
-
-// ✅ رقم البيكسل الخاص بك
-const FB_PIXEL_ID = '1418587233195999';
+import Script from 'next/script'; // 👈 استدعاء مكتبة السكربتات
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    // تتبع تغيير الصفحات عند التنقل داخل الموقع
-    const handleRouteChange = () => {
-      // نستخدم الكود المباشر بدلاً من المكتبة الخارجية لتجنب الأخطاء
-      if (window.fbq) {
-        window.fbq('track', 'PageView');
-      }
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
+  // 👇 هذا هو كود التيك توك الخاص بك
+  const TIKTOK_PIXEL_ID = 'D5R89ABC77U6BSHUH0G0'; 
 
   return (
-    <>
-      {/* 1️⃣ كود فيسبوك بيكسل الأصلي */}
-      <Script
-        id="fb-pixel"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
+    <CartProvider>
+      {/* 👇 هذا الكود يزرع التيك توك بيكسل في الموقع */}
+      <Script id="tiktok-pixel" strategy="afterInteractive">
+        {`
+          !function (w, d, t) {
+            w.TiktokAnalyticsObject=t;var tt=w[t]=w[t]||[];
+            tt.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],
+            tt.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+            for(var i=0;i<tt.methods.length;i++)tt.setAndDefer(tt,tt.methods[i]);
+            tt.instance=function(t){for(var e=tt.methods[i],n=0;n<tt.methods.length;n++)tt.setAndDefer(e,tt.methods[n]);return e},
+            tt.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
+            tt._i=tt._i||{},tt._i[e]=[],tt._i[e]._u=i,tt._t=tt._t||{},tt._t[e]=+new Date,tt._o=tt._o||{},tt._o[e]=n||{};
+            var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
+            var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
             
-            fbq('init', '${FB_PIXEL_ID}');
-            fbq('track', 'PageView');
-          `,
-        }}
-      />
+            tt.load("${TIKTOK_PIXEL_ID}");
+            tt.page();
+          }(window, document, 'ttq');
+        `}
+      </Script>
 
-      {/* 2️⃣ مكونات الموقع */}
-      <CartProvider>
-        <TopBar />
-        <Component {...pageProps} />
-        <Footer />
-      </CartProvider>
-    </>
-  );
+      <Toaster />
+      <Component {...pageProps} />
+    </CartProvider>
+  )
 }
 
 export default MyApp;
