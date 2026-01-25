@@ -6,8 +6,9 @@ export default function NichePage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 التعديل هنا: نبحث عن المنتجات التي قسمها "niche"
-    const query = `*[_type == "product" && category == "niche"]{
+    // 👇 بحثنا هنا عن المنتجات التي قسمها "niche" أو "Niche"
+    // (استخدمنا || للاحتياط لكي يقبل الحالتين)
+    const query = `*[_type == "product" && (category == "niche" || category == "Niche")]{
       _id,
       name,
       price,
@@ -21,7 +22,6 @@ export default function NichePage() {
   return (
     <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
       
-      {/* تصميم نظيف بدون فلاتر */}
       <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💎 عطور النيش الفاخرة</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
