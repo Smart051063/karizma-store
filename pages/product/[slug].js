@@ -28,9 +28,9 @@ export default function ProductDetails({ product }) {
     addToCart({ 
       _id: product._id,
       name: product.name,
-      price: product.price, // نرسل السعر الأصلي والسلة تخصم
+      price: product.price, 
       discount: product.discount,
-      image: product.imageUrl,
+      imageUrl: product.imageUrl, // ✅ تم التصحيح: غيرنا image إلى imageUrl
       slug: product.slug.current,
       quantity: quantity 
     });
@@ -93,13 +93,13 @@ export default function ProductDetails({ product }) {
             )}
           </div>
 
-          {/* 👇 تم التعديل هنا: استخدام description وإضافة تنسيق الأسطر */}
+          {/* الوصف */}
           <p style={{ 
             lineHeight: '1.8', 
             color: '#666', 
             marginBottom: '30px', 
             fontSize: '1.1rem',
-            whiteSpace: 'pre-line' // ✅ هام جداً: يحافظ على الأسطر الجديدة كما كتبتها
+            whiteSpace: 'pre-line' 
           }}>
             {product.description ? product.description : 'وصف العطر ومكوناته المميزة ستجدها هنا قريباً...'}
           </p>
@@ -137,7 +137,6 @@ export default function ProductDetails({ product }) {
   );
 }
 
-// 👇 دالة السيرفر: تم تعديلها لجلب description
 export const getServerSideProps = async ({ params: { slug } }) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]{
     _id,
@@ -145,7 +144,7 @@ export const getServerSideProps = async ({ params: { slug } }) => {
     image,
     price,
     discount,
-    description, // ✅ تم التعديل: جلب حقل الوصف الصحيح
+    description,
     slug,
     "imageUrl": image.asset->url
   }`;
