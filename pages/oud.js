@@ -6,7 +6,7 @@ export default function OudPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 نبحث عن المنتجات التي قسمها "oud" أو "Oud"
+    // 👇 استعلام لجلب منتجات قسم "oud" أو "Oud"
     const query = `*[_type == "product" && (category == "oud" || category == "Oud")]{
       _id,
       name,
