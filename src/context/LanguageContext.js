@@ -46,7 +46,7 @@ export const LanguageProvider = ({ children }) => {
 
   return (
     <LanguageContext.Provider value={{ language, switchLanguage, t: translations[language] }}>
-      {/* 👇 التعديل هنا: أضفنا suppressHydrationWarning */}
+      {/* 👇 التعديل هنا: أضفنا suppressHydrationWarning لمنع الخطأ الأحمر */}
       <div 
         dir={language === 'ar' ? 'rtl' : 'ltr'} 
         style={{ fontFamily: language === 'ar' ? 'Arial' : 'sans-serif' }}
