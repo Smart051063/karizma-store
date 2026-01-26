@@ -4,7 +4,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
+  const [totalQuantities, setTotalQuantities] = useState(0); // 👈 تم تعديل الاسم ليتوافق مع Navbar
 
   // 1️⃣ الشفاء الذاتي للسلة (Self-Healing) عند فتح الموقع
   useEffect(() => {
@@ -34,6 +34,9 @@ export function CartProvider({ children }) {
   useEffect(() => {
     if (cartItems.length > 0) {
       localStorage.setItem('karizma_cart', JSON.stringify(cartItems));
+    } else {
+        // تنظيف التخزين إذا كانت السلة فارغة لتجنب الأخطاء
+        // localStorage.removeItem('karizma_cart'); // اختياري
     }
     
     // حساب العداد (الأيقونة الحمراء) بشكل آمن
@@ -41,7 +44,8 @@ export function CartProvider({ children }) {
       const qty = item.quantity ? Number(item.quantity) : 1;
       return acc + qty;
     }, 0);
-    setCartCount(count);
+    
+    setTotalQuantities(count); // 👈 تحديث المتغير بالاسم الصحيح
 
   }, [cartItems]);
 
@@ -116,14 +120,13 @@ export function CartProvider({ children }) {
     message += `\n📍 يرجى تأكيد الطلب والعنوان.`;
 
     // 👇🔥 دمج كود تيك توك هنا
-    // عندما يضغط العميل على الزر، نرسل حدث "CompletePayment" لتيك توك
     if (typeof window !== 'undefined' && window.ttq) {
       window.ttq.track('CompletePayment', {
         content_type: 'product',
-        value: Number(totalPrice.toFixed(2)), // إرسال القيمة كرقم
-        currency: 'EGP', // العملة
+        value: Number(totalPrice.toFixed(2)),
+        currency: 'EGP',
       });
-      console.log("✅ TikTok Pixel: Purchase Event Sent!"); // للتأكد في الكونسول
+      console.log("✅ TikTok Pixel: Purchase Event Sent!");
     }
 
     // فتح الواتساب
@@ -132,7 +135,8 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, cartCount, addToCart, removeFromCart, updateQuantity, totalPrice, checkout }}>
+    // 👈 هنا مررنا totalQuantities لكي يراها الناف بار
+    <CartContext.Provider value={{ cartItems, totalQuantities, addToCart, removeFromCart, updateQuantity, totalPrice, checkout }}>
       {children}
     </CartContext.Provider>
   );
