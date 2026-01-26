@@ -25,16 +25,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ------------------------------------------------ */
-/* 👇 الإضافات الجديدة: ستايلات الأزرار الذهبية 👇 */
-/* ------------------------------------------------ */
+/* 👇👇👇 أهم جزء: كود الأزرار الذهبية 👇👇👇 */
 
-/* 🌟 1. ستايل الزر الذهبي الموحد (لأي زر في الموقع) */
 .gold-btn {
-  background: linear-gradient(145deg, #d4af37, #b3922b); /* تدرج ذهبي فخم */
-  color: #fff !important; /* النص والأيقونة أبيض دائماً */
+  background: linear-gradient(145deg, #d4af37, #b3922b) !important; /* الخلفية الذهبية */
+  color: #fff !important; /* لون الأيقونة أبيض */
   border: 2px solid #c29d25;
-  border-radius: 8px; /* حواف ناعمة */
+  border-radius: 8px;
   padding: 10px 20px;
   font-weight: bold;
   cursor: pointer;
@@ -44,39 +41,25 @@ body {
   justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
-  
-  /* التأثير المجسم (الظل الصلب في الأسفل) */
-  box-shadow: 
-    0 4px 0 #8a6e15, /* هذا هو الذي يعطي الإحساس بالعمق 3D */
-    0 5px 10px rgba(0,0,0,0.3); /* ظل ناعم للواقعية */
+  box-shadow: 0 4px 0 #8a6e15, 0 5px 10px rgba(0,0,0,0.3);
 }
 
-/* 🌟 عند مرور الماوس (Hover) */
 .gold-btn:hover {
-  background: linear-gradient(145deg, #e5c14d, #cfa830); /* تفتيح اللون قليلاً */
-  transform: translateY(-2px); /* يرتفع الزر قليلاً للأعلى */
-  box-shadow: 
-    0 6px 0 #8a6e15, /* يزيد عمق الظل */
-    0 8px 15px rgba(212, 175, 55, 0.4); /* توهج ذهبي */
+  background: linear-gradient(145deg, #e5c14d, #cfa830) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #8a6e15, 0 8px 15px rgba(212, 175, 55, 0.4);
 }
 
-/* 🌟 لحظة الضغط (Click) */
 .gold-btn:active {
-  transform: translateY(4px); /* يهبط الزر للأسفل كأنه ضُغط */
-  box-shadow: 
-    0 0 0 #8a6e15, /* يختفي الظل الصلب */
-    inset 0 2px 5px rgba(0,0,0,0.3); /* يظهر ظل داخلي */
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #8a6e15, inset 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* 🌟 2. تنسيق خاص لأزرار السوشيال ميديا (دائرية) */
-/* نستخدم هذا الكلاس بجانب gold-btn لجعله دائرياً */
+/* جعل أزرار السوشيال ميديا دائرية */
 .social-circle-btn {
   width: 45px;
   height: 45px;
-  padding: 0;
-  border-radius: 50%; /* دائري تماماً */
+  padding: 0 !important;
+  border-radius: 50% !important;
   font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
