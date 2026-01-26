@@ -18,35 +18,13 @@ export const LanguageProvider = ({ children }) => {
   };
 
   const translations = {
-    ar: {
-      home: 'الرئيسية',
-      men: 'رجالي',
-      women: 'نسائي',
-      oriental: 'شرقي',
-      search: 'بحث',
-      cart: 'السلة',
-      addToCart: 'إضافة للسلة 🛒',
-      price: 'جنيه',
-      descPlaceholder: 'الوصف غير متاح',
-      searchPlaceholder: 'اكتب اسم العطر...'
-    },
-    en: {
-      home: 'Home',
-      men: 'Men',
-      women: 'Women',
-      oriental: 'Oriental',
-      search: 'Search',
-      cart: 'Cart',
-      addToCart: 'Add to Cart 🛒',
-      price: 'EGP',
-      descPlaceholder: 'Description not available',
-      searchPlaceholder: 'Search for perfume...'
-    }
+    ar: { home: 'الرئيسية', men: 'رجالي', women: 'نسائي', oriental: 'شرقي', search: 'بحث', cart: 'السلة', addToCart: 'إضافة للسلة 🛒', price: 'جنيه', descPlaceholder: 'الوصف غير متاح', searchPlaceholder: 'اكتب اسم العطر...' },
+    en: { home: 'Home', men: 'Men', women: 'Women', oriental: 'Oriental', search: 'Search', cart: 'Cart', addToCart: 'Add to Cart 🛒', price: 'EGP', descPlaceholder: 'Description not available', searchPlaceholder: 'Search for perfume...' }
   };
 
   return (
     <LanguageContext.Provider value={{ language, switchLanguage, t: translations[language] }}>
-      {/* 👇 التعديل هنا: أضفنا suppressHydrationWarning لمنع الخطأ الأحمر */}
+      {/* 👇 الحل السحري هنا: suppressHydrationWarning */}
       <div 
         dir={language === 'ar' ? 'rtl' : 'ltr'} 
         style={{ fontFamily: language === 'ar' ? 'Arial' : 'sans-serif' }}
