@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { client } from '../src/sanity/lib/client';
+import Link from 'next/link';
 
 export default function Musks() {
   const [products, setProducts] = useState([]);

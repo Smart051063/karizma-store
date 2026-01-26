@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
+import Link from 'next/link';
 
 export default function BakhoorPage() {
   const [products, setProducts] = useState([]);
