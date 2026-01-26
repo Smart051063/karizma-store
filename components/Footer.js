@@ -11,15 +11,15 @@ export default function Footer() {
         <div style={{ flex: '1 1 300px' }}>
           <h2 style={{ color: '#d4af37', margin: '0 0 20px', fontSize: '2rem', fontFamily: 'serif' }}>Karizma ✨</h2>
           <p style={{ color: '#bbb', lineHeight: '1.8', marginBottom: '25px', fontSize: '0.95rem' }}>
-            نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة من أرقى الماركات العالمية.
+            نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية.
           </p>
           
-          {/* 👇 قسم الأيقونات الجديد */}
-          <div className="social-icons-container">
-            <SocialIcon href="https://www.facebook.com" path={icons.facebook} brandColor="#1877F2" label="فيسبوك" />
-            <SocialIcon href="https://www.instagram.com" path={icons.instagram} brandColor="#E4405F" label="إنستجرام" isInstagram={true} />
-            <SocialIcon href="https://www.tiktok.com" path={icons.tiktok} brandColor="#000000" label="تيك توك" />
-            <SocialIcon href="https://wa.me/201002410037" path={icons.whatsapp} brandColor="#25D366" label="واتساب" />
+          {/* 👇 الأزرار الذهبية تظهر هنا */}
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <SocialButton href="https://www.facebook.com" path={icons.facebook} label="فيسبوك" />
+            <SocialButton href="https://www.instagram.com" path={icons.instagram} label="إنستجرام" />
+            <SocialButton href="https://www.tiktok.com" path={icons.tiktok} label="تيك توك" />
+            <SocialButton href="https://wa.me/201002410037" path={icons.whatsapp} label="واتساب" />
           </div>
         </div>
 
@@ -28,7 +28,6 @@ export default function Footer() {
           <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>روابط تهمك</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             <FooterLink href="/offers" text="🔥 العروض والخصومات" />
-            <FooterLink href="/mixes" text="⚗️ ميكسات كاريزما" />
             <FooterLink href="/men" text="🤵 عطور رجالية" />
             <FooterLink href="/women" text="💃 عطور نسائية" />
             <FooterLink href="/makeup" text="💄 تجميل وعناية" />
@@ -42,132 +41,56 @@ export default function Footer() {
             <li style={{ marginBottom: '20px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
               <span style={{ fontSize: '1.5rem', marginTop: '-5px' }}>📍</span>
               <div>
-                <p style={{ margin: '0 0 5px 0', lineHeight: '1.6', color: '#fff', fontWeight: 'bold' }}>
+                <p style={{ margin: '0 0 10px 0', lineHeight: '1.6', color: '#fff' }}>
                   28WM+22W، شارع إبن الرومي<br />
-                  الحديقة الدولية، مدينة نصر<br />
-                  محافظة القاهرة 4441403
+                  الحديقة الدولية، مدينة نصر
                 </p>
-                <a href="https://www.google.com/maps/search/?api=1&query=28WM%2B22W+%D8%A5%D8%A8%D9%86+%D8%A7%D9%84%D8%B1%D9%88%D9%85%D9%8A" target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'inline-block', marginTop: '5px', color: '#1a1a1a', backgroundColor: '#d4af37', padding: '6px 12px', borderRadius: '4px', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                {/* زر الخريطة الذهبي */}
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=28WM%2B22W+%D8%A5%D8%A8%D9%86+%D8%A7%D9%84%D8%B1%D9%88%D9%85%D9%8A" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="gold-btn" 
+                  style={{ fontSize: '0.85rem', padding: '6px 12px' }}
+                >
                   عرض الموقع على الخريطة 🗺️
                 </a>
               </div>
             </li>
             <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '1.2rem' }}>📞</span> 
-              <a href="tel:01002410037" style={{ color: '#bbb', textDecoration: 'none' }}>01002410037</a>
-            </li>
-            <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '1.2rem' }}>📧</span> 
-              <a href="mailto:info@karizmaperfumes.com" style={{ color: '#bbb', textDecoration: 'none' }}>info@karizmaperfumes.com</a>
+               <span style={{fontSize: '1.2rem'}}>📞</span>
+               <a href="tel:01002410037" style={{ color: '#bbb', textDecoration: 'none' }}>01002410037</a>
             </li>
           </ul>
         </div>
       </div>
-
-      <div style={{ borderTop: '1px solid #333', marginTop: '50px', paddingTop: '20px', textAlign: 'center', color: '#777', fontSize: '0.9rem' }}>
+      
+      <div style={{ borderTop: '1px solid #333', marginTop: '50px', paddingTop: '20px', textAlign: 'center', color: '#777' }}>
         <p>© 2026 جميع الحقوق محفوظة لـ <span style={{ color: '#d4af37' }}>كاريزما للعطور</span>.</p>
       </div>
-
-      {/* 👇 ستايلات CSS للأزرار المجسمة */}
-      <style jsx>{`
-        .social-icons-container {
-          display: flex;
-          gap: 15px;
-        }
-        
-        /* التصميم الأساسي للزر */
-        .social-btn {
-          width: 45px;
-          height: 45px;
-          background: linear-gradient(145deg, #d4af37, #b3922b); /* تدرج ذهبي */
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justifyContent: center;
-          color: #fff; /* لون الأيقونة أبيض */
-          text-decoration: none;
-          /* الظلال التي تخلق التأثير المجسم */
-          box-shadow: 
-            0 4px 8px rgba(0,0,0,0.5), /* ظل خارجي للعمق */
-            inset 0 2px 3px rgba(255,255,255,0.4), /* لمعة علوية داخلية */
-            inset 0 -2px 3px rgba(0,0,0,0.2); /* ظل سفلي داخلي */
-          border: 2px solid #c29d25;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة انسيابية مرنة */
-          transform: translateY(0);
-        }
-
-        /* الأيقونة داخل الزر */
-        .social-btn svg {
-          fill: currentColor;
-          filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
-          transition: transform 0.3s ease;
-        }
-
-        /* تأثير عند مرور الماوس */
-        .social-btn:hover {
-          transform: translateY(-5px) scale(1.1); /* يرتفع ويكبر قليلاً */
-          background: var(--hover-bg); /* يتغير لونه للون البراند */
-          border-color: var(--hover-bg);
-          color: #fff;
-          box-shadow: 
-            0 10px 20px -5px var(--hover-bg-alpha), /* توهج بلون البراند */
-            inset 0 2px 3px rgba(255,255,255,0.3);
-        }
-
-        /* حركة إضافية للأيقونة عند الهوفر */
-        .social-btn:hover svg {
-           transform: scale(1.1) rotate(5deg);
-        }
-        
-        /* تعامل خاص مع تدرج ألوان إنستجرام */
-        .social-btn.instagram-btn:hover {
-           background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
-           --hover-bg-alpha: rgba(214, 36, 159, 0.6);
-           border-color: #d6249f;
-        }
-
-      `}</style>
     </footer>
   );
 }
 
-// --- مكون الزر الجديد المطور ---
-function SocialIcon({ href, path, brandColor, label, isInstagram }) {
-  // تحويل لون البراند إلى لون شفاف للظل
-  const brandColorAlpha = brandColor + '80'; // إضافة شفافية 50%
-
+// مكون الزر الذهبي الجديد
+function SocialButton({ href, path, label }) {
   return (
     <a 
       href={href} 
       target="_blank" 
       rel="noopener noreferrer"
+      className="gold-btn social-circle-btn" // 👈 هذا الكلاس هو الذي يجعلها ذهبية ودائرية
       aria-label={label}
-      className={`social-btn ${isInstagram ? 'instagram-btn' : ''}`}
-      // تمرير متغيرات الألوان إلى الـ CSS
-      style={{ 
-        '--hover-bg': brandColor,
-        '--hover-bg-alpha': brandColorAlpha
-      }}
     >
-      <svg viewBox="0 0 24 24" width="22" height="22">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
         <path d={path} />
       </svg>
     </a>
   );
 }
 
-// --- مكون الروابط (لم يتغير) ---
 function FooterLink({ href, text }) {
-  return (
-    <li style={{ marginBottom: '12px' }}>
-      <Link href={href} style={{ color: '#bbb', textDecoration: 'none', transition: 'color 0.3s' }} 
-            onMouseOver={(e) => e.target.style.color = '#d4af37'}
-            onMouseOut={(e) => e.target.style.color = '#bbb'}>
-        {text}
-      </Link>
-    </li>
-  );
+  return <li style={{ marginBottom: '12px' }}><Link href={href} style={{ color: '#bbb', textDecoration: 'none' }}>{text}</Link></li>;
 }
 
 const icons = {
