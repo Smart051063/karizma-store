@@ -3,9 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('ar'); // اللغة الافتراضية عربية
+  const [language, setLanguage] = useState('ar'); 
 
-  // استرجاع اللغة المحفوظة عند فتح الموقع
   useEffect(() => {
     const savedLang = localStorage.getItem('karizma_lang');
     if (savedLang) {
@@ -13,13 +12,11 @@ export const LanguageProvider = ({ children }) => {
     }
   }, []);
 
-  // دالة تغيير اللغة
   const switchLanguage = (lang) => {
     setLanguage(lang);
-    localStorage.setItem('karizma_lang', lang); // حفظ الاختيار
+    localStorage.setItem('karizma_lang', lang);
   };
 
-  // النصوص الثابتة في الموقع (للقوائم والأزرار)
   const translations = {
     ar: {
       home: 'الرئيسية',
@@ -49,8 +46,12 @@ export const LanguageProvider = ({ children }) => {
 
   return (
     <LanguageContext.Provider value={{ language, switchLanguage, t: translations[language] }}>
-      {/* هذا السطر سيقلب اتجاه الموقع تلقائياً */}
-      <div dir={language === 'ar' ? 'rtl' : 'ltr'} style={{ fontFamily: language === 'ar' ? 'Arial' : 'sans-serif' }}>
+      {/* 👇 التعديل هنا: أضفنا suppressHydrationWarning */}
+      <div 
+        dir={language === 'ar' ? 'rtl' : 'ltr'} 
+        style={{ fontFamily: language === 'ar' ? 'Arial' : 'sans-serif' }}
+        suppressHydrationWarning={true} 
+      >
         {children}
       </div>
     </LanguageContext.Provider>
