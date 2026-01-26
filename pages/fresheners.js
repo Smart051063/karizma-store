@@ -19,9 +19,9 @@ export default function FreshenersPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
-      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🌸 معطرات الجو والمفارش</h1>
+      <h1 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '2.5rem' }}>🌸 معطرات الجو والمفارش</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
         {products.length > 0 ? (
@@ -46,9 +46,30 @@ export default function FreshenersPage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل المعطرات... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p style={{ fontSize: '1.2rem', color: '#666' }}>جاري تحميل المعطرات... ⏳</p>
+          </div>
         )}
       </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ marginTop: '60px', marginBottom: '30px' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
+      </div>
+
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function ProductDetails({ product }) {
       name: product.name,
       price: product.price, 
       discount: product.discount,
-      imageUrl: product.imageUrl, // ✅ تم التصحيح: غيرنا image إلى imageUrl
+      imageUrl: product.imageUrl, 
       slug: product.slug.current,
       quantity: quantity 
     });
@@ -128,9 +128,27 @@ export default function ProductDetails({ product }) {
             </button>
           </div>
           
-          <Link href="/shop" style={{ marginTop: '20px', textAlign: 'center', color: '#d4af37', textDecoration: 'none' }}>
+          <Link href="/shop" style={{ marginTop: '20px', textAlign: 'center', color: '#d4af37', textDecoration: 'none', display: 'block' }}>
             &larr; مواصلة التسوق
           </Link>
+
+          {/* 👇 زر العودة للصفحة الرئيسية الجديد */}
+          <div style={{ marginTop: '20px', textAlign: 'center' }}>
+            <Link href="/" style={{ 
+              display: 'inline-block', 
+              padding: '10px 25px', 
+              backgroundColor: '#fff', 
+              border: '2px solid #d4af37', 
+              color: '#1a1a1a', 
+              textDecoration: 'none', 
+              borderRadius: '8px', 
+              fontWeight: 'bold',
+              transition: '0.3s'
+            }}>
+              🏠 العودة للصفحة الرئيسية
+            </Link>
+          </div>
+
         </div>
       </div>
     </div>
