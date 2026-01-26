@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
-// 👇 تأكد من وجود هذين السطرين
+import { LanguageProvider } from '../src/context/LanguageContext';
 import { CartProvider } from '../src/context/CartContext';
-import { LanguageProvider } from '../src/context/LanguageContext'; 
 import Script from 'next/script';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  // حالة للتأكد من تحميل الصفحة بالكامل (لحل مشكلة Hydration)
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -20,7 +18,9 @@ function MyApp({ Component, pageProps }) {
     <LanguageProvider>
       <CartProvider>
         
-        {/* كود تيك توك بيكسل */}
+        {/* ================================================= */}
+        {/* 1️⃣ كود تيك توك بيكسل (TikTok Pixel) */}
+        {/* ================================================= */}
         <Script
           id="tiktok-pixel"
           strategy="afterInteractive"
@@ -38,9 +38,51 @@ function MyApp({ Component, pageProps }) {
           }}
         />
 
-        {/* عرض التوستر فقط بعد التحميل */}
+        {/* ================================================= */}
+        {/* 2️⃣ كود فيسبوك بيكسل (Meta Pixel) - تم التحديث ✅ */}
+        {/* ================================================= */}
+        <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              
+              fbq('init', '1418587233195999'); // 👈 الرقم الصحيح من الصورة
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+
+        {/* ================================================= */}
+        {/* 3️⃣ كود إحصائيات جوجل (Google Analytics) - إضافي ✅ */}
+        {/* ================================================= */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-8MBK7Y702C`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-8MBK7Y702C');
+            `,
+          }}
+        />
+
+        {/* بقية الموقع */}
         {mounted && <Toaster />}
-        
         <Navbar /> 
         <Component {...pageProps} />
         <Footer /> 
