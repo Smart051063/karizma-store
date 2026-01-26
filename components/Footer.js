@@ -16,9 +16,9 @@ export default function Footer() {
           
           {/* 👇 الأزرار الذهبية تظهر هنا */}
           <div style={{ display: 'flex', gap: '15px' }}>
-            <SocialButton href="https://www.facebook.com" path={icons.facebook} label="فيسبوك" />
+            <SocialButton href="https://www.facebook.com/profile.php?id=61561267272083&rdid=6JOpUVqKfGsE7Z4L&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2F#" path={icons.facebook} label="فيسبوك" />
             <SocialButton href="https://www.instagram.com" path={icons.instagram} label="إنستجرام" />
-            <SocialButton href="https://www.tiktok.com" path={icons.tiktok} label="تيك توك" />
+            <SocialButton href="https://www.tiktok.com/@karizma.fragrance?is_from_webapp=1&sender_device=pc.com" path={icons.tiktok} label="تيك توك" />
             <SocialButton href="https://wa.me/201002410037" path={icons.whatsapp} label="واتساب" />
           </div>
         </div>
