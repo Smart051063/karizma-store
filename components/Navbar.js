@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { useCart } from '../src/context/CartContext';
-import { useLanguage } from '../src/context/LanguageContext'; // 👈 1. استيراد سياق اللغة
+import { useLanguage } from '../src/context/LanguageContext';
 
 export default function Navbar() {
   const { totalQuantities } = useCart();
-  const { language, switchLanguage, t } = useLanguage(); // 👈 2. استخراج الدوال
+  const { language, switchLanguage, t } = useLanguage();
 
   return (
     <nav style={{ 
@@ -16,7 +16,6 @@ export default function Navbar() {
       zIndex: 1000, 
       borderBottom: '2px solid #d4af37',
       boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
-      // لا نحتاج لـ direction هنا لأن LanguageContext سيتحكم في اتجاه الصفحة بالكامل
     }}>
       <div style={{ 
         maxWidth: '1200px', 
@@ -39,27 +38,17 @@ export default function Navbar() {
           </h1>
         </Link>
 
-        {/* 2️⃣ روابط التنقل */}
+        {/* 2️⃣ روابط التنقل (تم حذف الترس من هنا) */}
         <div className="nav-links" style={{ display: 'flex', gap: '20px' }}>
-          {/* يمكنك استخدام t.home هنا بدلاً من النص الثابت إذا أردت */}
           <NavLink href="/" text={t.home || "الرئيسية"} />
           <NavLink href="/shop" text="المتجر" />
           <NavLink href="/offers" text="العروض 🔥" />
-          
-          <Link href="/studio" style={{ 
-            color: '#777', 
-            textDecoration: 'none', 
-            fontSize: '0.9rem', 
-            alignSelf: 'center' 
-          }}>
-            ⚙️
-          </Link>
         </div>
 
         {/* 3️⃣ الأيقونات + زر اللغة */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           
-          {/* 👇 زر تغيير اللغة الجديد */}
+          {/* زر تغيير اللغة */}
           <button 
             onClick={() => switchLanguage(language === 'ar' ? 'en' : 'ar')}
             style={{
