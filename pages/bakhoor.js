@@ -6,8 +6,8 @@ export default function BakhoorPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 استعلام لجلب منتجات قسم "bakhoor" أو "Bakhoor"
-    const query = `*[_type == "product" && (category == "bakhoor" || category == "Bakhoor")]{
+    // 👇 هنا السر: نغير الكلمة إلى "bakhoor"
+    const query = `*[_type == "product" && category == "bakhoor"]{
       _id,
       name,
       price,
@@ -21,7 +21,7 @@ export default function BakhoorPage() {
   return (
     <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
-      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🪔 قسم البخور الشرقي</h1>
+      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💨 قسم البخور والعود</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
         {products.length > 0 ? (
@@ -47,53 +47,32 @@ export default function BakhoorPage() {
           ))
         ) : (
           <div style={{ marginTop: '50px', width: '100%' }}>
-            <p>جاري تحميل البخور... ⏳</p>
+            <p>لا توجد منتجات بخور حالياً... ⏳</p>
           </div>
         )}
       </div>
 
-      {/* 👇 تم وضع الزر هنا (داخل الدالة وقبل إغلاق الـ div الرئيسي) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
-          display: 'inline-block', 
-          padding: '12px 30px', 
-          backgroundColor: '#1a1a1a', 
-          color: '#d4af37', 
-          textDecoration: 'none', 
-          borderRadius: '8px', 
-          fontWeight: 'bold',
-          fontSize: '1.1rem',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-          transition: 'transform 0.2s'
+          display: 'inline-block', padding: '12px 30px', backgroundColor: '#1a1a1a', 
+          color: '#d4af37', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold'
         }}>
-          🏠 العودة للصفحة الرئيسية
+          🏠 العودة للرئيسية
         </Link>
       </div>
-
     </div>
   );
 }
 
-// --- التنسيقات ---
+// التنسيقات
 const cardStyle = {
-  border: '1px solid #ddd',
-  padding: '15px',
-  borderRadius: '10px',
-  width: '250px',
-  textAlign: 'center',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  backgroundColor: 'white'
+  border: '1px solid #ddd', padding: '15px', borderRadius: '10px',
+  width: '250px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  cursor: 'pointer', transition: 'transform 0.2s', backgroundColor: 'white'
 };
 
 const detailsButtonStyle = {
-  backgroundColor: '#1a1a1a',
-  color: 'white',
-  border: 'none',
-  padding: '10px 15px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  width: '100%',
-  marginTop: '10px'
+  backgroundColor: '#1a1a1a', color: 'white', border: 'none',
+  padding: '10px 15px', borderRadius: '5px', cursor: 'pointer',
+  width: '100%', marginTop: '10px'
 };

@@ -15,7 +15,7 @@ export default function Footer() {
             نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة من أرقى الماركات العالمية.
           </p>
           
-          {/* أيقونات السوشيال ميديا (SVG احترافية) */}
+          {/* أيقونات السوشيال ميديا */}
           <div style={{ display: 'flex', gap: '15px' }}>
             <SocialIcon href="https://www.facebook.com" path={icons.facebook} color="#1877F2" />
             <SocialIcon href="https://www.instagram.com" path={icons.instagram} color="#E4405F" />
@@ -36,17 +36,46 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* 3️⃣ العمود الثالث: تواصل معنا */}
+        {/* 3️⃣ العمود الثالث: خدمة العملاء والعنوان (تم التعديل هنا) */}
         <div style={{ flex: '1 1 250px' }}>
-          <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>خدمة العملاء</h3>
+          <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>تواصل معنا</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#bbb', fontSize: '0.95rem' }}>
-            <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '1.2rem' }}>📍</span> جمهورية مصر العربية
+            
+            {/* 👇 العنوان وزر الخريطة */}
+            <li style={{ marginBottom: '20px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              <span style={{ fontSize: '1.5rem', marginTop: '-5px' }}>📍</span>
+              <div>
+                <p style={{ margin: '0 0 5px 0', lineHeight: '1.6', color: '#fff' }}>
+                  مدينة نصر، الحي السابع<br />
+                  شارع ابن الرومي، رقم 25<br />
+                  (بجوار الحديقة الدولية)
+                </p>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=25+Ibn+Al+Rumi+Nasr+City" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: 'inline-block',
+                    marginTop: '5px',
+                    color: '#1a1a1a',
+                    backgroundColor: '#d4af37',
+                    padding: '5px 10px',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  عرض الموقع على الخريطة 🗺️
+                </a>
+              </div>
             </li>
+
             <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '1.2rem' }}>📞</span> 
               <a href="tel:01002410037" style={{ color: '#bbb', textDecoration: 'none' }}>01002410037</a>
             </li>
+            
             <li style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '1.2rem' }}>📧</span> 
               <a href="mailto:info@karizmaperfumes.com" style={{ color: '#bbb', textDecoration: 'none' }}>info@karizmaperfumes.com</a>

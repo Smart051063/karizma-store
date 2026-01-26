@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('ar'); 
+  const [language, setLanguage] = useState('ar');
 
   useEffect(() => {
     const savedLang = localStorage.getItem('karizma_lang');
@@ -24,7 +24,6 @@ export const LanguageProvider = ({ children }) => {
 
   return (
     <LanguageContext.Provider value={{ language, switchLanguage, t: translations[language] }}>
-      {/* 👇 الحل السحري هنا: suppressHydrationWarning */}
       <div 
         dir={language === 'ar' ? 'rtl' : 'ltr'} 
         style={{ fontFamily: language === 'ar' ? 'Arial' : 'sans-serif' }}
