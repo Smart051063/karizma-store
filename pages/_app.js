@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { CartProvider } from '../src/context/CartContext';
-import { LanguageProvider } from '../src/context/LanguageContext'; // 👈 استدعاء ملف اللغة
+import { LanguageProvider } from '../src/context/LanguageContext';
 import Script from 'next/script';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
+  // 👇 1. تعريف متغير حالة للتأكد من التحميل
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true); // عند تحميل الصفحة، نغير الحالة إلى true
+  }, []);
+
   return (
-    // 👇 نغلف الموقع بمزود اللغة أولاً (أو داخل السلة، لا يهم الترتيب كثيراً)
     <LanguageProvider>
       <CartProvider>
         
-        {/* كود تيك توك بيكسل */}
+        {/* كود تيك توك */}
         <Script
           id="tiktok-pixel"
           strategy="afterInteractive"
@@ -31,7 +37,8 @@ function MyApp({ Component, pageProps }) {
           }}
         />
 
-        <Toaster />
+        {/* 👇 2. نعرض التوستر فقط إذا اكتمل التحميل */}
+        {mounted && <Toaster />}
         
         <Navbar /> 
         <Component {...pageProps} />
