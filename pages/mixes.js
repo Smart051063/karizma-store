@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
 
@@ -7,8 +6,16 @@ export default function Mixes() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // جلب المنتجات التي تصنيفها "mixes"
-    client.fetch(`*[_type == "product" && category == "mixes"]{_id, name, price, "imageUrl": image.asset->url, slug}`).then(setProducts);
+    // 👇 استعلام ذكي (يقبل mixes أو Mixes)
+    const query = `*[_type == "product" && (category == "mixes" || category == "Mixes")]{
+      _id, 
+      name, 
+      price, 
+      "imageUrl": image.asset->url, 
+      slug
+    }`;
+    
+    client.fetch(query).then(setProducts);
   }, []);
 
   return (
@@ -40,10 +47,8 @@ export default function Mixes() {
           <p style={{ textAlign: 'center', width: '100%', marginTop: '50px', color: '#777' }}>لا توجد ميكسات مضافة حالياً... قريباً! ⚗️</p>
         )}
       </div>
-    </div>
-  );
-}
-{/* 👇 زر العودة للصفحة الرئيسية */}
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه هنا بشكل صحيح) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
           display: 'inline-block', 
@@ -60,7 +65,12 @@ export default function Mixes() {
           🏠 العودة للصفحة الرئيسية
         </Link>
       </div>
-// تنسيق الكارت (أكبر قليلاً من الرئيسية ليكون واضحاً في التصفح)
+
+    </div>
+  );
+}
+
+// تنسيق الكارت
 const productCardStyle = { 
   width: '170px', backgroundColor: 'white', borderRadius: '10px', 
   boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid #d4af37', 

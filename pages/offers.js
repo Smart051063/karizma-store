@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { client } from '../src/sanity/lib/client';
-import Link from 'next/link';
 
 export default function Offers() {
   const [products, setProducts] = useState([]);
@@ -76,10 +75,28 @@ export default function Offers() {
             );
           })
         ) : (
-          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+          <div style={{ textAlign: 'center', marginTop: '50px', width: '100%' }}>
             <p style={{ fontSize: '1.5rem', color: '#777' }}>لا توجد عروض حالياً.. تابعنا قريباً! ⏳</p>
           </div>
         )}
+      </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
       </div>
 
       <style jsx>{`

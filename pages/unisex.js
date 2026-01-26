@@ -6,8 +6,7 @@ export default function UnisexPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 التعديل الهام: غيرنا subCategory إلى category
-    // وتأكدنا أننا نبحث عن "unisex"
+    // 👇 استعلام لجلب منتجات قسم "unisex"
     const query = `*[_type == "product" && category == "unisex"]{
       _id,
       name,
@@ -20,9 +19,10 @@ export default function UnisexPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
-      {/* تم إزالة العنوان والأزرار العلوية */}
+      {/* عنوان القسم */}
+      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>👫 عطور للجنسين</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
         {products.length > 0 ? (
@@ -47,9 +47,30 @@ export default function UnisexPage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل عطور الجنسين... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p>جاري تحميل عطور الجنسين... ⏳</p>
+          </div>
         )}
       </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
+      </div>
+
     </div>
   );
 }

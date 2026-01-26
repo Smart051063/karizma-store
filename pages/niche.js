@@ -7,7 +7,6 @@ export default function NichePage() {
 
   useEffect(() => {
     // 👇 بحثنا هنا عن المنتجات التي قسمها "niche" أو "Niche"
-    // (استخدمنا || للاحتياط لكي يقبل الحالتين)
     const query = `*[_type == "product" && (category == "niche" || category == "Niche")]{
       _id,
       name,
@@ -20,7 +19,7 @@ export default function NichePage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
       <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💎 عطور النيش الفاخرة</h1>
 
@@ -47,26 +46,13 @@ export default function NichePage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل العطور النادرة... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p>جاري تحميل العطور النادرة... ⏳</p>
+          </div>
         )}
       </div>
-    </div>
-  );
-}
 
-// --- التنسيقات ---
-const cardStyle = {
-  border: '1px solid #ddd',
-  padding: '15px',
-  borderRadius: '10px',
-  width: '250px',
-  textAlign: 'center',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  backgroundColor: 'white'
-};
-{/* 👇 زر العودة للصفحة الرئيسية */}
+      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه في المكان الصحيح هنا) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
           display: 'inline-block', 
@@ -83,6 +69,24 @@ const cardStyle = {
           🏠 العودة للصفحة الرئيسية
         </Link>
       </div>
+
+    </div>
+  );
+}
+
+// --- التنسيقات ---
+const cardStyle = {
+  border: '1px solid #ddd',
+  padding: '15px',
+  borderRadius: '10px',
+  width: '250px',
+  textAlign: 'center',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  cursor: 'pointer',
+  transition: 'transform 0.2s',
+  backgroundColor: 'white'
+};
+
 const detailsButtonStyle = {
   backgroundColor: '#1a1a1a',
   color: 'white',

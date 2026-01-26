@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
 
@@ -7,9 +6,16 @@ export default function Musks() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 هنا المهم: سنجلب المنتجات التي تصنيفها "musks"
-    // تأكد في Sanity أنك تسمي القسم (musks) بالانجليزية
-    client.fetch(`*[_type == "product" && category == "musks"]{_id, name, price, "imageUrl": image.asset->url, slug}`).then(setProducts);
+    // 👇 استعلام ذكي (يقبل musks أو Musks)
+    const query = `*[_type == "product" && (category == "musks" || category == "Musks")]{
+      _id, 
+      name, 
+      price, 
+      "imageUrl": image.asset->url, 
+      slug
+    }`;
+    
+    client.fetch(query).then(setProducts);
   }, []);
 
   return (
@@ -41,10 +47,8 @@ export default function Musks() {
           <p style={{ textAlign: 'center', width: '100%', marginTop: '50px', color: '#777' }}>جاري تحضير أفخم أنواع المسك... 🧴✨</p>
         )}
       </div>
-    </div>
-  );
-}
-{/* 👇 زر العودة للصفحة الرئيسية */}
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه هنا بشكل صحيح) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
           display: 'inline-block', 
@@ -61,6 +65,11 @@ export default function Musks() {
           🏠 العودة للصفحة الرئيسية
         </Link>
       </div>
+
+    </div>
+  );
+}
+
 // تنسيق الكارت
 const productCardStyle = { 
   width: '170px', backgroundColor: 'white', borderRadius: '10px', 

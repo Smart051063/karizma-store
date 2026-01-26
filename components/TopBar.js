@@ -1,11 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-// 👇 مسار السلة الصحيح
 import { useCart } from '../src/context/CartContext'; 
 
 export default function TopBar() {
-  const cartData = useCart();
-  const totalQty = cartData ? cartData.totalQty : 0;
+  // 👇 التصحيح: استدعاء totalQuantities مباشرة لضمان توافق الأسماء
+  const { totalQuantities } = useCart();
 
   return (
     <div style={topBarStyle}>
@@ -16,11 +15,10 @@ export default function TopBar() {
           <h1 style={logoStyle}>Karizma ✨</h1>
         </Link>
 
-        {/* 2️⃣ روابط التنقل (بدون ميكسات) */}
-        <div style={navLinksStyle}>
+        {/* 2️⃣ روابط التنقل (تختفي في الموبايل عبر className) */}
+        <div className="nav-links" style={navLinksStyle}>
           <Link href="/" style={linkStyle}>الرئيسية</Link>
           
-          {/* رابط العروض المميز */}
           <Link href="/offers" style={{ ...linkStyle, color: '#e74c3c', fontWeight: 'bold' }}>
             العروض 🔥
           </Link>
@@ -32,13 +30,23 @@ export default function TopBar() {
         <Link href="/cart" style={{ textDecoration: 'none', position: 'relative' }}>
           <div style={cartIconStyle}>
             🛒
-            {totalQty > 0 && (
-              <span style={badgeStyle}>{totalQty}</span>
+            {/* التأكد من وجود منتجات قبل عرض العداد */}
+            {totalQuantities > 0 && (
+              <span style={badgeStyle}>{totalQuantities}</span>
             )}
           </div>
         </Link>
 
       </div>
+
+      {/* 👇 تنسيق لإخفاء الروابط في الموبايل لمنع الزحام */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .nav-links {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -49,7 +57,8 @@ const topBarStyle = {
   color: '#d4af37', 
   padding: '15px 0',
   position: 'sticky', top: 0, zIndex: 1000,
-  boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+  boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+  direction: 'rtl' // مهم للعربية
 };
 
 const containerStyle = {
@@ -70,11 +79,13 @@ const linkStyle = {
 };
 
 const cartIconStyle = {
-  fontSize: '1.5rem', color: '#fff', cursor: 'pointer', position: 'relative'
+  fontSize: '1.5rem', color: '#fff', cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center'
 };
 
 const badgeStyle = {
   position: 'absolute', top: '-8px', right: '-10px',
   backgroundColor: '#e74c3c', color: 'white',
-  borderRadius: '50%', padding: '2px 6px', fontSize: '0.75rem', fontWeight: 'bold'
+  borderRadius: '50%', width: '18px', height: '18px', 
+  display: 'flex', justifyContent: 'center', alignItems: 'center',
+  fontSize: '0.75rem', fontWeight: 'bold'
 };

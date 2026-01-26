@@ -6,8 +6,7 @@ export default function MenPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 الكويري البسيط (بدون شروط الفلترة لأننا حذفنا الأزرار)
-    // لاحظ: تأكدنا أننا نستخدم category == "men" كما صححناها
+    // 👇 الكويري البسيط لجلب منتجات الرجال
     const query = `*[_type == "product" && category == "men"]{
       _id,
       name,
@@ -20,9 +19,10 @@ export default function MenPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
-      {/* 👇 هنا كان يوجد العنوان والأزرار، وتم حذفهم ليبقى التركيز على المنتجات فقط */}
+      {/* عنوان القسم */}
+      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🤵 قسم عطور الرجال</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
         {products.length > 0 ? (
@@ -47,13 +47,13 @@ export default function MenPage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل العطور... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p>جاري تحميل العطور... ⏳</p>
+          </div>
         )}
       </div>
-    </div>
-  );
-}
-{/* 👇 زر العودة للصفحة الرئيسية */}
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه هنا بشكل صحيح) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
           display: 'inline-block', 
@@ -70,6 +70,11 @@ export default function MenPage() {
           🏠 العودة للصفحة الرئيسية
         </Link>
       </div>
+
+    </div>
+  );
+}
+
 // --- التنسيقات ---
 const cardStyle = {
   border: '1px solid #ddd',

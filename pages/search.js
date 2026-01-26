@@ -66,18 +66,18 @@ export default function Search() {
                   
                   {/* الصورة + شريط الخصم */}
                   <div style={{ height: '150px', overflow: 'hidden', borderRadius: '10px 10px 0 0', position: 'relative' }}>
-                     {hasDiscount && (
-                       <div style={{ 
-                         position: 'absolute', top: 0, left: 0, 
-                         backgroundColor: '#e74c3c', color: 'white', 
-                         fontSize: '0.8rem', padding: '4px 8px', 
-                         borderRadius: '0 0 10px 0', fontWeight: 'bold', zIndex: 2
-                       }}>
-                         خصم {product.discount}%
-                       </div>
-                     )}
-                     
-                     {product.imageUrl && <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                      {hasDiscount && (
+                        <div style={{ 
+                          position: 'absolute', top: 0, left: 0, 
+                          backgroundColor: '#e74c3c', color: 'white', 
+                          fontSize: '0.8rem', padding: '4px 8px', 
+                          borderRadius: '0 0 10px 0', fontWeight: 'bold', zIndex: 2
+                        }}>
+                          خصم {product.discount}%
+                        </div>
+                      )}
+                      
+                      {product.imageUrl && <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                   </div>
 
                   {/* التفاصيل */}
@@ -104,6 +104,25 @@ export default function Search() {
           </p>
         )}
       </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
+      </div>
+
     </div>
   );
 }

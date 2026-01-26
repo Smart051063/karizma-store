@@ -24,7 +24,7 @@ export default function MakeupPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
       <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💄 قسم التجميل والعناية</h1>
 
@@ -51,12 +51,30 @@ export default function MakeupPage() {
             </Link>
           ))
         ) : (
-          <div style={{ marginTop: '50px', color: '#777' }}>
+          <div style={{ marginTop: '50px', color: '#777', width: '100%' }}>
             <h2>💄 قسم المكياج</h2>
             <p>جاري تحميل المنتجات... أو تأكد من إضافة منتجات لهذا القسم.</p>
           </div>
         )}
       </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه في المكان الصحيح هنا) */}
+      <div style={{ marginTop: '50px', textAlign: 'center', paddingBottom: '20px' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 25px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
+      </div>
+
     </div>
   );
 }
@@ -84,19 +102,3 @@ const detailsButtonStyle = {
   width: '100%',
   marginTop: '10px'
 };
-{/* 👇 زر العودة للصفحة الرئيسية */}
-<div style={{ marginTop: '50px', textAlign: 'center', paddingBottom: '20px' }}>
-  <Link href="/" style={{ 
-    display: 'inline-block', 
-    padding: '12px 25px', 
-    backgroundColor: '#1a1a1a', 
-    color: '#d4af37', 
-    textDecoration: 'none', 
-    borderRadius: '8px', 
-    fontWeight: 'bold',
-    fontSize: '1.1rem',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-  }}>
-    🏠 العودة للصفحة الرئيسية
-  </Link>
-</div>

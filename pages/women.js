@@ -6,8 +6,7 @@ export default function WomenPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 التعديل الهام: غيرنا subCategory إلى category
-    // وتأكدنا أننا نبحث عن "women"
+    // 👇 استعلام لجلب منتجات قسم "women"
     const query = `*[_type == "product" && category == "women"]{
       _id,
       name,
@@ -20,9 +19,10 @@ export default function WomenPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
-      {/* تم حذف العنوان والأزرار العلوية ليكون التصميم نظيفاً مثل الرجالي */}
+      {/* عنوان القسم (تمت إضافته للوضوح) */}
+      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💃 قسم العطور النسائية</h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
         {products.length > 0 ? (
@@ -47,14 +47,35 @@ export default function WomenPage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل العطور النسائية... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p>جاري تحميل العطور النسائية... ⏳</p>
+          </div>
         )}
       </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
+      </div>
+
     </div>
   );
 }
 
-// --- التنسيقات (نفس تنسيقات صفحة الرجالي لتوحيد الشكل) ---
+// --- التنسيقات ---
 const cardStyle = {
   border: '1px solid #ddd',
   padding: '15px',

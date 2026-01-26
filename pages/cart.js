@@ -17,6 +17,13 @@ export default function Cart() {
         }}>
           تصفح المنتجات
         </Link>
+        
+        {/* زر العودة للصفحة الرئيسية (في حالة السلة الفارغة) */}
+        <div style={{ marginTop: '30px' }}>
+          <Link href="/" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>
+            🏠 العودة للرئيسية
+          </Link>
+        </div>
       </div>
     );
   }
@@ -87,6 +94,24 @@ export default function Cart() {
         }}>
           📱 إتمام الطلب عبر واتساب
         </button>
+      </div>
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا للتوحيد) */}
+      <div style={{ marginTop: '40px', marginBottom: '20px', textAlign: 'center' }}>
+        <Link href="/" style={{ 
+          display: 'inline-block', 
+          padding: '12px 30px', 
+          backgroundColor: '#1a1a1a', 
+          color: '#d4af37', 
+          textDecoration: 'none', 
+          borderRadius: '8px', 
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          transition: 'transform 0.2s'
+        }}>
+          🏠 العودة للصفحة الرئيسية
+        </Link>
       </div>
 
     </div>

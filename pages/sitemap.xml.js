@@ -3,18 +3,43 @@ import { client } from '../src/sanity/lib/client';
 const EXTERNAL_DATA_URL = 'https://www.karizmaperfumes.com';
 
 function generateSiteMap(products) {
+  // قائمة الصفحات الثابتة في موقعك
+  const staticPages = [
+    '', // الرئيسية
+    'shop',
+    'offers',
+    'men',
+    'women',
+    'unisex',
+    'niche',
+    'oud',
+    'gulf',
+    'mixes',
+    'musks',
+    'bakhoor',
+    'burners',
+    'fresheners',
+    'makeup',
+    'search'
+  ];
+
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-     <url>
-       <loc>${EXTERNAL_DATA_URL}</loc>
-       <changefreq>daily</changefreq>
-       <priority>1.0</priority>
-     </url>
-     <url>
-       <loc>${EXTERNAL_DATA_URL}/shop</loc>
-       <changefreq>daily</changefreq>
-       <priority>0.8</priority>
-     </url>
+     
+     ${/* 1. إضافة الصفحات الثابتة */ ''}
+     ${staticPages
+       .map((path) => {
+         return `
+       <url>
+           <loc>${EXTERNAL_DATA_URL}/${path}</loc>
+           <changefreq>daily</changefreq>
+           <priority>${path === '' ? '1.0' : '0.8'}</priority>
+       </url>
+     `;
+       })
+       .join('')}
+
+     ${/* 2. إضافة المنتجات الديناميكية */ ''}
      ${products
        .map(({ slug }) => {
          return `

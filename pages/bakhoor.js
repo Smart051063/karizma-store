@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
-import Link from 'next/link';
 
 export default function BakhoorPage() {
   const [products, setProducts] = useState([]);
@@ -20,7 +19,7 @@ export default function BakhoorPage() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center' }}>
+    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
       
       <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🪔 قسم البخور الشرقي</h1>
 
@@ -47,26 +46,13 @@ export default function BakhoorPage() {
             </Link>
           ))
         ) : (
-          <p>جاري تحميل البخور... ⏳</p>
+          <div style={{ marginTop: '50px', width: '100%' }}>
+            <p>جاري تحميل البخور... ⏳</p>
+          </div>
         )}
       </div>
-    </div>
-  );
-}
 
-// --- التنسيقات ---
-const cardStyle = {
-  border: '1px solid #ddd',
-  padding: '15px',
-  borderRadius: '10px',
-  width: '250px',
-  textAlign: 'center',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  backgroundColor: 'white'
-};
-{/* 👇 زر العودة للصفحة الرئيسية */}
+      {/* 👇 تم وضع الزر هنا (داخل الدالة وقبل إغلاق الـ div الرئيسي) */}
       <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
         <Link href="/" style={{ 
           display: 'inline-block', 
@@ -83,6 +69,24 @@ const cardStyle = {
           🏠 العودة للصفحة الرئيسية
         </Link>
       </div>
+
+    </div>
+  );
+}
+
+// --- التنسيقات ---
+const cardStyle = {
+  border: '1px solid #ddd',
+  padding: '15px',
+  borderRadius: '10px',
+  width: '250px',
+  textAlign: 'center',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  cursor: 'pointer',
+  transition: 'transform 0.2s',
+  backgroundColor: 'white'
+};
+
 const detailsButtonStyle = {
   backgroundColor: '#1a1a1a',
   color: 'white',
