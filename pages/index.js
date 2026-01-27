@@ -76,9 +76,6 @@ export default function Home() {
         
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
           <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
-          {/* 👇 الزر الجديد تم إضافته هنا */}
-          <CategoryCircle href="/detergents" emoji="🧼" label="منظفات ومطهرات" />
-          
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
           <CategoryCircle href="/women" emoji="💃" label="نسائي" />
           <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
@@ -91,9 +88,11 @@ export default function Home() {
           <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
           <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
+          
+          {/* 👇 تم نقل الزر هنا ليكون الأخير */}
+          <CategoryCircle href="/detergents" emoji="🧼" label="منظفات ومطهرات" />
         </div>
-      </div>
-      {/* 5️⃣ قسم الفيديو */}
+      </div>      {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
