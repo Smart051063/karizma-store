@@ -70,11 +70,15 @@ export default function Home() {
       </div>
 
       {/* بقية محتوى الصفحة (مجموعاتنا، فيديو، منتجات) تظل كما هي... */}
-      {/* 4️⃣ تصفح مجموعاتنا */}
+{/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '35px', fontWeight: 'bold' }} className="fade-in">تصفح مجموعاتنا</h2>
+        
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
           <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
+          {/* 👇 الزر الجديد تم إضافته هنا */}
+          <CategoryCircle href="/detergents" emoji="🧼" label="منظفات ومطهرات" />
+          
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
           <CategoryCircle href="/women" emoji="💃" label="نسائي" />
           <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
@@ -89,7 +93,6 @@ export default function Home() {
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
         </div>
       </div>
-
       {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
