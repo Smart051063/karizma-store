@@ -7,8 +7,14 @@ export default function Detergents() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 التعديل تم هنا: البحث أصبح عن النص مباشرة
-    client.fetch(`*[_type == "product" && category == "detergents"]`).then((data) => {
+    // 👇 التعديل الجوهري هنا: طلبنا رابط الصورة مباشرة (imageUrl)
+    client.fetch(`*[_type == "product" && category == "detergents"]{
+      _id,
+      name,
+      price,
+      slug,
+      "imageUrl": image.asset->url
+    }`).then((data) => {
       setProducts(data);
     });
   }, []);
@@ -24,26 +30,31 @@ export default function Detergents() {
       </h1>
 
       {products.length === 0 ? (
-        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#777' }}>
-           جاري تحميل المنتجات أو لا توجد منتجات حالياً...
-           <br/>
-           <span style={{fontSize: '0.9rem', color: 'red'}}>(تأكد أنك قمت بنشر المنتج وضبط القسم على "منظفات ومطهرات")</span>
-        </p>
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+           <p style={{ fontSize: '1.2rem', color: '#777' }}>جاري تحميل المنتجات...</p>
+           {/* رسالة تظهر فقط إذا تأخر التحميل كثيراً */}
+           <p style={{ fontSize: '0.9rem', color: '#999', marginTop: '10px' }}>
+             (إذا لم تظهر المنتجات، تأكد من اختيار قسم "منظفات ومطهرات" للمنتج في لوحة التحكم)
+           </p>
+        </div>
       ) : (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
           {products.map((product) => (
              product.slug?.current && (
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div className="product-card" style={productCardStyle}>
-                  <div style={{ height: '250px', overflow: 'hidden', borderRadius: '10px 10px 0 0' }}>
+                  <div style={{ height: '250px', overflow: 'hidden', borderRadius: '10px 10px 0 0', position: 'relative' }}>
+                    {/* عرض الصورة مباشرة الآن لأننا جلبناها جاهزة */}
                     {product.imageUrl ? (
                        <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                       product.image && <img src={client.imageUrl(product.image).url()} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                       <div style={{ width: '100%', height: '100%', backgroundColor: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+                         لا توجد صورة
+                       </div>
                     )}
                   </div>
                   <div style={{ padding: '15px', textAlign: 'center' }}>
-                    <h3 style={{ fontWeight: 'bold', margin: '10px 0', color: '#333' }}>{product.name}</h3>
+                    <h3 style={{ fontWeight: 'bold', margin: '10px 0', color: '#333', fontSize: '1.1rem' }}>{product.name}</h3>
                     <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} ج.م</p>
                   </div>
                 </div>
