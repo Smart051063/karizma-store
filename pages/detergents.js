@@ -7,9 +7,8 @@ export default function Detergents() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // جلب المنتجات التي تصنيفها "منظفات" أو "detergents"
-    // ملاحظة: تأكد من أنك تكتب الكلمة في تصنيف المنتج في Sanity بشكل صحيح
-    client.fetch(`*[_type == "product" && (category->slug.current == "detergents" || "detergents" in tags)]`).then((data) => {
+    // 👇 التعديل تم هنا: البحث أصبح عن النص مباشرة
+    client.fetch(`*[_type == "product" && category == "detergents"]`).then((data) => {
       setProducts(data);
     });
   }, []);
@@ -25,7 +24,11 @@ export default function Detergents() {
       </h1>
 
       {products.length === 0 ? (
-        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#777' }}>جاري تحميل المنتجات أو لا توجد منتجات حالياً...</p>
+        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#777' }}>
+           جاري تحميل المنتجات أو لا توجد منتجات حالياً...
+           <br/>
+           <span style={{fontSize: '0.9rem', color: 'red'}}>(تأكد أنك قمت بنشر المنتج وضبط القسم على "منظفات ومطهرات")</span>
+        </p>
       ) : (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
           {products.map((product) => (
@@ -36,7 +39,6 @@ export default function Detergents() {
                     {product.imageUrl ? (
                        <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                       // جلب الصورة من الحقل العادي إذا لم يكن الحقل المخصص موجوداً
                        product.image && <img src={client.imageUrl(product.image).url()} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     )}
                   </div>
@@ -54,7 +56,6 @@ export default function Detergents() {
   );
 }
 
-// تنسيق الكارت (نفس المستخدم في بقية الموقع)
 const productCardStyle = { 
   width: '280px', 
   backgroundColor: 'white', 
