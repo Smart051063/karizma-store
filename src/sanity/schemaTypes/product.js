@@ -31,7 +31,7 @@ export default {
       validation: Rule => Rule.required().min(0)
     },
 
-    // 4️⃣ نسبة الخصم (المكان المثالي هنا 👇)
+    // 4️⃣ نسبة الخصم
     {
       name: 'discount',
       title: 'نسبة الخصم (%)',
@@ -59,6 +59,8 @@ export default {
           { title: 'فوحات ومباخر (Burners)', value: 'burners' }, // ♨️
           { title: 'معطرات (Fresheners)', value: 'fresheners' }, // 🌬️
           { title: 'تجميل وعناية (Makeup)', value: 'makeup' },   // 💄
+          // 👇 تمت إضافة القسم الجديد هنا
+          { title: 'منظفات ومطهرات (Detergents)', value: 'detergents' }, // 🧼
         ],
       },
       validation: Rule => Rule.required()
