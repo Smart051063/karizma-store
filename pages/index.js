@@ -8,8 +8,12 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // جلب البنر
-    client.fetch(`*[_type == "banner" && isActive == true][0]{title, "imageUrl": image.asset->url}`).then(setBanner);
+    // جلب البنر مع صورة الخلفية الجديدة ✅
+    client.fetch(`*[_type == "banner" && isActive == true][0]{
+      title, 
+      "imageUrl": image.asset->url,
+      "heroImageUrl": heroImage.asset->url 
+    }`).then(setBanner);
 
     // جلب أحدث 6 منتجات
     client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..5] {_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
@@ -50,9 +54,9 @@ export default function Home() {
         </div>
       )}
 
-      {/* 3️⃣ الشاشة الترحيبية */}
+      {/* 3️⃣ الشاشة الترحيبية - أصبحت ديناميكية الآن ✅ */}
       <div style={{ 
-        backgroundImage: 'url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
+        backgroundImage: `url("${banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}")`,
         height: '60vh', backgroundSize: 'cover', backgroundPosition: 'center',
         display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
         position: 'relative', color: 'white', textAlign: 'center'
@@ -65,11 +69,10 @@ export default function Home() {
         </div>
       </div>
 
+      {/* بقية محتوى الصفحة (مجموعاتنا، فيديو، منتجات) تظل كما هي... */}
       {/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '35px', fontWeight: 'bold' }} className="fade-in">تصفح مجموعاتنا</h2>
-        
-        {/* 👇 تم إصلاح التداخل هنا: حاوية واحدة لكل الأزرار */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
           <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
           <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
@@ -89,28 +92,17 @@ export default function Home() {
 
       {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
-        <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>
-          🎥 اكتشف عالم كاريزما
-        </h2>
+        <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          <video 
-            width="100%" 
-            height="auto" 
-            controls  
-            loop 
-          >
+          <video width="100%" height="auto" controls loop>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات (أحدث 6 منتجات فقط) */}
+      {/* 6️⃣ قسم المنتجات */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-        
-        <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>
-          🌟 وصلنا حديثاً
-        </h2>
-
+        <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
           {products.map((product) => (
             product.slug?.current && (
@@ -128,12 +120,9 @@ export default function Home() {
             )
           ))}
         </div>
-        
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
           <Link href="/shop">
-            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>
-              🛍️ عرض كل المنتجات
-            </button>
+            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>🛍️ عرض كل المنتجات</button>
           </Link>
         </div>
       </div>
@@ -164,9 +153,7 @@ function CategoryCircle({ href, emoji, label }) {
       <div className="category-circle" style={{
         width: '110px', height: '110px', borderRadius: '50%', backgroundColor: 'white',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
-        border: '2px solid #d4af37', 
-        cursor: 'pointer'
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer'
       }}>
         <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
         <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>

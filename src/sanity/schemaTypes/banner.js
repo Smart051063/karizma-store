@@ -4,16 +4,23 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'image',
-      title: 'صورة العرض',
-      type: 'image',
-      options: { hotspot: true },
-      validation: Rule => Rule.required(),
-    },
-    {
       name: 'title',
       title: 'عنوان العرض (مثلاً: خصومات رمضان)',
       type: 'string',
+    },
+    {
+      name: 'heroImage', // 👈 الحقل الجديد للخلفية الرئيسية
+      title: 'صورة الخلفية الرئيسية للموقع',
+      description: 'هذه الصورة تظهر في أعلى الصفحة الرئيسية خلف كلمة كاريزما للعطور',
+      type: 'image',
+      options: { hotspot: true },
+    },
+    {
+      name: 'image',
+      title: 'صورة بنر العروض (السلايدر)',
+      type: 'image',
+      options: { hotspot: true },
+      validation: Rule => Rule.required(),
     },
     {
       name: 'description',
