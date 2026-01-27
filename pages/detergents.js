@@ -7,7 +7,7 @@ export default function Detergents() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // 👇 التعديل الجوهري هنا: طلبنا رابط الصورة مباشرة (imageUrl)
+    // جلب المنتجات + الصور مباشرة
     client.fetch(`*[_type == "product" && category == "detergents"]{
       _id,
       name,
@@ -32,10 +32,6 @@ export default function Detergents() {
       {products.length === 0 ? (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
            <p style={{ fontSize: '1.2rem', color: '#777' }}>جاري تحميل المنتجات...</p>
-           {/* رسالة تظهر فقط إذا تأخر التحميل كثيراً */}
-           <p style={{ fontSize: '0.9rem', color: '#999', marginTop: '10px' }}>
-             (إذا لم تظهر المنتجات، تأكد من اختيار قسم "منظفات ومطهرات" للمنتج في لوحة التحكم)
-           </p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
@@ -44,7 +40,6 @@ export default function Detergents() {
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div className="product-card" style={productCardStyle}>
                   <div style={{ height: '250px', overflow: 'hidden', borderRadius: '10px 10px 0 0', position: 'relative' }}>
-                    {/* عرض الصورة مباشرة الآن لأننا جلبناها جاهزة */}
                     {product.imageUrl ? (
                        <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
@@ -63,6 +58,29 @@ export default function Detergents() {
           ))}
         </div>
       )}
+
+      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
+      <div style={{ textAlign: 'center', marginTop: '60px', paddingBottom: '20px' }}>
+        <Link href="/">
+          <button style={{ 
+            padding: '12px 30px', 
+            backgroundColor: '#111', 
+            color: '#d4af37', 
+            border: 'none', 
+            borderRadius: '8px', 
+            fontSize: '1rem', 
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+          }}>
+            العودة للصفحة الرئيسية 🏠
+          </button>
+        </Link>
+      </div>
+
     </div>
   );
 }
