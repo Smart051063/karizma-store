@@ -22,7 +22,6 @@ export default function Footer() {
             <SocialButton href="https://wa.me/201002410037" path={icons.whatsapp} label="واتساب" />
           </div>
         </div>
-
         {/* 2️⃣ العمود الثاني */}
         <div style={{ flex: '1 1 200px' }}>
           <h3 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.3rem' }}>روابط تهمك</h3>
