@@ -46,7 +46,7 @@ export default function Footer() {
                 </p>
                 {/* زر الخريطة الذهبي */}
                 <a 
-                  href="https://www.google.com/maps/search/?api=1&query=28WM%2B22W+%D8%A5%D8%A8%D9%86+%D8%A7%D9%84%D8%B1%D9%88%D9%85%D9%8A" 
+                  href="https://www.google.com/maps/place/٢٥+إبن+الرومي،+الحي+السابع،+مدينة+نصر،+محافظة+القاهرة‬+4441403" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="gold-btn" 

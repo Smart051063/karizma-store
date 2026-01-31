@@ -89,7 +89,7 @@ export default function Home() {
           <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
           
-          {/* 👇 تم نقل الزر هنا ليكون الأخير */}
+          {/* 👇 تم نقل الزر هنا ليكون الأخير  */}
           <CategoryCircle href="/detergents" emoji="🧼" label="منظفات ومطهرات" />
         </div>
       </div>      {/* 5️⃣ قسم الفيديو */}
