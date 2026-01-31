@@ -27,7 +27,8 @@ export default function Home() {
       
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
-        <meta name="google-site-verification" content="OP6x0i1bX9xy4ooN7YYcZY5MObr575koRd7SlhR_L-o" />
+        {/* 👇 تم تحديث كود التحقق الجديد هنا */}
+        <meta name="google-site-verification" content="s7kdan4N8o-pq1rz001hv2ZnIrfyCNqygwGnuvSRv4A" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
