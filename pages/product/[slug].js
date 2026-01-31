@@ -3,6 +3,7 @@ import { client } from '../../src/sanity/lib/client';
 import { useCart } from '../../src/context/CartContext';
 import Head from 'next/head';
 import Link from 'next/link';
+import Script from 'next/script'; // 👈 إضافة مهمة للبيانات المنظمة
 
 export default function ProductDetails({ product }) {
   const { addToCart } = useCart();
@@ -14,10 +15,34 @@ export default function ProductDetails({ product }) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>عذراً، المنتج غير متاح حالياً 😕</div>;
   }
 
-  // حساب السعر للعرض فقط في الصفحة
+  // حساب السعر والخصم
   const price = product.price;
   const discount = product.discount || 0;
   const finalPrice = discount ? price - (price * discount / 100) : price;
+
+  // 🛠️ إعداد بيانات الـ SEO (البيانات المنظمة JSON-LD)
+  // هذا الكود هو ما يجعل جوجل يفهم أن هذا "منتج" وله "سعر"
+  const schemaData = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": [product.imageUrl],
+    "description": product.description || `تسوق الآن عطر ${product.name} المميز من كاريزما للعطور بأفضل سعر.`,
+    "sku": product._id,
+    "brand": {
+      "@type": "Brand",
+      "name": "Karizma Perfumes"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://www.karizmaperfumes.com/product/${product.slug.current}`,
+      "priceCurrency": "EGP",
+      "price": finalPrice,
+      "priceValidUntil": "2026-12-31",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
+  };
 
   // دوال زيادة ونقصان الكمية
   const incQty = () => setQuantity((prev) => prev + 1);
@@ -41,9 +66,30 @@ export default function ProductDetails({ product }) {
 
   return (
     <div style={{ padding: '40px 20px', direction: 'rtl', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
+      
+      {/* 👇 بداية سحر الـ SEO */}
       <Head>
-        <title>{product.name} | كاريزما للعطور</title>
+        {/* 1. العنوان الديناميكي (اسم العطر + السعر) لجذب الانتباه */}
+        <title>{`${product.name} - بسعر ${finalPrice} ج.م | كاريزما للعطور`}</title>
+        
+        {/* 2. وصف ديناميكي للصفحة */}
+        <meta name="description" content={`اشتري ${product.name} الآن بسعر ${finalPrice} جنيه مصري. ${product.description ? product.description.substring(0, 150) : 'عطور مستوحاة بجودة عالية وثبات ممتاز وشحن سريع لكل المحافظات.'}...`} />
+        
+        {/* 3. تحسين المظهر عند المشاركة على فيسبوك وواتساب (Open Graph) */}
+        <meta property="og:title" content={`${product.name} - ${finalPrice} ج.م | كاريزما للعطور`} />
+        <meta property="og:description" content={product.description || `لا تفوت عرض ${product.name} المميز. اطلبه الآن!`} />
+        <meta property="og:image" content={product.imageUrl} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={`https://www.karizmaperfumes.com/product/${product.slug.current}`} />
       </Head>
+
+      {/* 4. حقن بيانات المنتج لجوجل (Rich Snippets) */}
+      <Script
+        id="product-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+      {/* 👆 نهاية سحر الـ SEO */}
 
       {/* إشعار الإضافة للسلة */}
       {showNotification && (
