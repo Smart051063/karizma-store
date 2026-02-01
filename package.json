@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint"
   },
@@ -19,13 +20,13 @@
     "react-dom": "19.2.3",
     "react-hot-toast": "^2.6.0",
     "sanity": "^4.22.0",
-    "styled-components": "^6.3.8"
+    "styled-components": "^6.3.8",
+    "next-sitemap": "^4.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
-    "tailwindcss": "^4",
-    "next-sitemap": "^4.2.3"
+    "tailwindcss": "^4"
   }
-} 
+}
