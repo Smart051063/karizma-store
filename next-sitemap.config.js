@@ -15,4 +15,4 @@ module.exports = {
       'https://www.karizmaperfumes.com/sitemap.xml',
     ],
   },
-}
+} 
