@@ -1,3 +1,11 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /studio
+Disallow: /api
+
+# Host
+Host: https://www.karizmaperfumes.com
+
+# Sitemaps
 Sitemap: https://www.karizmaperfumes.com/sitemap.xml
