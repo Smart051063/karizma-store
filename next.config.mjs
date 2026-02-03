@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io', // للسماح بصور Sanity
+        hostname: 'cdn.sanity.io', // للسماح بصور Sanity (منتجاتك)
       },
       {
         protocol: 'https',
