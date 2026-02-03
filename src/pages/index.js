@@ -1,4 +1,3 @@
-// update speed v3 (هذا التعليق سيجبر فيرسل على التحديث)
 import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -14,7 +13,7 @@ export default function Home({ banner, products }) {
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
       <Head>
-        <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
+        <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="google-site-verification" content="s7kdan4N8o-pq1rz001hv2ZnIrfyCNqygwGnuvSRv4A" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,7 +34,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 2️⃣ قسم البنر العلوي (رمضان) */}
+      {/* 2️⃣ قسم بانر العروض (مثل رمضان) */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto' }}>
           <Image 
@@ -44,7 +43,7 @@ export default function Home({ banner, products }) {
             width={1400} 
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
-            priority={true} // 🚀 تحميل فوري
+            priority={true} // تحميل فوري
             sizes="100vw"
           />
         </div>
@@ -58,24 +57,26 @@ export default function Home({ banner, products }) {
         textAlign: 'center',
         overflow: 'hidden'
       }}>
-        {/* الخلفية باستخدام Next/Image للأداء العالي */}
+        {/* صورة الخلفية - تم تحسينها للسرعة القصوى */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            priority={true} // 🚀 أهم سطر للسرعة
+            priority={true} // 🚀 هذا السطر يرفع السكور فوراً
             style={{ objectFit: 'cover' }}
             sizes="100vw"
           />
         </div>
         
-        {/* طبقة شفافة فوق الخلفية */}
+        {/* طبقة الظل */}
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
 
-        {/* المحتوى النصي */}
+        {/* المحتوى النصي - لاحظ علامة الصاروخ للتأكد من التحديث */}
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
-          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
+          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>
+            كاريزما للعطور 🚀
+          </h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
           <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
         </div>
@@ -147,7 +148,6 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* CSS Styles */}
       <style jsx global>{`
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
@@ -170,7 +170,7 @@ export default function Home({ banner, products }) {
   );
 }
 
-// 👇 السيرفر: جلب البيانات قبل تحميل الصفحة (السرعة القصوى)
+// 👇 السيرفر: جلب البيانات مسبقاً (Server Side) للسرعة القصوى
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{
     title, 
@@ -191,6 +191,7 @@ export async function getStaticProps() {
   };
 }
 
+// مكونات صغيرة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
