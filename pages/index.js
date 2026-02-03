@@ -20,7 +20,7 @@ export default function Home({ banner, products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* 1️⃣ الأشرطة المتحركة */}
+      {/* 1️⃣ الأشرطة المتحركة (تم تسريعها بتقنية GPU) */}
       <div className="ticker-container first-ticker">
         <div className="ticker-track">
           <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
@@ -44,7 +44,8 @@ export default function Home({ banner, products }) {
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
             priority={true} 
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 100vw"
+            quality={65} // جودة متوازنة
           />
         </div>
       )}
@@ -65,6 +66,7 @@ export default function Home({ banner, products }) {
             priority={true} 
             style={{ objectFit: 'cover' }}
             sizes="100vw"
+            quality={60} // خفيف جداً
           />
         </div>
         
@@ -100,18 +102,26 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 5️⃣ قسم الفيديو (محسن جداً) */}
+      {/* 5️⃣ قسم الفيديو (ذكي جداً: لا يحمل إلا عند الضغط) */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          {/* إضافة preload="none" لمنع التحميل المسبق */}
-          <video width="100%" height="auto" controls loop muted playsInline preload="none" poster={banner?.imageUrl}>
+          <video 
+            width="100%" 
+            height="auto" 
+            controls 
+            loop 
+            muted 
+            playsInline 
+            preload="none" // 👈 السر هنا: لن يحمل الفيديو ويبطئ الموقع
+            poster={banner?.imageUrl} // صورة تظهر مكان الفيديو حتى يضغط العميل
+          >
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات (محسن جداً) */}
+      {/* 6️⃣ قسم المنتجات */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
@@ -126,7 +136,9 @@ export default function Home({ banner, products }) {
                         alt={product.name} 
                         fill
                         style={{ objectFit: 'cover' }}
-                        sizes="150px" // 👈 هذا التعديل سيجعل الصور خفيفة جداً
+                        sizes="150px"
+                        loading="lazy"
+                        quality={50} // صور خفيفة جداً
                       />
                     )}
                   </div>
@@ -150,8 +162,9 @@ export default function Home({ banner, products }) {
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
         .second-ticker { background-color: #1a1a1a; }
-        .ticker-track { display: inline-flex; animation: scroll-left 40s linear infinite; }
-        .ticker-track-reverse { display: inline-flex; animation: scroll-right 40s linear infinite; }
+        /* استخدام GPU للتسريع (transform: translateZ(0)) */
+        .ticker-track { display: inline-flex; animation: scroll-left 40s linear infinite; will-change: transform; transform: translateZ(0); }
+        .ticker-track-reverse { display: inline-flex; animation: scroll-right 40s linear infinite; will-change: transform; transform: translateZ(0); }
         .ticker-block { display: flex; }
         .ticker-item { padding: 0 2rem; font-weight: bold; color: black; }
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; }
