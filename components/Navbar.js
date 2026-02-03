@@ -38,10 +38,14 @@ export default function Navbar() {
           </h1>
         </Link>
 
-        {/* 2️⃣ روابط التنقل (تم حذف الترس من هنا) */}
+        {/* 2️⃣ روابط التنقل (تمت إضافة المدونة هنا) */}
         <div className="nav-links" style={{ display: 'flex', gap: '20px' }}>
           <NavLink href="/" text={t.home || "الرئيسية"} />
           <NavLink href="/shop" text="المتجر" />
+          
+          {/* 👇 هنا أضفنا رابط المدونة */}
+          <NavLink href="/blog" text="المدونة ✍️" />
+          
           <NavLink href="/offers" text="العروض 🔥" />
         </div>
 
