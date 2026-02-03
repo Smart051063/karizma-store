@@ -1,13 +1,14 @@
 // pages/blog/index.js
 import Link from 'next/link';
-import { client } from '../../src/sanity/lib/client'; // 👈 تأكد أن مسار الكلاينت صحيح حسب ملفاتك
+import Image from 'next/image'; // 👈 1. استيراد مكون الصور السريع
+import { client } from '../../src/sanity/lib/client';
 
 export default function Blog({ posts }) {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">مدونة كاريزما</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">مدونة كاريزما ✍️</h1>
           <p className="text-xl text-gray-600">أحدث المقالات والنصائح في عالم العطور</p>
         </div>
 
@@ -15,30 +16,33 @@ export default function Blog({ posts }) {
           {posts.map((post) => (
             <Link href={`/blog/${post.slug.current}`} key={post._id} className="group">
               <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100 h-full flex flex-col">
-                {/* صورة المقال */}
+                
+                {/* 2️⃣ تحسين عرض الصورة */}
                 {post.imageUrl && (
-                  <div className="h-48 w-full overflow-hidden">
-                    <img 
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image 
                       src={post.imageUrl} 
                       alt={post.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill // تجعل الصورة تملأ المكان تلقائياً
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // تحسين الأداء حسب حجم الشاشة
                     />
                   </div>
                 )}
                 
                 {/* محتوى الكارت */}
                 <div className="p-6 flex-1 flex flex-col">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#d4af37] transition-colors">
                     {post.title}
                   </h2>
                   <p className="text-gray-500 text-sm mb-4 line-clamp-3 flex-1">
                     {post.excerpt}
                   </p>
-                  <div className="flex justify-between items-center mt-4">
+                  <div className="flex justify-between items-center mt-4 border-t pt-4">
                     <span className="text-sm text-gray-400">
                       {new Date(post.publishedAt).toLocaleDateString('ar-EG')}
                     </span>
-                    <span className="text-blue-600 font-medium text-sm">اقرأ المزيد ←</span>
+                    <span className="text-[#d4af37] font-bold text-sm">اقرأ المزيد ←</span>
                   </div>
                 </div>
               </div>
@@ -56,7 +60,6 @@ export default function Blog({ posts }) {
   );
 }
 
-// ⚙️ هذا الكود يعمل على السيرفر لجلب البيانات أثناء البناء
 export async function getStaticProps() {
   const posts = await client.fetch(`*[_type == "post"] | order(publishedAt desc) {
     _id,
@@ -68,9 +71,7 @@ export async function getStaticProps() {
   }`);
 
   return {
-    props: {
-      posts,
-    },
-    revalidate: 10, // تحديث الصفحة كل 10 ثوانٍ إذا جد جديد
+    props: { posts },
+    revalidate: 10,
   };
 }
