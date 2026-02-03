@@ -1,14 +1,9 @@
-// src/sanity/schemaTypes/index.ts
+// 👇 استيراد الملف الجديد
+import post from './post'
 
-// استيراد الملفات الموجودة لديك (تأكد أن الأسماء تطابق ملفاتك الحالية)
-// مثال: import { product } from './product'
-// مثال: import { category } from './category'
+// 👇 استيراد ملفاتك القديمة كما هي
+import product from './product'
+import banner from './banner'
 
-import post from './post' // 👈 أضف هذا السطر (استيراد ملف المقالات)
-
-export const schema = {
-  types: [
-    // ... أضف هنا ملفاتك القديمة (product, category, etc)
-    post, // 👈 أضف هذا السطر لتفعيل المقالات
-  ],
-}
+// 👇 دمج الجميع في القائمة النهائية
+export const schemaTypes = [product, banner, post]

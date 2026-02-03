@@ -34,10 +34,19 @@ export default {
       initialValue: () => new Date().toISOString(),
     },
     {
+      name: 'excerpt',
+      title: 'مقتطف قصير',
+      type: 'text',
+      rows: 3,
+    },
+    {
       name: 'body',
       title: 'محتوى المقال',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [
+        { type: 'block' },
+        { type: 'image', options: { hotspot: true } }
+      ],
     },
   ],
 }
