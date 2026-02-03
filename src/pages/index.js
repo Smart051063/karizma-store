@@ -1,10 +1,10 @@
+// update speed v3 (هذا التعليق سيجبر فيرسل على التحديث)
 import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { client } from '../src/sanity/lib/client';
 
-// نستقبل البيانات كـ props مباشرة من السيرفر (بدون useState أو useEffect)
 export default function Home({ banner, products }) {
 
   const text1 = " ✨ أهلاً بكم في كاريزما للعطور - خصومات تبدا من 5 % الى 20 % على بعض المنتجات - شحن سريع لجميع المحافظات 🚚 ";
@@ -35,7 +35,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 2️⃣ قسم البنر العلوي */}
+      {/* 2️⃣ قسم البنر العلوي (رمضان) */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto' }}>
           <Image 
@@ -44,7 +44,7 @@ export default function Home({ banner, products }) {
             width={1400} 
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
-            priority // تحميل فوري
+            priority={true} // 🚀 تحميل فوري
             sizes="100vw"
           />
         </div>
@@ -58,20 +58,22 @@ export default function Home({ banner, products }) {
         textAlign: 'center',
         overflow: 'hidden'
       }}>
-        {/* الخلفية */}
+        {/* الخلفية باستخدام Next/Image للأداء العالي */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
-            alt="Hero Background"
+            alt="Karizma Background"
             fill
-            priority // 🚀 تحميل فوري جداً
+            priority={true} // 🚀 أهم سطر للسرعة
             style={{ objectFit: 'cover' }}
             sizes="100vw"
           />
         </div>
         
+        {/* طبقة شفافة فوق الخلفية */}
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
 
+        {/* المحتوى النصي */}
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
           <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
@@ -104,7 +106,7 @@ export default function Home({ banner, products }) {
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          <video width="100%" height="auto" controls loop muted autoPlay playsInline>
+          <video width="100%" height="auto" controls loop muted playsInline>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
@@ -145,6 +147,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
+      {/* CSS Styles */}
       <style jsx global>{`
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
@@ -167,16 +170,14 @@ export default function Home({ banner, products }) {
   );
 }
 
-// 👇 هنا السر: جلب البيانات وقت بناء الصفحة (Server Side) بدلاً من المتصفح
+// 👇 السيرفر: جلب البيانات قبل تحميل الصفحة (السرعة القصوى)
 export async function getStaticProps() {
-  // جلب البانر
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{
     title, 
     "imageUrl": image.asset->url,
     "heroImageUrl": heroImage.asset->url 
   }`);
 
-  // جلب المنتجات
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..5] {
     _id, name, price, discount, "imageUrl": image.asset->url, slug
   }`);
@@ -186,11 +187,10 @@ export async function getStaticProps() {
       banner: banner || null,
       products: products || [],
     },
-    revalidate: 10, // تحديث الصفحة كل 10 ثوانٍ لضمان السرعة والتحديث
+    revalidate: 10,
   };
 }
 
-// مكونات صغيرة مساعدة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
