@@ -34,7 +34,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 2️⃣ قسم بانر العروض (مثل رمضان) */}
+      {/* 2️⃣ قسم البانر */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto' }}>
           <Image 
@@ -43,8 +43,8 @@ export default function Home({ banner, products }) {
             width={1400} 
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
-            priority={true} // تحميل فوري
-            sizes="100vw"
+            priority={true} 
+            sizes="(max-width: 768px) 100vw, 100vw"
           />
         </div>
       )}
@@ -57,25 +57,22 @@ export default function Home({ banner, products }) {
         textAlign: 'center',
         overflow: 'hidden'
       }}>
-        {/* صورة الخلفية - تم تحسينها للسرعة القصوى */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            priority={true} // 🚀 هذا السطر يرفع السكور فوراً
+            priority={true} 
             style={{ objectFit: 'cover' }}
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 100vw"
           />
         </div>
         
-        {/* طبقة الظل */}
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
 
-        {/* المحتوى النصي - لاحظ علامة الصاروخ للتأكد من التحديث */}
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
           <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>
-            كاريزما للعطور 🚀
+            كاريزما للعطور
           </h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
           <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
@@ -103,11 +100,12 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 5️⃣ قسم الفيديو */}
+      {/* 5️⃣ قسم الفيديو (تم تحسينه ليلا يستهلك السرعة) */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          <video width="100%" height="auto" controls loop muted playsInline>
+          {/* إضافة preload="none" هي السر هنا */}
+          <video width="100%" height="auto" controls loop muted playsInline preload="none" poster={banner?.imageUrl}>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
@@ -128,7 +126,7 @@ export default function Home({ banner, products }) {
                         alt={product.name} 
                         fill
                         style={{ objectFit: 'cover' }}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 50vw, 33vw"
                       />
                     )}
                   </div>
@@ -170,7 +168,6 @@ export default function Home({ banner, products }) {
   );
 }
 
-// 👇 السيرفر: جلب البيانات مسبقاً (Server Side) للسرعة القصوى
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{
     title, 
@@ -191,7 +188,6 @@ export async function getStaticProps() {
   };
 }
 
-// مكونات صغيرة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
