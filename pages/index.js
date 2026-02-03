@@ -44,7 +44,7 @@ export default function Home({ banner, products }) {
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
             priority={true} 
-            sizes="(max-width: 768px) 100vw, 100vw"
+            sizes="100vw"
           />
         </div>
       )}
@@ -64,7 +64,7 @@ export default function Home({ banner, products }) {
             fill
             priority={true} 
             style={{ objectFit: 'cover' }}
-            sizes="(max-width: 768px) 100vw, 100vw"
+            sizes="100vw"
           />
         </div>
         
@@ -100,18 +100,18 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 5️⃣ قسم الفيديو (تم تحسينه ليلا يستهلك السرعة) */}
+      {/* 5️⃣ قسم الفيديو (محسن جداً) */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
-          {/* إضافة preload="none" هي السر هنا */}
+          {/* إضافة preload="none" لمنع التحميل المسبق */}
           <video width="100%" height="auto" controls loop muted playsInline preload="none" poster={banner?.imageUrl}>
             <source src="/promo.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات */}
+      {/* 6️⃣ قسم المنتجات (محسن جداً) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
@@ -126,7 +126,7 @@ export default function Home({ banner, products }) {
                         alt={product.name} 
                         fill
                         style={{ objectFit: 'cover' }}
-                        sizes="(max-width: 768px) 50vw, 33vw"
+                        sizes="150px" // 👈 هذا التعديل سيجعل الصور خفيفة جداً
                       />
                     )}
                   </div>
