@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image'; // 👈 1. استيراد المكون السحري
 import { client } from '../src/sanity/lib/client';
 
 export default function Home() {
@@ -8,14 +9,14 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // جلب البنر مع صورة الخلفية الجديدة ✅
+    // جلب البنر
     client.fetch(`*[_type == "banner" && isActive == true][0]{
       title, 
       "imageUrl": image.asset->url,
       "heroImageUrl": heroImage.asset->url 
     }`).then(setBanner);
 
-    // جلب أحدث 6 منتجات
+    // جلب المنتجات
     client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..5] {_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then(setProducts);
   }, []);
 
@@ -27,7 +28,6 @@ export default function Home() {
       
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes - عطور فرنسية وشرقية</title>
-        {/* 👇 تم تحديث كود التحقق الجديد هنا */}
         <meta name="google-site-verification" content="s7kdan4N8o-pq1rz001hv2ZnIrfyCNqygwGnuvSRv4A" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,30 +48,51 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 2️⃣ قسم البنر العلوي */}
-      {banner && (
-        <div className="fade-in" style={{ backgroundColor: '#fff', textAlign: 'center', borderBottom: '1px solid #eee' }}>
-          <img src={banner.imageUrl} alt={banner.title} style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }} />
+      {/* 2️⃣ قسم البنر العلوي (محسن) */}
+      {banner && banner.imageUrl && (
+        <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', minHeight: '200px' }}>
+          <Image 
+            src={banner.imageUrl} 
+            alt={banner.title || 'Offer'} 
+            width={1200} 
+            height={400}
+            style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
+            priority // 🚀 تحميل فوري للبنر
+          />
         </div>
       )}
 
-      {/* 3️⃣ الشاشة الترحيبية - أصبحت ديناميكية الآن ✅ */}
+      {/* 3️⃣ الشاشة الترحيبية (تم استبدال backgroundImage لزيادة السرعة) */}
       <div style={{ 
-        backgroundImage: `url("${banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}")`,
-        height: '60vh', backgroundSize: 'cover', backgroundPosition: 'center',
+        position: 'relative', 
+        height: '60vh', 
         display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
-        position: 'relative', color: 'white', textAlign: 'center'
+        textAlign: 'center',
+        overflow: 'hidden'
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.4)' }}></div>
-        <div style={{ position: 'relative', zIndex: 1 }} className="fade-in-up">
+        {/* الخلفية باستخدام Next/Image */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <Image
+            src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
+            alt="Karizma Hero Background"
+            fill // 👈 تجعل الصورة تملأ الخلفية
+            priority // 🚀🚀 السطر السحري: يحمل الصورة فوراً قبل أي شيء
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
+        
+        {/* طبقة الظل */}
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
+
+        {/* المحتوى النصي */}
+        <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
           <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
           <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
         </div>
       </div>
 
-      {/* بقية محتوى الصفحة (مجموعاتنا، فيديو، منتجات) تظل كما هي... */}
-{/* 4️⃣ تصفح مجموعاتنا */}
+      {/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '35px', fontWeight: 'bold' }} className="fade-in">تصفح مجموعاتنا</h2>
         
@@ -89,11 +110,11 @@ export default function Home() {
           <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
           <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="تجميل" />
-          
-          {/* 👇 تم نقل الزر هنا ليكون الأخير  */}
           <CategoryCircle href="/detergents" emoji="🧼" label="منظفات ومطهرات" />
         </div>
-      </div>      {/* 5️⃣ قسم الفيديو */}
+      </div>
+
+      {/* 5️⃣ قسم الفيديو */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
@@ -103,7 +124,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 6️⃣ قسم المنتجات */}
+      {/* 6️⃣ قسم المنتجات (محسن) */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
@@ -111,8 +132,17 @@ export default function Home() {
             product.slug?.current && (
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div className="product-card" style={productCardStyle}>
-                  <div style={{ height: '120px', overflow: 'hidden', borderRadius: '10px 10px 0 0' }}>
-                    {product.imageUrl && <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                  <div style={{ position: 'relative', height: '120px', overflow: 'hidden', borderRadius: '10px 10px 0 0' }}>
+                    {/* تحسين صور المنتجات */}
+                    {product.imageUrl && (
+                      <Image 
+                        src={product.imageUrl} 
+                        alt={product.name} 
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    )}
                   </div>
                   <div style={{ padding: '10px', textAlign: 'center' }}>
                     <p style={{ fontWeight: 'bold', margin: '5px 0', fontSize: '0.9rem', color: '#333' }}>{product.name}</p>
