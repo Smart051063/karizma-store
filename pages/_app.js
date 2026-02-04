@@ -72,7 +72,7 @@ const GlobalElements = ({ children }) => {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #333', fontSize: '0.9rem', color: '#777' }}>
-          © 2024 Karizma Perfumes. جميع الحقوق محفوظة.
+          © 2024 Karizma Fragrances. جميع الحقوق محفوظة.
         </div>
       </footer>
 
