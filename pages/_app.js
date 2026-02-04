@@ -2,9 +2,9 @@ import '../styles/globals.css';
 import { CartProvider, useCart } from '../src/context/CartContext';
 import Link from 'next/link';
 
-// هذا المكون يحتوي على الأزرار العائمة والفوتر، ويستخدم الـ Hook الخاص بالسلة
+// هذا المكون يحتوي على الأزرار العائمة والفوتر
 const GlobalElements = ({ children }) => {
-  const { totalQuantities } = useCart(); // 👈 هنا نجلب عدد المنتجات للعداد الأحمر
+  const { totalQuantities } = useCart(); // العداد الأحمر للسلة
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -13,10 +13,11 @@ const GlobalElements = ({ children }) => {
         {children}
       </main>
 
-      {/* ==================== الفوتر الموحد (يظهر في كل الصفحات) ==================== */}
+      {/* ==================== الفوتر الموحد ==================== */}
       <footer style={{ backgroundColor: 'black', color: 'white', padding: '60px 20px 20px', borderTop: '5px solid #d4af37', direction: 'rtl', fontFamily: 'Arial' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'space-between', textAlign: 'right' }}>
           
+          {/* العمود الأول */}
           <div style={{ flex: '1 1 300px' }}>
             <h3 style={{ color: '#d4af37', fontSize: '1.5rem', marginBottom: '20px' }}>✨ Karizma</h3>
             <p style={{ lineHeight: '1.8', color: '#ccc' }}>
@@ -24,6 +25,7 @@ const GlobalElements = ({ children }) => {
             </p>
           </div>
 
+          {/* العمود الثاني */}
           <div style={{ flex: '1 1 200px' }}>
             <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>روابط تهمك</h4>
             <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -34,6 +36,7 @@ const GlobalElements = ({ children }) => {
             </ul>
           </div>
 
+          {/* العمود الثالث: التواصل والسوشيال ميديا */}
           <div style={{ flex: '1 1 300px' }}>
             <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>تواصل معنا</h4>
             <p style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -42,10 +45,29 @@ const GlobalElements = ({ children }) => {
             <p style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
               📞 01002410037
             </p>
-            <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
-              <div style={socialIconStyle}>f</div>
-              <div style={socialIconStyle}>📷</div>
-              <div style={socialIconStyle}>♪</div>
+
+            {/* 👇👇 هنا أزرار السوشيال ميديا (استبدل الروابط بروابطك) 👇👇 */}
+            <h4 style={{ color: '#d4af37', marginTop: '20px', marginBottom: '15px', fontSize: '1rem' }}>تابعنا على:</h4>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              
+              {/* فيسبوك */}
+              <a href="https://www.facebook.com/" target="_blank" style={socialIconStyle} title="Facebook">f</a>
+              
+              {/* انستجرام */}
+              <a href="https://www.instagram.com/" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
+              
+              {/* تيك توك */}
+              <a href="https://www.tiktok.com/" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
+              
+              {/* يوتيوب */}
+              <a href="https://www.youtube.com/" target="_blank" style={socialIconStyle} title="YouTube">▶️</a>
+              
+              {/* تليجرام */}
+              <a href="https://t.me/" target="_blank" style={socialIconStyle} title="Telegram">✈️</a>
+
+               {/* واتساب (أيقونة إضافية في الفوتر) */}
+               <a href="https://wa.me/201002410037" target="_blank" style={socialIconStyle} title="WhatsApp">💬</a>
+
             </div>
           </div>
         </div>
@@ -54,9 +76,9 @@ const GlobalElements = ({ children }) => {
         </div>
       </footer>
 
-      {/* ==================== الأزرار العائمة (في كل الصفحات) ==================== */}
+      {/* ==================== الأزرار العائمة ==================== */}
       
-      {/* 🛒 زر السلة العائم مع العداد الأحمر */}
+      {/* 🛒 زر السلة العائم */}
       <Link href="/cart" style={{
           position: 'fixed', bottom: '90px', right: '20px', 
           backgroundColor: 'white', color: 'black', border: '2px solid #d4af37',
@@ -83,7 +105,7 @@ const GlobalElements = ({ children }) => {
         )}
       </Link>
 
-      {/* 💬 زر الواتساب العائم */}
+      {/* 💬 زر الواتساب العائم (بالرقم الصحيح) */}
       <a 
         href="https://wa.me/201002410037" 
         target="_blank"
@@ -117,4 +139,11 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-const socialIconStyle = { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#d4af37', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', cursor: 'pointer' };
+// تصميم أيقونات السوشيال ميديا (ذهبي وأسود)
+const socialIconStyle = { 
+  width: '40px', height: '40px', borderRadius: '50%', 
+  backgroundColor: '#d4af37', color: 'black', 
+  display: 'flex', alignItems: 'center', justifyContent: 'center', 
+  fontWeight: 'bold', textDecoration: 'none', fontSize: '1.2rem',
+  border: '2px solid #d4af37', transition: '0.3s'
+};
