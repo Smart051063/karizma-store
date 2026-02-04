@@ -1,157 +1,213 @@
-import React from 'react';
-import { client } from '../src/sanity/lib/client';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
+import { client } from '../src/sanity/lib/client';
 
-// 🧠 القاموس الذكي: لترجمة الروابط الإنجليزية إلى عناوين عربية فخمة
-const categoryTitles = {
-  'men': '🤵 العطور الرجالية الفاخرة',
-  'women': '💃 العطور النسائية الجذابة',
-  'unisex': '👫 عطور النيش (للجنسين)',
-  'niche': '💎 عطور النيش الحصرية',
-  'oud': '🪵 دهن العود والبخور',
-  'gulf': '🕌 العطور الخليجية والمخلطات',
-  'mixes': '⚗️ ميكسات كاريزما الخاصة',
-  'musks': '🧴 المسك والروائح الهادئة',
-  'bakhoor': '🪔 البخور والمعمول',
-  'burners': '♨️ الفوحات والإكسسوارات',
-  'fresheners': '🌸 معطرات الجو والمفارش',
-  'makeup': '💄 مستحضرات التجميل',
-  'detergents': '🧼 المنظفات والمطهرات',
-  'offers': '🔥 العروض والتخفيضات'
-};
+export default function Home({ banner, products }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-export default function CategoryPage({ products, slug, categoryTitle }) {
-  
-  // إذا لم يكن هناك منتجات في هذا القسم
-  if (!products || products.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '100px 20px', fontFamily: 'Arial', minHeight: '60vh' }}>
-        <h1 style={{ color: '#333', marginBottom: '20px' }}>{categoryTitle}</h1>
-        <div style={{ fontSize: '5rem', marginBottom: '20px' }}>📦</div>
-        <h3>عذراً، لم نضف منتجات في هذا القسم بعد.</h3>
-        <p style={{ color: '#666' }}>نعمل على تجهيز تشكيلة مميزة تليق بكم.</p>
-        <Link href="/">
-          <button style={ctaButtonStyle}>العودة للرئيسية</button>
-        </Link>
-      </div>
-    );
-  }
+  const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 50% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
-    <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: '#f9f9f9', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
+      
       <Head>
-        <title>{categoryTitle} | كاريزما للعطور</title>
+        <title>كاريزما للعطور | Karizma Perfumes</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* هيدر القسم */}
-      <div style={{ backgroundColor: '#1a1a1a', padding: '40px 20px', textAlign: 'center', color: 'white', marginBottom: '40px' }}>
-        <h1 style={{ fontSize: '2.5rem', color: '#d4af37', margin: 0 }}>{categoryTitle}</h1>
-        <p style={{ marginTop: '10px', opacity: 0.8 }}>تصفح أفضل المنتجات المختارة بعناية</p>
+      {/* ==================== 1. الهيدر ==================== */}
+      <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+        <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
+          {topStatusText}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' }}>✨ Karizma</div>
+          <nav className="desktop-nav">
+            <Link href="/" style={linkStyle}>الرئيسية</Link>
+            <Link href="/shop" style={linkStyle}>المتجر</Link>
+            <Link href="/blog" style={linkStyle}>المدونة</Link>
+            <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
+          </nav>
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <Link href="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
+               <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
+            </Link>
+            <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span style={{ cursor: 'pointer', fontSize: '1.3rem', display: 'inline-block', transform: 'translateY(2px)' }}>🔍</span>
+            </Link>
+            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
+            <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'white', border: '2px solid #d4af37', borderRadius: '8px', color: '#d4af37', fontSize: '1.5rem', cursor: 'pointer', padding: '0px 8px', marginRight: '8px', height: '35px', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {isMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        </div>
+        {isMenuOpen && (
+          <div className="mobile-nav-list fade-in">
+            <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
+            <Link href="/shop" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المتجر</Link>
+            <Link href="/blog" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المدونة</Link>
+            <Link href="/offers" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>العروض 🔥</Link>
+            <Link href="/search" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>🔍 البحث</Link>
+          </div>
+        )}
+      </header>
+
+      {/* ==================== 2. الأشرطة المتحركة ==================== */}
+      <div className="ticker-container first-ticker">
+        <div className="ticker-track">
+          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
+          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
+        </div>
+      </div>
+      <div className="ticker-container second-ticker">
+        <div className="ticker-track-reverse">
+          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
+          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
+        </div>
       </div>
 
-      {/* شبكة المنتجات */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 60px' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
-          {products.map((product) => (
-            <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
+      {/* ==================== 3. البانر ==================== */}
+      {banner?.imageUrl && (
+        <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
+          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} priority={true} sizes="(max-width: 768px) 100vw, 100vw" />
+        </div>
+      )}
+
+      {/* ==================== 4. الهيرو (الشاشة الترحيبية) ==================== */}
+      <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
+        <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
+          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
+          <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
+          <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
+        </div>
+      </div>
+
+      {/* ==================== 5. تصفح مجموعاتنا (تمت إعادتها ✅) ==================== */}
+      <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
+        <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
+          <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
+          <CategoryCircle href="/women" emoji="💃" label="نسائي" />
+          <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
+          <CategoryCircle href="/niche" emoji="💎" label="نيش" />
+          <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
+          <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
+          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
+        </div>
+      </div>
+
+      {/* ==================== 6. المنتجات ==================== */}
+      <div style={{ padding: '60px 10px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+        <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+          {products?.map((product) => (
+            <Link href={`/product/${product.slug?.current}`} key={product._id} style={{ textDecoration: 'none' }}>
               <div className="product-card" style={productCardStyle}>
-                
-                {/* صورة المنتج */}
-                <div style={{ position: 'relative', height: '250px', backgroundColor: 'white', borderBottom: '1px solid #eee' }}>
-                  {product.discount > 0 && (
-                    <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#e74c3c', color: 'white', padding: '2px 10px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: 'bold', zIndex: 1 }}>
-                      خصم {product.discount}%
-                    </span>
-                  )}
-                  {product.imageUrl && (
-                    <Image 
-                      src={product.imageUrl} 
-                      alt={product.name} 
-                      fill 
-                      style={{ objectFit: 'contain', padding: '10px' }} 
-                      sizes="(max-width: 768px) 100vw, 250px"
-                    />
-                  )}
+                <div style={{ position: 'relative', height: '140px', backgroundColor: '#f9f9f9' }}>
+                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'cover' }} sizes="160px" />}
                 </div>
-
-                {/* تفاصيل المنتج */}
-                <div style={{ padding: '15px', textAlign: 'center' }}>
-                  <h3 style={{ fontSize: '1rem', color: '#333', marginBottom: '10px', height: '40px', overflow: 'hidden' }}>{product.name}</h3>
-                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} ج.م</span>
-                    {product.oldPrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>{product.oldPrice} ج.م</span>}
-                  </div>
+                <div style={{ padding: '10px' }}>
+                  <p style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#333', marginBottom: '5px' }}>{product.name}</p>
+                  <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} ج.م</p>
                 </div>
-                
-                {/* زر أضف للسلة (شكلي) */}
-                <div style={{ padding: '10px', borderTop: '1px solid #f9f9f9' }}>
-                  <div style={{ backgroundColor: '#1a1a1a', color: '#d4af37', padding: '8px', borderRadius: '5px', textAlign: 'center', fontSize: '0.9rem' }}>
-                    عرض التفاصيل 👁️
-                  </div>
-                </div>
-
               </div>
             </Link>
           ))}
         </div>
-
-        {/* زر العودة */}
-        <div style={{ textAlign: 'center', marginTop: '60px' }}>
-          <Link href="/">
-            <button style={{ ...ctaButtonStyle, backgroundColor: 'white', border: '2px solid #d4af37', color: 'black' }}>🏠 العودة للرئيسية</button>
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <Link href="/shop">
+            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>🛍️ عرض كل المنتجات</button>
           </Link>
         </div>
       </div>
 
+      {/* ==================== 7. الفيديو ==================== */}
+      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
+        <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
+        <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+          <video 
+            width="100%" 
+            height="auto" 
+            controls 
+            loop 
+            muted 
+            playsInline 
+            src="/promo.mp4" 
+            style={{ display: 'block' }}
+          >
+            متصفحك لا يدعم الفيديو.
+          </video>
+        </div>
+      </div>
+
+      {/* Styles */}
       <style jsx global>{`
-        .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+        .desktop-nav { display: flex; gap: 20px; }
+        .mobile-menu-btn { display: none; }
+        .mobile-nav-list { display: none; }
+        @media (max-width: 768px) {
+          .desktop-nav { display: none; }
+          .mobile-menu-btn { display: flex; }
+          .mobile-nav-list { display: flex; flex-direction: column; background: white; position: absolute; top: 100%; left: 0; width: 100%; padding: 10px 0; border-top: 1px solid #eee; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        }
+        .ticker-container { width: 100%; overflow: hidden; padding: 8px 0; white-space: nowrap; direction: ltr; }
+        .first-ticker { background-color: #d4af37; }
+        .second-ticker { background-color: #1a1a1a; }
+        .ticker-track { display: inline-flex; animation: scroll-left 30s linear infinite; }
+        .ticker-track-reverse { display: inline-flex; animation: scroll-right 30s linear infinite; }
+        .ticker-block { display: flex; }
+        .ticker-item { padding: 0 2rem; font-weight: bold; color: black; font-size: 1rem; }
+        .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; font-size: 1rem; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        
+        .product-card, .category-circle { transition: transform 0.3s ease; }
+        .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
+        
+        .fade-in { animation: fadeIn 0.5s; }
+        .fade-in-up { animation: fadeInUp 1s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
 }
 
-// السيرفر: جلب المنتجات حسب القسم
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-
-  // 1. تحديد العنوان العربي بناءً على الرابط
-  const categoryTitle = categoryTitles[slug] || `قسم ${slug}`;
-
-  // 2. الاستعلام من Sanity
-  // هذا الاستعلام يبحث عن المنتجات التي ينتمي قسمها (category) لنفس الاسم (slug)
-  // ملاحظة: نفترض أن لديك حقل 'categories' في المنتج، أو سنستخدم الفلترة بالكلمات المفتاحية
-  // لتسهيل الأمر عليك حالياً، سنجلب المنتجات التي تحتوي "tags" أو قسم يطابق الاسم
-  
-  // السيناريو الأذكى: جلب كل المنتجات وفلترتها (إذا لم يكن الـ Schema جاهزاً تماماً)
-  // أو استخدام استعلام دقيق إذا كنت قد ربطت الأقسام.
-  // سأستخدم استعلاماً مرناً يبحث في (القسم)
-  
-  const query = `*[_type == "product" && references(*[_type == "category" && slug.current == '${slug}']._id)] | order(_createdAt desc) {
-    _id,
-    name,
-    price,
-    discount,
-    "imageUrl": image.asset->url,
-    slug
-  }`;
-
-  // ⚠️ إذا لم يعمل الاستعلام السابق (لأنك ربما لم تربط الأقسام بعد)،
-  // يمكنك استبداله مؤقتاً بـ: *[_type == "product"] لجلب كل المنتجات للتجربة.
-  
-  const products = await client.fetch(query);
-
-  return {
-    props: {
-      products: products || [],
-      slug,
-      categoryTitle
-    }
-  };
+// السيرفر
+export async function getStaticProps() {
+  const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
+  const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
+  return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
-// التنسيقات
-const productCardStyle = { width: '250px', backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', border: '1px solid #eee', cursor: 'pointer' };
-const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
+// المكونات الصغيرة
+function CategoryCircle({ href, emoji, label }) {
+  return (
+    <Link href={href} style={{ textDecoration: 'none' }}>
+      <div className="category-circle" style={{
+        width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer'
+      }}>
+        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
+        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
+      </div>
+    </Link>
+  );
+}
+
+const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
+const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
+const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
+const productCardStyle = { width: '160px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.08)', overflow: 'hidden', border: '1px solid #eee' };
