@@ -1,95 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
-import { LanguageProvider } from '../src/context/LanguageContext';
-import { CartProvider } from '../src/context/CartContext';
-import Script from 'next/script';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import '../styles/globals.css';
+import { CartProvider, useCart } from '../src/context/CartContext';
+import Link from 'next/link';
 
-function MyApp({ Component, pageProps }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+// هذا المكون يحتوي على الأزرار العائمة والفوتر، ويستخدم الـ Hook الخاص بالسلة
+const GlobalElements = ({ children }) => {
+  const { totalQuantities } = useCart(); // 👈 هنا نجلب عدد المنتجات للعداد الأحمر
 
   return (
-    <LanguageProvider>
-      <CartProvider>
-        
-        {/* ================================================= */}
-        {/* 1️⃣ كود تيك توك بيكسل (TikTok Pixel) */}
-        {/* ================================================= */}
-        <Script
-          id="tiktok-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function (w, d, t) {
-                w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
-                var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
-                ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {/* محتوى الصفحة الحالية */}
+      <main style={{ flex: 1 }}>
+        {children}
+      </main>
 
-                ttq.load('D5R89ABC77U6BSHUH0G0');
-                ttq.page();
-              }(window, document, 'ttq');
-            `,
-          }}
-        />
+      {/* ==================== الفوتر الموحد (يظهر في كل الصفحات) ==================== */}
+      <footer style={{ backgroundColor: 'black', color: 'white', padding: '60px 20px 20px', borderTop: '5px solid #d4af37', direction: 'rtl', fontFamily: 'Arial' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'space-between', textAlign: 'right' }}>
+          
+          <div style={{ flex: '1 1 300px' }}>
+            <h3 style={{ color: '#d4af37', fontSize: '1.5rem', marginBottom: '20px' }}>✨ Karizma</h3>
+            <p style={{ lineHeight: '1.8', color: '#ccc' }}>
+              نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة بأعلى جودة.
+            </p>
+          </div>
 
-        {/* ================================================= */}
-        {/* 2️⃣ كود فيسبوك بيكسل (Meta Pixel) - تم التحديث ✅ */}
-        {/* ================================================= */}
-        <Script
-          id="fb-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              
-              fbq('init', '1418587233195999'); // 👈 الرقم الصحيح من الصورة
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
+          <div style={{ flex: '1 1 200px' }}>
+            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>روابط تهمك</h4>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              <li style={{ marginBottom: '10px' }}><Link href="/offers" style={{ color: '#fff', textDecoration: 'none' }}>🔥 العروض والخصومات</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/men" style={{ color: '#fff', textDecoration: 'none' }}>🤵 عطور رجالية</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/women" style={{ color: '#fff', textDecoration: 'none' }}>💃 عطور نسائية</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/blog" style={{ color: '#fff', textDecoration: 'none' }}>📝 نصائح وجمال</Link></li>
+            </ul>
+          </div>
 
-        {/* ================================================= */}
-        {/* 3️⃣ كود إحصائيات جوجل (Google Analytics) - إضافي ✅ */}
-        {/* ================================================= */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=G-8MBK7Y702C`}
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-8MBK7Y702C');
-            `,
-          }}
-        />
+          <div style={{ flex: '1 1 300px' }}>
+            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>تواصل معنا</h4>
+            <p style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              📍 <span>28WM+22W، شارع إبن الرومي<br/>الحديقة الدولية، مدينة نصر</span>
+            </p>
+            <p style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
+              📞 01002410037
+            </p>
+            <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+              <div style={socialIconStyle}>f</div>
+              <div style={socialIconStyle}>📷</div>
+              <div style={socialIconStyle}>♪</div>
+            </div>
+          </div>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #333', fontSize: '0.9rem', color: '#777' }}>
+          © 2024 Karizma Perfumes. جميع الحقوق محفوظة.
+        </div>
+      </footer>
 
-        {/* بقية الموقع */}
-        {mounted && <Toaster />}
-        <Navbar /> 
+      {/* ==================== الأزرار العائمة (في كل الصفحات) ==================== */}
+      
+      {/* 🛒 زر السلة العائم مع العداد الأحمر */}
+      <Link href="/cart" style={{
+          position: 'fixed', bottom: '90px', right: '20px', 
+          backgroundColor: 'white', color: 'black', border: '2px solid #d4af37',
+          width: '60px', height: '60px', borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          zIndex: 9999, cursor: 'pointer', textDecoration: 'none'
+        }}
+        className="floating-btn"
+      >
+        🛒
+        {/* 🔴 العداد الأحمر */}
+        {totalQuantities > 0 && (
+          <span style={{
+            position: 'absolute', top: '-5px', left: '-5px',
+            backgroundColor: '#e74c3c', color: 'white',
+            width: '24px', height: '24px', borderRadius: '50%',
+            fontSize: '12px', fontWeight: 'bold',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: '2px solid white'
+          }}>
+            {totalQuantities}
+          </span>
+        )}
+      </Link>
+
+      {/* 💬 زر الواتساب العائم */}
+      <a 
+        href="https://wa.me/201002410037" 
+        target="_blank"
+        style={{
+          position: 'fixed', bottom: '20px', right: '20px',
+          backgroundColor: '#25D366', color: 'white',
+          width: '60px', height: '60px', borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '35px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          zIndex: 9999, transition: '0.3s', textDecoration: 'none'
+        }}
+        className="floating-btn"
+      >
+        💬
+      </a>
+      
+      <style jsx global>{`
+        .floating-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important; }
+      `}</style>
+    </div>
+  );
+};
+
+export default function App({ Component, pageProps }) {
+  return (
+    <CartProvider>
+      <GlobalElements>
         <Component {...pageProps} />
-        <Footer /> 
-
-      </CartProvider>
-    </LanguageProvider>
-  )
+      </GlobalElements>
+    </CartProvider>
+  );
 }
 
-export default MyApp;
+const socialIconStyle = { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#d4af37', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', cursor: 'pointer' };
