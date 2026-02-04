@@ -13,10 +13,7 @@ const nextConfig = {
       }
     ],
   },
-  // 👇 هذا الجزء الجديد: يتجاهل أخطاء التدقيق الصارمة لكي ينجح البناء
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // 👇 لاحظ: أبقينا التايب سكريبت وحذفنا eslint
   typescript: {
     ignoreBuildErrors: true,
   },
