@@ -77,7 +77,7 @@ export default function Home({ banner, products }) {
         </div>
       )}
 
-      {/* ==================== 4. الهيرو ==================== */}
+      {/* ==================== 4. الهيرو (الشاشة الترحيبية) ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
@@ -90,8 +90,25 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 5. المنتجات ==================== */}
-      <div style={{ padding: '60px 10px', textAlign: 'center' }}>
+      {/* ==================== 5. تصفح مجموعاتنا (تمت إعادتها ✅) ==================== */}
+      <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
+        <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
+          <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
+          <CategoryCircle href="/women" emoji="💃" label="نسائي" />
+          <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
+          <CategoryCircle href="/niche" emoji="💎" label="نيش" />
+          <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
+          <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
+          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
+          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
+        </div>
+      </div>
+
+      {/* ==================== 6. المنتجات ==================== */}
+      <div style={{ padding: '60px 10px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
           {products?.map((product) => (
@@ -108,10 +125,15 @@ export default function Home({ banner, products }) {
             </Link>
           ))}
         </div>
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <Link href="/shop">
+            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>🛍️ عرض كل المنتجات</button>
+          </Link>
+        </div>
       </div>
 
-      {/* ==================== 6. قسم الفيديو (تمت إعادته!) ==================== */}
-      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white', marginTop: '40px' }}>
+      {/* ==================== 7. الفيديو ==================== */}
+      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
           <video 
@@ -121,7 +143,6 @@ export default function Home({ banner, products }) {
             loop 
             muted 
             playsInline 
-            // تأكد أن ملف promo.mp4 موجود في مجلد public
             src="/promo.mp4" 
             style={{ display: 'block' }}
           >
@@ -150,8 +171,10 @@ export default function Home({ banner, products }) {
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; font-size: 1rem; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        .product-card { transition: transform 0.3s ease; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
+        
+        .product-card, .category-circle { transition: transform 0.3s ease; }
+        .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
+        
         .fade-in { animation: fadeIn 0.5s; }
         .fade-in-up { animation: fadeInUp 1s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -161,10 +184,27 @@ export default function Home({ banner, products }) {
   );
 }
 
+// السيرفر
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
+}
+
+// المكونات الصغيرة
+function CategoryCircle({ href, emoji, label }) {
+  return (
+    <Link href={href} style={{ textDecoration: 'none' }}>
+      <div className="category-circle" style={{
+        width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer'
+      }}>
+        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
+        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
+      </div>
+    </Link>
+  );
 }
 
 const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
