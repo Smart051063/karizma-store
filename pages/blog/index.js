@@ -1,16 +1,12 @@
-import React, { useState } from 'react'; // 👈 استيراد useState للتحكم في القائمة
+import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { client } from '../src/sanity/lib/client';
 
 export default function Home({ banner, products }) {
-  // متغير للتحكم في فتح وغلق القائمة في الموبايل
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 👇 هذا النص هو دليلك أن التحديث وصل!
-  const text1 = " 🚀 التحديث وصل! القائمة الجانبية تعمل الآن بنجاح 100% 🚀 ";
-  
+  const text1 = " ✨  بكم في كاريزما للعطور - خصومات تبدا من 5 % الى 20 % على بعض المنتجات - شحن سريع لجميع المحافظات 🚚 ";
   const text2 = " 🛡️ جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها 🛡️ ";
 
   return (
@@ -24,62 +20,13 @@ export default function Home({ banner, products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* ==================== 1. الهيدر المتجاوب (الجديد) ==================== */}
-      <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        
-        {/* الشريط العلوي (اختبار التحديث) */}
-        <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
-          {text1}
+      {/* 1️⃣ الأشرطة المتحركة (محسنة لتعمل على GPU لسرعة قصوى) */}
+      <div className="ticker-container first-ticker">
+        <div className="ticker-track">
+          <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
+          <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
         </div>
-
-        {/* محتوى الهيدر */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
-          
-          {/* اليمين: اللوجو */}
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            ✨ Karizma
-          </div>
-
-          {/* الوسط: الروابط (تظهر في الكمبيوتر وتختفي في الموبايل) */}
-          <nav className="desktop-nav">
-            <Link href="/" style={linkStyle}>الرئيسية</Link>
-            <Link href="/shop" style={linkStyle}>المتجر</Link>
-            <Link href="/blog" style={linkStyle}>المدونة</Link>
-            <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
-          </nav>
-
-          {/* اليسار: الأيقونات + زر القائمة للموبايل */}
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
-            <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
-            </Link>
-            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
-            
-            {/* زر القائمة (الهامبرغر) - يظهر فقط في الموبايل */}
-            <button 
-              className="mobile-menu-btn" 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', marginRight: '5px' }}
-            >
-              {isMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
-
-        {/* القائمة المنسدلة للموبايل (تظهر فقط عند الضغط) */}
-        {isMenuOpen && (
-          <div className="mobile-nav-list fade-in">
-            <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
-            <Link href="/shop" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المتجر</Link>
-            <Link href="/blog" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المدونة</Link>
-            <Link href="/offers" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>العروض 🔥</Link>
-          </div>
-        )}
-      </header>
-      {/* =================================================================== */}
-
-      {/* 2️⃣ الأشرطة المتحركة */}
+      </div>
       <div className="ticker-container second-ticker">
         <div className="ticker-track-reverse">
           <div className="ticker-block"><span className="ticker-item-white">{text2}</span><span className="ticker-item-white">{text2}</span></div>
@@ -87,7 +34,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 3️⃣ قسم البانر */}
+      {/* 2️⃣ قسم البانر */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto' }}>
           <Image 
@@ -103,7 +50,7 @@ export default function Home({ banner, products }) {
         </div>
       )}
 
-      {/* 4️⃣ الشاشة الترحيبية (حافظنا على priority للسرعة) */}
+      {/* 3️⃣ الشاشة الترحيبية (الهيرو) */}
       <div style={{ 
         position: 'relative', 
         height: '60vh', 
@@ -116,7 +63,7 @@ export default function Home({ banner, products }) {
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            priority={true} // ✅ مبقين عليها لضمان عدم هبوط السكور
+            priority={true} 
             style={{ objectFit: 'cover' }}
             sizes="100vw"
             quality={60}
@@ -134,7 +81,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 5️⃣ تصفح مجموعاتنا */}
+      {/* 4️⃣ تصفح مجموعاتنا */}
       <div style={{ padding: '50px 10px', textAlign: 'center' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '35px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
@@ -155,7 +102,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 6️⃣ قسم الفيديو */}
+      {/* 5️⃣ قسم الفيديو (ذكي: لا يحمل إلا عند الضغط) */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
@@ -174,7 +121,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 7️⃣ قسم المنتجات */}
+      {/* 6️⃣ قسم المنتجات */}
       <div style={{ padding: '60px 10px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '35px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
@@ -189,7 +136,7 @@ export default function Home({ banner, products }) {
                         alt={product.name} 
                         fill
                         style={{ objectFit: 'cover' }}
-                        sizes="150px"
+                        sizes="(max-width: 768px) 50vw, 33vw"
                         quality={50}
                       />
                     )}
@@ -211,43 +158,20 @@ export default function Home({ banner, products }) {
       </div>
 
       <style jsx global>{`
-        /* --- أنماط الهيدر المتجاوب --- */
-        .desktop-nav { display: flex; gap: 20px; }
-        .mobile-menu-btn { display: none; }
-        .mobile-nav-list { display: none; }
-
-        @media (max-width: 768px) {
-          .desktop-nav { display: none; } /* إخفاء الروابط العادية في الموبايل */
-          .mobile-menu-btn { display: block; } /* إظهار زر القائمة في الموبايل */
-          
-          /* قائمة الموبايل المنسدلة */
-          .mobile-nav-list {
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            border-top: 1px solid #eee;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            padding: 10px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            z-index: 999;
-          }
-        }
-
-        /* --- باقي الأنماط (الشريط المتحرك وغيرها) --- */
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
         .second-ticker { background-color: #1a1a1a; }
+        /* GPU Acceleration */
+        .ticker-track { display: inline-flex; animation: scroll-left 40s linear infinite; will-change: transform; transform: translateZ(0); }
         .ticker-track-reverse { display: inline-flex; animation: scroll-right 40s linear infinite; will-change: transform; transform: translateZ(0); }
         .ticker-block { display: flex; }
+        .ticker-item { padding: 0 2rem; font-weight: bold; color: black; }
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-
         .product-card, .category-circle { transition: 0.3s; }
         .product-card:hover, .category-circle:hover { transform: translateY(-5px); }
-        .fade-in { animation: fadeIn 0.5s; }
+        .fade-in { animation: fadeIn 1.5s; }
         .fade-in-up { animation: fadeInUp 1s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -293,7 +217,6 @@ function CategoryCircle({ href, emoji, label }) {
   );
 }
 
-const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '1rem', transition: '0.3s' };
-const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9', display: 'block' };
+// الستايلات الثابتة
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
 const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' };

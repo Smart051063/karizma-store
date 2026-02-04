@@ -1,14 +1,16 @@
-import React, { useState } from 'react'; // 👈 أضفنا useState للتحكم في فتح وغلق القائمة
+import React, { useState } from 'react'; // 👈 استيراد useState للتحكم في القائمة
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { client } from '../src/sanity/lib/client';
 
 export default function Home({ banner, products }) {
-  // متغير للتحكم في ظهور القائمة في الموبايل
+  // متغير للتحكم في فتح وغلق القائمة في الموبايل
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const text1 = " ✨ أهلاً بكم في كاريزما للعطور - خصومات تبدا من 5 % الى 20 % على بعض المنتجات - شحن سريع لجميع المحافظات 🚚 ";
+  // 👇 هذا النص هو دليلك أن التحديث وصل!
+  const text1 = " 🚀 التحديث وصل! القائمة الجانبية تعمل الآن بنجاح 100% 🚀 ";
+  
   const text2 = " 🛡️ جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها 🛡️ ";
 
   return (
@@ -25,8 +27,8 @@ export default function Home({ banner, products }) {
       {/* ==================== 1. الهيدر المتجاوب (الجديد) ==================== */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
         
-        {/* الشريط العلوي الأسود */}
-        <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center' }}>
+        {/* الشريط العلوي (اختبار التحديث) */}
+        <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
           {text1}
         </div>
 
@@ -38,7 +40,7 @@ export default function Home({ banner, products }) {
             ✨ Karizma
           </div>
 
-          {/* الوسط: الروابط (تظهر في الكمبيوتر وتختفي في الموبايل عبر CSS) */}
+          {/* الوسط: الروابط (تظهر في الكمبيوتر وتختفي في الموبايل) */}
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
@@ -49,7 +51,9 @@ export default function Home({ banner, products }) {
           {/* اليسار: الأيقونات + زر القائمة للموبايل */}
           <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
             <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
-            <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
+            <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
+            </Link>
             <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
             
             {/* زر القائمة (الهامبرغر) - يظهر فقط في الموبايل */}
