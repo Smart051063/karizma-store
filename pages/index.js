@@ -8,7 +8,7 @@ export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلىئ20% على جميع العطور ✨ ";
   const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
@@ -17,6 +17,11 @@ export default function Home({ banner, products }) {
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* ✅ تحسين SEO: إضافة وصف للموقع */}
+        <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية في مصر. عطور رجالية ونسائية، عود، وبخور بجودة عالية وثبات ممتاز." />
+        <meta name="keywords" content="عطور, برفان, عطور مستوحاة, كاريزما, عود, بخور, عطور مصر" />
+        {/* إضافة خط عربي جميل */}
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
       </Head>
 
       {/* ==================== 1. الهيدر ==================== */}
@@ -25,7 +30,7 @@ export default function Home({ banner, products }) {
           {topStatusText}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' }}>✨ Karizma</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37', fontFamily: 'Tajawal, Arial' }}>✨ Karizma</div>
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
@@ -70,27 +75,41 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 3. البانر ==================== */}
+      {/* ==================== 3. البانر (تحسين الأداء: إزالة priority) ==================== */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
-          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} priority={true} sizes="(max-width: 768px) 100vw, 100vw" />
+          <Image 
+            src={banner.imageUrl} 
+            alt={banner.title || 'Ramadan Offer'} 
+            width={1400} 
+            height={400} 
+            style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} 
+            loading="lazy" // ✅ تحميل كسول لتحسين السرعة
+            sizes="(max-width: 768px) 100vw, 100vw" 
+          />
         </div>
       )}
 
-      {/* ==================== 4. الهيرو ==================== */}
+      {/* ==================== 4. الهيرو (هذه الصورة الوحيدة المهمة للسرعة) ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
+          <Image 
+            src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} 
+            alt="Hero Background" 
+            fill 
+            priority={true} // ✅ مبقين عليها لأنها أول ما يراه العميل (LCP)
+            style={{ objectFit: 'cover' }} 
+          />
         </div>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
-          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
+          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold', fontFamily: 'Tajawal, Arial' }}>كاريزما للعطور</h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
           <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
         </div>
       </div>
 
-      {/* ==================== 5. تصفح مجموعاتنا (بالمسميات الفاخرة الجديدة) ==================== */}
+      {/* ==================== 5. تصفح مجموعاتنا ==================== */}
       <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
@@ -98,7 +117,7 @@ export default function Home({ banner, products }) {
           <CategoryCircle href="/offers" emoji="🔥" label="العروض والتخفيضات" />
           <CategoryCircle href="/men" emoji="🤵" label="العطور الرجالية الفاخرة" />
           <CategoryCircle href="/women" emoji="💃" label="العطور النسائية الجذابة" />
-          <CategoryCircle href="/unisex" emoji="👫" label="عطور (للجنسين)" />
+          <CategoryCircle href="/unisex" emoji="👫" label="عطور النيش (للجنسين)" />
           <CategoryCircle href="/niche" emoji="💎" label="عطور النيش الحصرية" />
           <CategoryCircle href="/oud" emoji="🪵" label="دهن العود والبخور" />
           <CategoryCircle href="/gulf" emoji="🕌" label="العطور الخليجية والمخلطات" />
@@ -138,7 +157,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 7. الفيديو ==================== */}
+      {/* ==================== 7. الفيديو (تم التحسين للسرعة ⚡) ==================== */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
@@ -149,6 +168,8 @@ export default function Home({ banner, products }) {
             loop 
             muted 
             playsInline 
+            preload="none" /* 👈 هذا هو السطر السحري الذي سيحل مشكلة السرعة */
+            poster={banner?.imageUrl} /* عرض صورة البانر كغلاف حتى يتم تشغيل الفيديو */
             src="/promo.mp4" 
             style={{ display: 'block' }}
           >
@@ -157,8 +178,77 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
+      {/* ==================== 8. الفوتر ==================== */}
+      <footer style={{ backgroundColor: 'black', color: 'white', padding: '60px 20px 20px', borderTop: '5px solid #d4af37' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'space-between', textAlign: 'right' }}>
+          
+          <div style={{ flex: '1 1 300px' }}>
+            <h3 style={{ color: '#d4af37', fontSize: '1.5rem', marginBottom: '20px' }}>✨ Karizma</h3>
+            <p style={{ lineHeight: '1.8', color: '#ccc' }}>
+              نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة بأعلى جودة.
+            </p>
+          </div>
+
+          <div style={{ flex: '1 1 200px' }}>
+            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>روابط تهمك</h4>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              <li style={{ marginBottom: '10px' }}><Link href="/offers" style={{ color: '#fff', textDecoration: 'none' }}>🔥 العروض والخصومات</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/men" style={{ color: '#fff', textDecoration: 'none' }}>🤵 عطور رجالية</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/women" style={{ color: '#fff', textDecoration: 'none' }}>💃 عطور نسائية</Link></li>
+              <li style={{ marginBottom: '10px' }}><Link href="/blog" style={{ color: '#fff', textDecoration: 'none' }}>📝 نصائح وجمال</Link></li>
+            </ul>
+          </div>
+
+          <div style={{ flex: '1 1 300px' }}>
+            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>تواصل معنا</h4>
+            <p style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              📍 <span>28WM+22W، شارع إبن الرومي<br/>الحديقة الدولية، مدينة نصر</span>
+            </p>
+            <a 
+              href="https://maps.app.goo.gl/your-link" 
+              target="_blank" 
+              style={{ display: 'inline-block', marginBottom: '15px', padding: '5px 15px', backgroundColor: '#d4af37', color: 'black', borderRadius: '5px', textDecoration: 'none', fontWeight: 'bold', fontSize: '0.8rem' }}
+            >
+               🗺️ عرض الموقع على الخريطة
+            </a>
+            <p style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
+              📞 01002410037
+            </p>
+            
+            <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+              <div style={socialIconStyle}>f</div>
+              <div style={socialIconStyle}>📷</div>
+              <div style={socialIconStyle}>♪</div>
+              <div style={socialIconStyle}>👻</div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #333', fontSize: '0.9rem', color: '#777' }}>
+          © 2024 Karizma Perfumes. جميع الحقوق محفوظة.
+        </div>
+      </footer>
+
+      {/* ==================== 9. زر الواتساب العائم ==================== */}
+      <a 
+        href="https://wa.me/201002410037" 
+        target="_blank"
+        style={{
+          position: 'fixed', bottom: '20px', right: '20px',
+          backgroundColor: '#25D366', color: 'white',
+          width: '60px', height: '60px', borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '35px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          zIndex: 9999, transition: '0.3s', textDecoration: 'none'
+        }}
+        className="whatsapp-btn"
+      >
+        💬
+      </a>
+
       {/* Styles */}
       <style jsx global>{`
+        /* ... الأنماط السابقة ... */
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
         .mobile-nav-list { display: none; }
@@ -180,6 +270,7 @@ export default function Home({ banner, products }) {
         
         .product-card, .category-circle { transition: transform 0.3s ease; }
         .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
+        .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5) !important; }
         
         .fade-in { animation: fadeIn 0.5s; }
         .fade-in-up { animation: fadeInUp 1s ease-out; }
@@ -197,7 +288,7 @@ export async function getStaticProps() {
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
-// المكونات الصغيرة (تم تكبير الدوائر قليلاً لتناسب النص الطويل)
+// المكونات الصغيرة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
@@ -218,3 +309,4 @@ const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
 const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
 const productCardStyle = { width: '160px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.08)', overflow: 'hidden', border: '1px solid #eee' };
+const socialIconStyle = { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#d4af37', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', cursor: 'pointer' };
