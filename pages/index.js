@@ -98,7 +98,7 @@ export default function Home({ banner, products }) {
           <CategoryCircle href="/offers" emoji="🔥" label="العروض والتخفيضات" />
           <CategoryCircle href="/men" emoji="🤵" label="العطور الرجالية الفاخرة" />
           <CategoryCircle href="/women" emoji="💃" label="العطور النسائية الجذابة" />
-          <CategoryCircle href="/unisex" emoji="👫" label="عطور النيش (للجنسين)" />
+          <CategoryCircle href="/unisex" emoji="👫" label="عطور (للجنسين)" />
           <CategoryCircle href="/niche" emoji="💎" label="عطور النيش الحصرية" />
           <CategoryCircle href="/oud" emoji="🪵" label="دهن العود والبخور" />
           <CategoryCircle href="/gulf" emoji="🕌" label="العطور الخليجية والمخلطات" />
