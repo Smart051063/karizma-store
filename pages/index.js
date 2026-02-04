@@ -7,11 +7,9 @@ import { client } from '../src/sanity/lib/client';
 export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 👇 تم تعديل هذه الجملة لتكون ترحيبية بدلاً من جملة الاختبار
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى  20% على جميع العطور ✨ ";
-  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 50% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
@@ -21,62 +19,32 @@ export default function Home({ banner, products }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* ==================== 1. الهيدر (الثابت) ==================== */}
+      {/* ==================== 1. الهيدر ==================== */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        
-        {/* شريط الحالة العلوي (صغير) */}
         <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
           {topStatusText}
         </div>
-
-        {/* محتوى الهيدر الرئيسي */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
-          
-          {/* اللوجو */}
           <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' }}>✨ Karizma</div>
-
-          {/* روابط الكمبيوتر */}
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
             <Link href="/blog" style={linkStyle}>المدونة</Link>
             <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
           </nav>
-
-          {/* الأيقونات وزر القائمة */}
           <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
-            
+            <Link href="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
+               <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
+            </Link>
             <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
               <span style={{ cursor: 'pointer', fontSize: '1.3rem', display: 'inline-block', transform: 'translateY(2px)' }}>🔍</span>
             </Link>
-
             <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
-            
-            {/* زر الهامبرغر الذهبي (للموبايل) */}
-            <button 
-              className="mobile-menu-btn" 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              style={{ 
-                background: 'white', 
-                border: '2px solid #d4af37', 
-                borderRadius: '8px', 
-                color: '#d4af37', 
-                fontSize: '1.5rem', 
-                cursor: 'pointer', 
-                padding: '0px 8px',
-                marginRight: '8px',
-                height: '35px',
-                lineHeight: '1',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}
-            >
+            <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'white', border: '2px solid #d4af37', borderRadius: '8px', color: '#d4af37', fontSize: '1.5rem', cursor: 'pointer', padding: '0px 8px', marginRight: '8px', height: '35px', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {isMenuOpen ? '✕' : '☰'}
             </button>
           </div>
         </div>
-
-        {/* القائمة المنسدلة للموبايل */}
         {isMenuOpen && (
           <div className="mobile-nav-list fade-in">
             <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
@@ -88,18 +56,13 @@ export default function Home({ banner, products }) {
         )}
       </header>
 
-
-      {/* ==================== 2. الأشرطة المتحركة (عدد 2) ==================== */}
-      
-      {/* الشريط الأول (ذهبي) */}
+      {/* ==================== 2. الأشرطة المتحركة ==================== */}
       <div className="ticker-container first-ticker">
         <div className="ticker-track">
           <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
           <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
         </div>
       </div>
-
-      {/* الشريط الثاني (أسود) */}
       <div className="ticker-container second-ticker">
         <div className="ticker-track-reverse">
           <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
@@ -107,33 +70,17 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-
-      {/* ==================== 3. صورة عرض رمضان (البانر) ==================== */}
+      {/* ==================== 3. البانر ==================== */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
-          <Image 
-            src={banner.imageUrl} 
-            alt={banner.title || 'Ramadan Offer'} 
-            width={1400} 
-            height={400}
-            style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }}
-            priority={true} 
-            sizes="(max-width: 768px) 100vw, 100vw"
-          />
+          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} priority={true} sizes="(max-width: 768px) 100vw, 100vw" />
         </div>
       )}
 
-
-      {/* ==================== 4. الشاشة الترحيبية (الهيرو) ==================== */}
+      {/* ==================== 4. الهيرو ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image
-            src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
-            alt="Hero Background"
-            fill
-            priority={true}
-            style={{ objectFit: 'cover' }}
-          />
+          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
@@ -142,7 +89,6 @@ export default function Home({ banner, products }) {
           <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
         </div>
       </div>
-
 
       {/* ==================== 5. المنتجات ==================== */}
       <div style={{ padding: '60px 10px', textAlign: 'center' }}>
@@ -164,40 +110,46 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* الأنماط (CSS) */}
+      {/* ==================== 6. قسم الفيديو (تمت إعادته!) ==================== */}
+      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white', marginTop: '40px' }}>
+        <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
+        <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+          <video 
+            width="100%" 
+            height="auto" 
+            controls 
+            loop 
+            muted 
+            playsInline 
+            // تأكد أن ملف promo.mp4 موجود في مجلد public
+            src="/promo.mp4" 
+            style={{ display: 'block' }}
+          >
+            متصفحك لا يدعم الفيديو.
+          </video>
+        </div>
+      </div>
+
+      {/* Styles */}
       <style jsx global>{`
-        /* الهيدر والموبايل */
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
         .mobile-nav-list { display: none; }
-
         @media (max-width: 768px) {
           .desktop-nav { display: none; }
           .mobile-menu-btn { display: flex; }
-          .mobile-nav-list { 
-            display: flex; flex-direction: column; 
-            background: white; position: absolute; top: 100%; left: 0; width: 100%; 
-            padding: 10px 0; border-top: 1px solid #eee; z-index: 2000; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-          }
+          .mobile-nav-list { display: flex; flex-direction: column; background: white; position: absolute; top: 100%; left: 0; width: 100%; padding: 10px 0; border-top: 1px solid #eee; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         }
-
-        /* الأشرطة المتحركة */
         .ticker-container { width: 100%; overflow: hidden; padding: 8px 0; white-space: nowrap; direction: ltr; }
-        .first-ticker { background-color: #d4af37; } /* الشريط الذهبي */
-        .second-ticker { background-color: #1a1a1a; } /* الشريط الأسود */
-        
+        .first-ticker { background-color: #d4af37; }
+        .second-ticker { background-color: #1a1a1a; }
         .ticker-track { display: inline-flex; animation: scroll-left 30s linear infinite; }
         .ticker-track-reverse { display: inline-flex; animation: scroll-right 30s linear infinite; }
-        
         .ticker-block { display: flex; }
         .ticker-item { padding: 0 2rem; font-weight: bold; color: black; font-size: 1rem; }
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; font-size: 1rem; }
-
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-
-        /* تأثيرات عامة */
         .product-card { transition: transform 0.3s ease; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
         .fade-in { animation: fadeIn 0.5s; }
@@ -215,7 +167,6 @@ export async function getStaticProps() {
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
-// التنسيقات (Styles)
 const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
 const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
