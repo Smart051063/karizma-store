@@ -7,8 +7,10 @@ import { client } from '../src/sanity/lib/client';
 export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const text1 = " 🚀 تم التحديث! القائمة الجانبية تعمل بنجاح الآن 🚀 ";
-  const text2 = " 🛡️ جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها 🛡️ ";
+  // النصوص
+  const topStatusText = " 🚀 التحديث وصل! القائمة الجانبية والبحث يعملان بنجاح 🚀 ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 50% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
@@ -18,15 +20,21 @@ export default function Home({ banner, products }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* الهيدر المتجاوب */}
+      {/* ==================== 1. الهيدر (الثابت) ==================== */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+        
+        {/* شريط الحالة العلوي (صغير) */}
         <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
-          {text1}
+          {topStatusText}
         </div>
 
+        {/* محتوى الهيدر الرئيسي */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
+          
+          {/* اللوجو */}
           <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' }}>✨ Karizma</div>
 
+          {/* روابط الكمبيوتر */}
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
@@ -34,70 +42,167 @@ export default function Home({ banner, products }) {
             <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
           </nav>
 
+          {/* الأيقونات وزر القائمة */}
           <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
-            <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>
+            <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
+            
+            <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <span style={{ cursor: 'pointer', fontSize: '1.3rem', display: 'inline-block', transform: 'translateY(2px)' }}>🔍</span>
+            </Link>
+
+            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
+            
+            {/* زر الهامبرغر الذهبي (للموبايل) */}
+            <button 
+              className="mobile-menu-btn" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              style={{ 
+                background: 'white', 
+                border: '2px solid #d4af37', 
+                borderRadius: '8px', 
+                color: '#d4af37', 
+                fontSize: '1.5rem', 
+                cursor: 'pointer', 
+                padding: '0px 8px',
+                marginRight: '8px',
+                height: '35px',
+                lineHeight: '1',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}
+            >
               {isMenuOpen ? '✕' : '☰'}
             </button>
           </div>
         </div>
 
+        {/* القائمة المنسدلة للموبايل */}
         {isMenuOpen && (
           <div className="mobile-nav-list fade-in">
             <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
             <Link href="/shop" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المتجر</Link>
             <Link href="/blog" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المدونة</Link>
+            <Link href="/offers" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>العروض 🔥</Link>
+            <Link href="/search" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>🔍 البحث</Link>
           </div>
         )}
       </header>
 
-      {/* البانر والصورة الخلفية */}
-      <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center' }}>
+
+      {/* ==================== 2. الأشرطة المتحركة (عدد 2) ==================== */}
+      
+      {/* الشريط الأول (ذهبي) */}
+      <div className="ticker-container first-ticker">
+        <div className="ticker-track">
+          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
+          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
+        </div>
+      </div>
+
+      {/* الشريط الثاني (أسود) */}
+      <div className="ticker-container second-ticker">
+        <div className="ticker-track-reverse">
+          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
+          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
+        </div>
+      </div>
+
+
+      {/* ==================== 3. صورة عرض رمضان (البانر) ==================== */}
+      {banner?.imageUrl && (
+        <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
+          <Image 
+            src={banner.imageUrl} 
+            alt={banner.title || 'Ramadan Offer'} 
+            width={1400} 
+            height={400}
+            style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }}
+            priority={true} // ✅ أولوية قصوى للتحميل السريع
+            sizes="(max-width: 768px) 100vw, 100vw"
+          />
+        </div>
+      )}
+
+
+      {/* ==================== 4. الشاشة الترحيبية (الهيرو) ==================== */}
+      <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
-            alt="Hero"
+            alt="Hero Background"
             fill
             priority={true}
             style={{ objectFit: 'cover' }}
           />
         </div>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
-        <div style={{ position: 'relative', zIndex: 2, color: 'white' }}>
-          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37' }}>كاريزما للعطور</h1>
-          <Link href="/shop"><button style={ctaButtonStyle}>تسوق الآن</button></Link>
+        <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
+          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
+          <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
+          <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
         </div>
       </div>
 
-      {/* المنتجات */}
+
+      {/* ==================== 5. المنتجات ==================== */}
       <div style={{ padding: '60px 10px', textAlign: 'center' }}>
-        <h2 style={{ color: '#d4af37', marginBottom: '40px' }}>🌟 وصلنا حديثاً</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '35px', justifyContent: 'center' }}>
+        <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
           {products?.map((product) => (
             <Link href={`/product/${product.slug?.current}`} key={product._id} style={{ textDecoration: 'none' }}>
-              <div style={productCardStyle}>
-                <div style={{ position: 'relative', height: '120px' }}>
-                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'cover' }} />}
+              <div className="product-card" style={productCardStyle}>
+                <div style={{ position: 'relative', height: '140px', backgroundColor: '#f9f9f9' }}>
+                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'cover' }} sizes="160px" />}
                 </div>
-                <p style={{ padding: '10px', fontWeight: 'bold', color: '#333' }}>{product.name}</p>
-                <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} ج.م</p>
+                <div style={{ padding: '10px' }}>
+                  <p style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#333', marginBottom: '5px' }}>{product.name}</p>
+                  <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} ج.م</p>
+                </div>
               </div>
             </Link>
           ))}
         </div>
       </div>
 
+      {/* الأنماط (CSS) */}
       <style jsx global>{`
+        /* الهيدر والموبايل */
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
         .mobile-nav-list { display: none; }
+
         @media (max-width: 768px) {
           .desktop-nav { display: none; }
-          .mobile-menu-btn { display: block; }
-          .mobile-nav-list { display: flex; flex-direction: column; background: white; position: absolute; top: 100%; left: 0; width: 100%; padding: 10px 0; border-top: 1px solid #eee; }
+          .mobile-menu-btn { display: flex; }
+          .mobile-nav-list { 
+            display: flex; flex-direction: column; 
+            background: white; position: absolute; top: 100%; left: 0; width: 100%; 
+            padding: 10px 0; border-top: 1px solid #eee; z-index: 2000; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+          }
         }
+
+        /* الأشرطة المتحركة */
+        .ticker-container { width: 100%; overflow: hidden; padding: 8px 0; white-space: nowrap; direction: ltr; }
+        .first-ticker { background-color: #d4af37; } /* الشريط الذهبي */
+        .second-ticker { background-color: #1a1a1a; } /* الشريط الأسود */
+        
+        .ticker-track { display: inline-flex; animation: scroll-left 30s linear infinite; }
+        .ticker-track-reverse { display: inline-flex; animation: scroll-right 30s linear infinite; }
+        
+        .ticker-block { display: flex; }
+        .ticker-item { padding: 0 2rem; font-weight: bold; color: black; font-size: 1rem; }
+        .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; font-size: 1rem; }
+
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+        /* تأثيرات عامة */
+        .product-card { transition: transform 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
         .fade-in { animation: fadeIn 0.5s; }
+        .fade-in-up { animation: fadeInUp 1s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
@@ -105,11 +210,12 @@ export default function Home({ banner, products }) {
 
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
-  const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..5] { _id, name, price, "imageUrl": image.asset->url, slug }`);
+  const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
+// التنسيقات (Styles)
 const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
 const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
-const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
-const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', overflow: 'hidden' };
+const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
+const productCardStyle = { width: '160px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.08)', overflow: 'hidden', border: '1px solid #eee' };
