@@ -1,11 +1,11 @@
-import React, { useState } from 'react'; // 👈 أضفنا useState للتحكم في القائمة
+import React, { useState } from 'react'; // 👈 أضفنا useState للتحكم في فتح وغلق القائمة
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { client } from '../src/sanity/lib/client';
 
 export default function Home({ banner, products }) {
-  // حالة القائمة (مفتوحة أم مغلقة)
+  // متغير للتحكم في ظهور القائمة في الموبايل
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const text1 = " ✨ أهلاً بكم في كاريزما للعطور - خصومات تبدا من 5 % الى 20 % على بعض المنتجات - شحن سريع لجميع المحافظات 🚚 ";
@@ -22,7 +22,7 @@ export default function Home({ banner, products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* ==================== 1. الهيدر (القائمة العلوية) ==================== */}
+      {/* ==================== 1. الهيدر المتجاوب (الجديد) ==================== */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
         
         {/* الشريط العلوي الأسود */}
@@ -38,7 +38,7 @@ export default function Home({ banner, products }) {
             ✨ Karizma
           </div>
 
-          {/* الوسط: الروابط (تظهر في الكمبيوتر وتختفي في الموبايل) */}
+          {/* الوسط: الروابط (تظهر في الكمبيوتر وتختفي في الموبايل عبر CSS) */}
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
@@ -52,18 +52,18 @@ export default function Home({ banner, products }) {
             <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
             <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
             
-            {/* زر الهامبرغر (يظهر فقط في الموبايل) */}
+            {/* زر القائمة (الهامبرغر) - يظهر فقط في الموبايل */}
             <button 
               className="mobile-menu-btn" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', marginRight: '10px' }}
+              style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', marginRight: '5px' }}
             >
               {isMenuOpen ? '✕' : '☰'}
             </button>
           </div>
         </div>
 
-        {/* القائمة المنسدلة للموبايل (تظهر عند الضغط فقط) */}
+        {/* القائمة المنسدلة للموبايل (تظهر فقط عند الضغط) */}
         {isMenuOpen && (
           <div className="mobile-nav-list fade-in">
             <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
@@ -74,7 +74,6 @@ export default function Home({ banner, products }) {
         )}
       </header>
       {/* =================================================================== */}
-
 
       {/* 2️⃣ الأشرطة المتحركة */}
       <div className="ticker-container second-ticker">
@@ -100,7 +99,7 @@ export default function Home({ banner, products }) {
         </div>
       )}
 
-      {/* 4️⃣ الشاشة الترحيبية */}
+      {/* 4️⃣ الشاشة الترحيبية (حافظنا على priority للسرعة) */}
       <div style={{ 
         position: 'relative', 
         height: '60vh', 
@@ -113,7 +112,7 @@ export default function Home({ banner, products }) {
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            priority={true} // ✅ أبقينا الأولوية كما اتفقنا للسرعة
+            priority={true} // ✅ مبقين عليها لضمان عدم هبوط السكور
             style={{ objectFit: 'cover' }}
             sizes="100vw"
             quality={60}
@@ -208,7 +207,7 @@ export default function Home({ banner, products }) {
       </div>
 
       <style jsx global>{`
-        /* أنماط الهيدر التفاعلي */
+        /* --- أنماط الهيدر المتجاوب --- */
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
         .mobile-nav-list { display: none; }
@@ -217,6 +216,7 @@ export default function Home({ banner, products }) {
           .desktop-nav { display: none; } /* إخفاء الروابط العادية في الموبايل */
           .mobile-menu-btn { display: block; } /* إظهار زر القائمة في الموبايل */
           
+          /* قائمة الموبايل المنسدلة */
           .mobile-nav-list {
             display: flex;
             flex-direction: column;
@@ -227,11 +227,12 @@ export default function Home({ banner, products }) {
             left: 0;
             width: 100%;
             padding: 10px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 999;
           }
         }
 
-        /* أنماط الشريط المتحرك */
+        /* --- باقي الأنماط (الشريط المتحرك وغيرها) --- */
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
         .second-ticker { background-color: #1a1a1a; }
@@ -240,7 +241,6 @@ export default function Home({ banner, products }) {
         .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; }
         @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 
-        /* أنماط عامة */
         .product-card, .category-circle { transition: 0.3s; }
         .product-card:hover, .category-circle:hover { transform: translateY(-5px); }
         .fade-in { animation: fadeIn 0.5s; }
@@ -289,7 +289,7 @@ function CategoryCircle({ href, emoji, label }) {
   );
 }
 
-const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '1rem' };
-const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f0f0f0', display: 'block' };
+const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '1rem', transition: '0.3s' };
+const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9', display: 'block' };
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
 const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' };
