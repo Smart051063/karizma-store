@@ -1,138 +1,157 @@
 import React from 'react';
+import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
+import Head from 'next/head';
 import Image from 'next/image';
-import { client } from '../../src/sanity/lib/client';
-import { PortableText } from '@portabletext/react'; // المكتبة التي قمنا بتثبيتها
 
-export default function BlogPost({ post }) {
+// 🧠 القاموس الذكي: لترجمة الروابط الإنجليزية إلى عناوين عربية فخمة
+const categoryTitles = {
+  'men': '🤵 العطور الرجالية الفاخرة',
+  'women': '💃 العطور النسائية الجذابة',
+  'unisex': '👫 عطور النيش (للجنسين)',
+  'niche': '💎 عطور النيش الحصرية',
+  'oud': '🪵 دهن العود والبخور',
+  'gulf': '🕌 العطور الخليجية والمخلطات',
+  'mixes': '⚗️ ميكسات كاريزما الخاصة',
+  'musks': '🧴 المسك والروائح الهادئة',
+  'bakhoor': '🪔 البخور والمعمول',
+  'burners': '♨️ الفوحات والإكسسوارات',
+  'fresheners': '🌸 معطرات الجو والمفارش',
+  'makeup': '💄 مستحضرات التجميل',
+  'detergents': '🧼 المنظفات والمطهرات',
+  'offers': '🔥 العروض والتخفيضات'
+};
+
+export default function CategoryPage({ products, slug, categoryTitle }) {
   
-  // شاشة تحميل أو خطأ إذا لم يوجد المقال
-  if (!post) return (
-    <div style={{ padding: '100px', textAlign: 'center', fontFamily: 'Arial' }}>
-      <h1>⚠️ المقال غير موجود</h1>
-      <Link href="/blog" style={{ color: '#d4af37' }}>العودة للمدونة</Link>
-    </div>
-  );
+  // إذا لم يكن هناك منتجات في هذا القسم
+  if (!products || products.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', padding: '100px 20px', fontFamily: 'Arial', minHeight: '60vh' }}>
+        <h1 style={{ color: '#333', marginBottom: '20px' }}>{categoryTitle}</h1>
+        <div style={{ fontSize: '5rem', marginBottom: '20px' }}>📦</div>
+        <h3>عذراً، لم نضف منتجات في هذا القسم بعد.</h3>
+        <p style={{ color: '#666' }}>نعمل على تجهيز تشكيلة مميزة تليق بكم.</p>
+        <Link href="/">
+          <button style={ctaButtonStyle}>العودة للرئيسية</button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
-      
-      {/* 1. صورة الغلاف (الهيرو) */}
-      <div style={{ position: 'relative', width: '100%', height: '50vh', backgroundColor: 'black' }}>
-        {post.imageUrl && (
-          <Image 
-            src={post.imageUrl} 
-            alt={post.title} 
-            fill 
-            style={{ objectFit: 'cover', opacity: 0.7 }} 
-            priority
-          />
-        )}
-        {/* العنوان فوق الصورة */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '40px 20px', background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto', color: 'white' }}>
-            <h1 style={{ fontSize: '2.5rem', margin: '0 0 10px 0', color: '#d4af37' }}>{post.title}</h1>
-            {post.publishedAt && (
-              <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
-                📅 نُشر في: {new Date(post.publishedAt).toLocaleDateString('ar-EG')}
-              </p>
-            )}
-          </div>
-        </div>
+    <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: '#f9f9f9', fontFamily: 'Arial, sans-serif' }}>
+      <Head>
+        <title>{categoryTitle} | كاريزما للعطور</title>
+      </Head>
+
+      {/* هيدر القسم */}
+      <div style={{ backgroundColor: '#1a1a1a', padding: '40px 20px', textAlign: 'center', color: 'white', marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '2.5rem', color: '#d4af37', margin: 0 }}>{categoryTitle}</h1>
+        <p style={{ marginTop: '10px', opacity: 0.8 }}>تصفح أفضل المنتجات المختارة بعناية</p>
       </div>
 
-      {/* 2. محتوى المقال */}
-      <div style={{ maxWidth: '800px', margin: '50px auto', padding: '0 20px', lineHeight: '1.8', fontSize: '1.1rem', color: '#333' }}>
-        
+      {/* شبكة المنتجات */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 60px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
+          {products.map((product) => (
+            <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
+              <div className="product-card" style={productCardStyle}>
+                
+                {/* صورة المنتج */}
+                <div style={{ position: 'relative', height: '250px', backgroundColor: 'white', borderBottom: '1px solid #eee' }}>
+                  {product.discount > 0 && (
+                    <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#e74c3c', color: 'white', padding: '2px 10px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: 'bold', zIndex: 1 }}>
+                      خصم {product.discount}%
+                    </span>
+                  )}
+                  {product.imageUrl && (
+                    <Image 
+                      src={product.imageUrl} 
+                      alt={product.name} 
+                      fill 
+                      style={{ objectFit: 'contain', padding: '10px' }} 
+                      sizes="(max-width: 768px) 100vw, 250px"
+                    />
+                  )}
+                </div>
+
+                {/* تفاصيل المنتج */}
+                <div style={{ padding: '15px', textAlign: 'center' }}>
+                  <h3 style={{ fontSize: '1rem', color: '#333', marginBottom: '10px', height: '40px', overflow: 'hidden' }}>{product.name}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} ج.م</span>
+                    {product.oldPrice && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>{product.oldPrice} ج.م</span>}
+                  </div>
+                </div>
+                
+                {/* زر أضف للسلة (شكلي) */}
+                <div style={{ padding: '10px', borderTop: '1px solid #f9f9f9' }}>
+                  <div style={{ backgroundColor: '#1a1a1a', color: '#d4af37', padding: '8px', borderRadius: '5px', textAlign: 'center', fontSize: '0.9rem' }}>
+                    عرض التفاصيل 👁️
+                  </div>
+                </div>
+
+              </div>
+            </Link>
+          ))}
+        </div>
+
         {/* زر العودة */}
-        <div style={{ marginBottom: '30px' }}>
-          <Link href="/blog" style={{ textDecoration: 'none', color: '#666', fontSize: '0.9rem' }}>
-            ← العودة لجميع المقالات
+        <div style={{ textAlign: 'center', marginTop: '60px' }}>
+          <Link href="/">
+            <button style={{ ...ctaButtonStyle, backgroundColor: 'white', border: '2px solid #d4af37', color: 'black' }}>🏠 العودة للرئيسية</button>
           </Link>
         </div>
-
-        {/* جسم المقال (النصوص والصور الداخلية) */}
-        <div className="content-body">
-          <PortableText 
-            value={post.body} 
-            components={myPortableTextComponents} 
-          />
-        </div>
-
-        {/* خاتمة وزر */}
-        <div style={{ marginTop: '60px', borderTop: '1px solid #eee', paddingTop: '30px', textAlign: 'center' }}>
-          <h3 style={{ marginBottom: '20px' }}>هل أعجبك المقال؟</h3>
-          <Link href="/shop">
-            <button style={{ padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}>
-              تصفح عطورنا الآن 🛍️
-            </button>
-          </Link>
-        </div>
-
       </div>
 
-      {/* تنسيقات خاصة للنصوص القادمة من Sanity */}
       <style jsx global>{`
-        .content-body h2 { color: #d4af37; margin-top: 40px; font-size: 1.8rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-        .content-body h3 { color: #333; margin-top: 30px; font-size: 1.4rem; font-weight: bold; }
-        .content-body p { margin-bottom: 20px; text-align: justify; }
-        .content-body ul { padding-right: 20px; margin-bottom: 20px; list-style-type: disc; color: #555; }
-        .content-body li { margin-bottom: 10px; }
-        .content-body blockquote { border-right: 5px solid #d4af37; padding-right: 20px; margin: 30px 0; font-style: italic; background: #fafafa; padding: 20px; color: #555; }
-        .content-body strong { color: black; }
-        .content-body a { color: #d4af37; text-decoration: underline; }
+        .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
       `}</style>
     </div>
   );
 }
 
-// 🖌️ تخصيص مكونات PortableText (للصور داخل المقال)
-const myPortableTextComponents = {
-  types: {
-    image: ({ value }) => {
-      if (!value?.asset?._ref) {
-        return null;
-      }
-      return (
-        <div style={{ margin: '30px 0', position: 'relative', height: '400px', width: '100%' }}>
-          {/* ملاحظة: هذا يتطلب دالة مساعدة لجلب رابط الصورة، لكن للتبسيط سنتركها الآن */}
-          <img 
-             src={`https://cdn.sanity.io/images/${client.config().projectId}/${client.config().dataset}/${value.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}`} 
-             style={{ width: '100%', height: 'auto', borderRadius: '10px' }} 
-             alt={value.alt || 'صورة مقال'}
-          />
-        </div>
-      );
-    }
-  }
-};
-
-// 1. إنشاء المسارات
-export async function getStaticPaths() {
-  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
-
-  const paths = posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
-
-  return { paths, fallback: 'blocking' };
-}
-
-// 2. جلب البيانات
-export async function getStaticProps({ params }) {
+// السيرفر: جلب المنتجات حسب القسم
+export async function getServerSideProps({ params }) {
   const { slug } = params;
+
+  // 1. تحديد العنوان العربي بناءً على الرابط
+  const categoryTitle = categoryTitles[slug] || `قسم ${slug}`;
+
+  // 2. الاستعلام من Sanity
+  // هذا الاستعلام يبحث عن المنتجات التي ينتمي قسمها (category) لنفس الاسم (slug)
+  // ملاحظة: نفترض أن لديك حقل 'categories' في المنتج، أو سنستخدم الفلترة بالكلمات المفتاحية
+  // لتسهيل الأمر عليك حالياً، سنجلب المنتجات التي تحتوي "tags" أو قسم يطابق الاسم
   
-  const post = await client.fetch(`*[_type == "post" && slug.current == $slug][0]{
-    title,
-    publishedAt,
-    body,
-    "imageUrl": mainImage.asset->url
-  }`, { slug });
+  // السيناريو الأذكى: جلب كل المنتجات وفلترتها (إذا لم يكن الـ Schema جاهزاً تماماً)
+  // أو استخدام استعلام دقيق إذا كنت قد ربطت الأقسام.
+  // سأستخدم استعلاماً مرناً يبحث في (القسم)
+  
+  const query = `*[_type == "product" && references(*[_type == "category" && slug.current == '${slug}']._id)] | order(_createdAt desc) {
+    _id,
+    name,
+    price,
+    discount,
+    "imageUrl": image.asset->url,
+    slug
+  }`;
+
+  // ⚠️ إذا لم يعمل الاستعلام السابق (لأنك ربما لم تربط الأقسام بعد)،
+  // يمكنك استبداله مؤقتاً بـ: *[_type == "product"] لجلب كل المنتجات للتجربة.
+  
+  const products = await client.fetch(query);
 
   return {
     props: {
-      post: post || null,
-    },
-    revalidate: 10,
+      products: products || [],
+      slug,
+      categoryTitle
+    }
   };
 }
+
+// التنسيقات
+const productCardStyle = { width: '250px', backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', border: '1px solid #eee', cursor: 'pointer' };
+const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
