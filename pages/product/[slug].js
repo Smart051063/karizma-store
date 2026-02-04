@@ -11,7 +11,6 @@ export default function ProductDetails({ product, relatedProducts }) {
   const [quantity, setQuantity] = useState(1);
   const [showNotification, setShowNotification] = useState(false);
 
-  // حماية: إذا لم يتم العثور على المنتج
   if (!product) {
     return (
       <div style={{ textAlign: 'center', padding: '100px', fontFamily: 'Arial' }}>
@@ -21,16 +20,13 @@ export default function ProductDetails({ product, relatedProducts }) {
     );
   }
 
-  // حساب السعر والخصم
   const price = product.price;
   const discount = product.discount || 0;
   const finalPrice = discount ? Math.round(price - (price * discount / 100)) : price;
 
-  // دوال الكمية
   const incQty = () => setQuantity((prev) => prev + 1);
   const decQty = () => setQuantity((prev) => (prev - 1 < 1 ? 1 : prev - 1));
 
-  // دالة الإضافة للسلة
   const handleAddToCart = () => {
     addToCart({ 
       _id: product._id,
@@ -46,7 +42,6 @@ export default function ProductDetails({ product, relatedProducts }) {
     setTimeout(() => setShowNotification(false), 3000);
   };
 
-  // إعداد بيانات الـ SEO (Schema Markup)
   const schemaData = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -81,7 +76,6 @@ export default function ProductDetails({ product, relatedProducts }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
-      {/* إشعار الإضافة للسلة */}
       {showNotification && (
         <div className="fade-in" style={{
           position: 'fixed', top: '20px', left: '50%', transform: 'translateX(-50%)',
@@ -97,7 +91,6 @@ export default function ProductDetails({ product, relatedProducts }) {
         {/* ================= القسم العلوي: تفاصيل المنتج ================= */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', backgroundColor: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
           
-          {/* الصورة */}
           <div style={{ flex: '1 1 400px', position: 'relative' }}>
             <div style={{ position: 'relative', height: '500px', borderRadius: '15px', overflow: 'hidden', border: '1px solid #f0f0f0' }}>
               {discount > 0 && (
@@ -117,7 +110,6 @@ export default function ProductDetails({ product, relatedProducts }) {
             </div>
           </div>
 
-          {/* التفاصيل */}
           <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h1 style={{ fontSize: '2.5rem', marginBottom: '15px', color: '#1a1a1a' }}>{product.name}</h1>
             
@@ -130,7 +122,6 @@ export default function ProductDetails({ product, relatedProducts }) {
               {product.description || 'وصف العطر ومكوناته الفاخرة سيتم إضافتها قريباً...'}
             </p>
 
-            {/* التحكم بالكمية والإضافة */}
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', border: '2px solid #eee', borderRadius: '30px', overflow: 'hidden' }}>
                 <button onClick={decQty} style={{ padding: '10px 20px', background: 'white', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}>-</button>
@@ -162,11 +153,33 @@ export default function ProductDetails({ product, relatedProducts }) {
           </div>
         </div>
 
-        {/* ================= القسم الجديد: منتجات قد تعجبك ================= */}
+        {/* ================= القسم الجديد: فيديو المنتج 🎥 ================= */}
+        <div style={{ marginTop: '80px', textAlign: 'center' }}>
+           <h2 style={{ fontSize: '2rem', marginBottom: '30px', color: '#333' }}>🎥 اكتشف سحر {product.name}</h2>
+           <div style={{ 
+             maxWidth: '900px', margin: '0 auto', 
+             borderRadius: '20px', overflow: 'hidden', 
+             border: '2px solid #d4af37', 
+             boxShadow: '0 10px 30px rgba(0,0,0,0.1)' 
+           }}>
+             <video 
+               width="100%" 
+               height="auto" 
+               controls 
+               // إذا كان للمنتج فيديو خاص نستخدمه، وإلا نستخدم فيديو البرومو الافتراضي
+               src={product.videoUrl ? product.videoUrl : "/promo.mp4"}
+               poster={product.imageUrl} // نستخدم صورة المنتج كغلاف للفيديو
+               style={{ display: 'block' }}
+             >
+               متصفحك لا يدعم تشغيل الفيديو.
+             </video>
+           </div>
+        </div>
+
+        {/* ================= قسم منتجات قد تعجبك ================= */}
         {relatedProducts.length > 0 && (
           <div style={{ marginTop: '80px' }}>
             <h2 style={{ fontSize: '2rem', marginBottom: '40px', textAlign: 'center', color: '#333' }}>منتجات قد تعجبك ❤️</h2>
-            
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
               {relatedProducts.map((item) => (
                 <Link href={`/product/${item.slug.current}`} key={item._id} style={{ textDecoration: 'none' }}>
@@ -199,17 +212,17 @@ export default function ProductDetails({ product, relatedProducts }) {
   );
 }
 
-// السيرفر: جلب المنتج الحالي + منتجات مقترحة
 export const getServerSideProps = async ({ params: { slug } }) => {
-  // 1. جلب المنتج الحالي
+  // جلب المنتج + الفيديو (إذا وجد)
+  // ملاحظة: افترضنا أن حقل الفيديو اسمه video في السانيتي، إذا لم يوجد سيأخذ الرابط فارغاً
   const queryProduct = `*[_type == "product" && slug.current == '${slug}'][0]{
     _id, name, price, discount, description, slug,
-    "imageUrl": image.asset->url
+    "imageUrl": image.asset->url,
+    "videoUrl": video.asset->url 
   }`;
   
   const product = await client.fetch(queryProduct);
 
-  // 2. جلب 4 منتجات أخرى (ليست المنتج الحالي) لتعرض كـ "منتجات ذات صلة"
   const queryRelated = `*[_type == "product" && slug.current != '${slug}'] | order(_createdAt desc) [0..3] {
     _id, name, price, slug,
     "imageUrl": image.asset->url
