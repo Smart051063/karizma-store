@@ -1,213 +1,137 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import Image from 'next/image';
-import { client } from '../src/sanity/lib/client';
+import { client } from '../../src/sanity/lib/client'; // 👈 لاحظ: نقطتين للرجوع للخلف مرتين
+import { PortableText } from '@portabletext/react';
 
-export default function Home({ banner, products }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
-  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+export default function BlogPost({ post }) {
+  
+  // شاشة تحميل أو خطأ إذا لم يوجد المقال
+  if (!post) return (
+    <div style={{ padding: '100px', textAlign: 'center', fontFamily: 'Arial' }}>
+      <h1>⚠️ المقال غير موجود</h1>
+      <Link href="/blog" style={{ color: '#d4af37' }}>العودة للمدونة</Link>
+    </div>
+  );
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      <Head>
-        <title>كاريزما للعطور | Karizma Perfumes</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-
-      {/* ==================== 1. الهيدر ==================== */}
-      <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
-          {topStatusText}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' }}>✨ Karizma</div>
-          <nav className="desktop-nav">
-            <Link href="/" style={linkStyle}>الرئيسية</Link>
-            <Link href="/shop" style={linkStyle}>المتجر</Link>
-            <Link href="/blog" style={linkStyle}>المدونة</Link>
-            <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
-          </nav>
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <Link href="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
-               <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
-            </Link>
-            <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span style={{ cursor: 'pointer', fontSize: '1.3rem', display: 'inline-block', transform: 'translateY(2px)' }}>🔍</span>
-            </Link>
-            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
-            <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'white', border: '2px solid #d4af37', borderRadius: '8px', color: '#d4af37', fontSize: '1.5rem', cursor: 'pointer', padding: '0px 8px', marginRight: '8px', height: '35px', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {isMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
-        {isMenuOpen && (
-          <div className="mobile-nav-list fade-in">
-            <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
-            <Link href="/shop" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المتجر</Link>
-            <Link href="/blog" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المدونة</Link>
-            <Link href="/offers" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>العروض 🔥</Link>
-            <Link href="/search" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>🔍 البحث</Link>
-          </div>
+      {/* 1. صورة الغلاف (الهيرو) */}
+      <div style={{ position: 'relative', width: '100%', height: '50vh', backgroundColor: 'black' }}>
+        {post.imageUrl && (
+          <Image 
+            src={post.imageUrl} 
+            alt={post.title} 
+            fill 
+            style={{ objectFit: 'cover', opacity: 0.7 }} 
+            priority
+          />
         )}
-      </header>
-
-      {/* ==================== 2. الأشرطة المتحركة ==================== */}
-      <div className="ticker-container first-ticker">
-        <div className="ticker-track">
-          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
-          <div className="ticker-block"><span className="ticker-item">{tickerText1}</span><span className="ticker-item">{tickerText1}</span></div>
-        </div>
-      </div>
-      <div className="ticker-container second-ticker">
-        <div className="ticker-track-reverse">
-          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
-          <div className="ticker-block"><span className="ticker-item-white">{tickerText2}</span><span className="ticker-item-white">{tickerText2}</span></div>
+        {/* العنوان فوق الصورة */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '40px 20px', background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto', color: 'white' }}>
+            <h1 style={{ fontSize: '2.5rem', margin: '0 0 10px 0', color: '#d4af37' }}>{post.title}</h1>
+            {post.publishedAt && (
+              <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                📅 نُشر في: {new Date(post.publishedAt).toLocaleDateString('ar-EG')}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ==================== 3. البانر ==================== */}
-      {banner?.imageUrl && (
-        <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
-          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} priority={true} sizes="(max-width: 768px) 100vw, 100vw" />
-        </div>
-      )}
-
-      {/* ==================== 4. الهيرو (الشاشة الترحيبية) ==================== */}
-      <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
-        </div>
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
-        <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
-          <h1 style={{ fontSize: '3rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold' }}>كاريزما للعطور</h1>
-          <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>عطرك.. بصمتك التي لا تُنسى ✨</p>
-          <Link href="/shop"><button className="hover-btn" style={ctaButtonStyle}>تسوق الآن</button></Link>
-        </div>
-      </div>
-
-      {/* ==================== 5. تصفح مجموعاتنا (تمت إعادتها ✅) ==================== */}
-      <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
-        <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
-          <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
-          <CategoryCircle href="/women" emoji="💃" label="نسائي" />
-          <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
-          <CategoryCircle href="/niche" emoji="💎" label="نيش" />
-          <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
-          <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
-          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
-          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
-          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
-        </div>
-      </div>
-
-      {/* ==================== 6. المنتجات ==================== */}
-      <div style={{ padding: '60px 10px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
-        <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-          {products?.map((product) => (
-            <Link href={`/product/${product.slug?.current}`} key={product._id} style={{ textDecoration: 'none' }}>
-              <div className="product-card" style={productCardStyle}>
-                <div style={{ position: 'relative', height: '140px', backgroundColor: '#f9f9f9' }}>
-                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'cover' }} sizes="160px" />}
-                </div>
-                <div style={{ padding: '10px' }}>
-                  <p style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#333', marginBottom: '5px' }}>{product.name}</p>
-                  <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{product.price} ج.م</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <Link href="/shop">
-            <button className="hover-btn" style={{ ...ctaButtonStyle, backgroundColor: '#333', color: '#fff' }}>🛍️ عرض كل المنتجات</button>
+      {/* 2. محتوى المقال */}
+      <div style={{ maxWidth: '800px', margin: '50px auto', padding: '0 20px', lineHeight: '1.8', fontSize: '1.1rem', color: '#333' }}>
+        
+        {/* زر العودة */}
+        <div style={{ marginBottom: '30px' }}>
+          <Link href="/blog" style={{ textDecoration: 'none', color: '#666', fontSize: '0.9rem' }}>
+            ← العودة لجميع المقالات
           </Link>
         </div>
-      </div>
 
-      {/* ==================== 7. الفيديو ==================== */}
-      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
-        <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
-        <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
-          <video 
-            width="100%" 
-            height="auto" 
-            controls 
-            loop 
-            muted 
-            playsInline 
-            src="/promo.mp4" 
-            style={{ display: 'block' }}
-          >
-            متصفحك لا يدعم الفيديو.
-          </video>
+        {/* جسم المقال (النصوص والصور الداخلية) */}
+        <div className="content-body">
+          <PortableText 
+            value={post.body} 
+            components={myPortableTextComponents} 
+          />
         </div>
+
+        {/* خاتمة وزر */}
+        <div style={{ marginTop: '60px', borderTop: '1px solid #eee', paddingTop: '30px', textAlign: 'center' }}>
+          <h3 style={{ marginBottom: '20px' }}>هل أعجبك المقال؟</h3>
+          <Link href="/shop">
+            <button style={{ padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}>
+              تصفح عطورنا الآن 🛍️
+            </button>
+          </Link>
+        </div>
+
       </div>
 
-      {/* Styles */}
+      {/* تنسيقات خاصة للنصوص القادمة من Sanity */}
       <style jsx global>{`
-        .desktop-nav { display: flex; gap: 20px; }
-        .mobile-menu-btn { display: none; }
-        .mobile-nav-list { display: none; }
-        @media (max-width: 768px) {
-          .desktop-nav { display: none; }
-          .mobile-menu-btn { display: flex; }
-          .mobile-nav-list { display: flex; flex-direction: column; background: white; position: absolute; top: 100%; left: 0; width: 100%; padding: 10px 0; border-top: 1px solid #eee; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        }
-        .ticker-container { width: 100%; overflow: hidden; padding: 8px 0; white-space: nowrap; direction: ltr; }
-        .first-ticker { background-color: #d4af37; }
-        .second-ticker { background-color: #1a1a1a; }
-        .ticker-track { display: inline-flex; animation: scroll-left 30s linear infinite; }
-        .ticker-track-reverse { display: inline-flex; animation: scroll-right 30s linear infinite; }
-        .ticker-block { display: flex; }
-        .ticker-item { padding: 0 2rem; font-weight: bold; color: black; font-size: 1rem; }
-        .ticker-item-white { padding: 0 2rem; font-weight: bold; color: #d4af37; font-size: 1rem; }
-        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        
-        .product-card, .category-circle { transition: transform 0.3s ease; }
-        .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
-        
-        .fade-in { animation: fadeIn 0.5s; }
-        .fade-in-up { animation: fadeInUp 1s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .content-body h2 { color: #d4af37; margin-top: 40px; font-size: 1.8rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .content-body h3 { color: #333; margin-top: 30px; font-size: 1.4rem; font-weight: bold; }
+        .content-body p { margin-bottom: 20px; text-align: justify; }
+        .content-body ul { padding-right: 20px; margin-bottom: 20px; list-style-type: disc; color: #555; }
+        .content-body li { margin-bottom: 10px; }
+        .content-body blockquote { border-right: 5px solid #d4af37; padding-right: 20px; margin: 30px 0; font-style: italic; background: #fafafa; padding: 20px; color: #555; }
+        .content-body strong { color: black; }
+        .content-body a { color: #d4af37; text-decoration: underline; }
       `}</style>
     </div>
   );
 }
 
-// السيرفر
-export async function getStaticProps() {
-  const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
-  const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
-  return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
+// 🖌️ تخصيص مكونات PortableText (للصور داخل المقال)
+const myPortableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      if (!value?.asset?._ref) {
+        return null;
+      }
+      return (
+        <div style={{ margin: '30px 0', position: 'relative', height: '400px', width: '100%' }}>
+           <img 
+             src={`https://cdn.sanity.io/images/${client.config().projectId}/${client.config().dataset}/${value.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}`} 
+             style={{ width: '100%', height: 'auto', borderRadius: '10px' }} 
+             alt={value.alt || 'صورة مقال'}
+          />
+        </div>
+      );
+    }
+  }
+};
+
+// 1. إنشاء المسارات
+export async function getStaticPaths() {
+  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
+
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+
+  return { paths, fallback: 'blocking' };
 }
 
-// المكونات الصغيرة
-function CategoryCircle({ href, emoji, label }) {
-  return (
-    <Link href={href} style={{ textDecoration: 'none' }}>
-      <div className="category-circle" style={{
-        width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer'
-      }}>
-        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
-        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
-      </div>
-    </Link>
-  );
-}
+// 2. جلب البيانات
+export async function getStaticProps({ params }) {
+  const { slug } = params;
+  
+  const post = await client.fetch(`*[_type == "post" && slug.current == $slug][0]{
+    title,
+    publishedAt,
+    body,
+    "imageUrl": mainImage.asset->url
+  }`, { slug });
 
-const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
-const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
-const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
-const productCardStyle = { width: '160px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.08)', overflow: 'hidden', border: '1px solid #eee' };
+  return {
+    props: {
+      post: post || null,
+    },
+    revalidate: 10,
+  };
+}
