@@ -1,13 +1,15 @@
 import '../styles/globals.css';
 import { CartProvider, useCart } from '../src/context/CartContext';
 import Link from 'next/link';
+import Script from 'next/script';
 
-// هذا المكون يحتوي على الأزرار العائمة والفوتر
+// مكون العناصر العامة (الفوتر والأزرار العائمة)
 const GlobalElements = ({ children }) => {
-  const { totalQuantities } = useCart(); // العداد الأحمر للسلة
+  const { totalQuantities } = useCart(); // لجلب عدد المنتجات للعداد الأحمر
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      
       {/* محتوى الصفحة الحالية */}
       <main style={{ flex: 1 }}>
         {children}
@@ -36,7 +38,7 @@ const GlobalElements = ({ children }) => {
             </ul>
           </div>
 
-          {/* العمود الثالث: التواصل والسوشيال ميديا */}
+          {/* العمود الثالث */}
           <div style={{ flex: '1 1 300px' }}>
             <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>تواصل معنا</h4>
             <p style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -46,28 +48,15 @@ const GlobalElements = ({ children }) => {
               📞 01002410037
             </p>
 
-            {/* 👇👇 هنا أزرار السوشيال ميديا (استبدل الروابط بروابطك) 👇👇 */}
+            {/* أزرار السوشيال ميديا */}
             <h4 style={{ color: '#d4af37', marginTop: '20px', marginBottom: '15px', fontSize: '1rem' }}>تابعنا على:</h4>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              
-              {/* فيسبوك */}
               <a href="https://www.facebook.com/" target="_blank" style={socialIconStyle} title="Facebook">f</a>
-              
-              {/* انستجرام */}
               <a href="https://www.instagram.com/" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
-              
-              {/* تيك توك */}
               <a href="https://www.tiktok.com/" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
-              
-              {/* يوتيوب */}
               <a href="https://www.youtube.com/" target="_blank" style={socialIconStyle} title="YouTube">▶️</a>
-              
-              {/* تليجرام */}
               <a href="https://t.me/" target="_blank" style={socialIconStyle} title="Telegram">✈️</a>
-
-               {/* واتساب (أيقونة إضافية في الفوتر) */}
-               <a href="https://wa.me/201002410037" target="_blank" style={socialIconStyle} title="WhatsApp">💬</a>
-
+              <a href="https://wa.me/201002410037" target="_blank" style={socialIconStyle} title="WhatsApp">💬</a>
             </div>
           </div>
         </div>
@@ -86,11 +75,9 @@ const GlobalElements = ({ children }) => {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
           zIndex: 9999, cursor: 'pointer', textDecoration: 'none'
-        }}
-        className="floating-btn"
-      >
+        }} className="floating-btn">
         🛒
-        {/* 🔴 العداد الأحمر */}
+        {/* العداد الأحمر */}
         {totalQuantities > 0 && (
           <span style={{
             position: 'absolute', top: '-5px', left: '-5px',
@@ -99,26 +86,19 @@ const GlobalElements = ({ children }) => {
             fontSize: '12px', fontWeight: 'bold',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: '2px solid white'
-          }}>
-            {totalQuantities}
-          </span>
+          }}>{totalQuantities}</span>
         )}
       </Link>
 
-      {/* 💬 زر الواتساب العائم (بالرقم الصحيح) */}
-      <a 
-        href="https://wa.me/201002410037" 
-        target="_blank"
-        style={{
+      {/* 💬 زر الواتساب العائم */}
+      <a href="https://wa.me/201002410037" target="_blank" style={{
           position: 'fixed', bottom: '20px', right: '20px',
           backgroundColor: '#25D366', color: 'white',
           width: '60px', height: '60px', borderRadius: '50%',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '35px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
           zIndex: 9999, transition: '0.3s', textDecoration: 'none'
-        }}
-        className="floating-btn"
-      >
+        }} className="floating-btn">
         💬
       </a>
       
@@ -132,6 +112,45 @@ const GlobalElements = ({ children }) => {
 export default function App({ Component, pageProps }) {
   return (
     <CartProvider>
+      
+      {/* 🔵 1. إعدادات فيسبوك بيكسل */}
+      <Script id="facebook-pixel" strategy="afterInteractive">
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          
+          fbq('init', '1418587233195999'); 
+          fbq('track', 'PageView');
+        `}
+      </Script>
+
+      {/* ⚫ 2. إعدادات تيك توك بيكسل (تم وضع رقمك الجديد ✅) */}
+      <Script id="tiktok-pixel" strategy="afterInteractive">
+        {`
+          !function (w, d, t) {
+            w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
+            ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],
+            ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+            for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+            ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},
+            ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
+            ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};
+            var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
+            var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+
+            // 👇 رقمك الجديد من الصورة
+            ttq.load('D5R8HEBC77UDQTF87QVG');
+            ttq.page();
+          }(window, document, 'ttq');
+        `}
+      </Script>
+
       <GlobalElements>
         <Component {...pageProps} />
       </GlobalElements>
@@ -139,7 +158,6 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-// تصميم أيقونات السوشيال ميديا (ذهبي وأسود)
 const socialIconStyle = { 
   width: '40px', height: '40px', borderRadius: '50%', 
   backgroundColor: '#d4af37', color: 'black', 
