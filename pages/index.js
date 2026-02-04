@@ -20,7 +20,7 @@ export default function Home({ banner, products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* 1️⃣ الأشرطة المتحركة (تم تسريعها بتقنية GPU) */}
+      {/* 1️⃣ الأشرطة المتحركة (محسنة لتعمل على GPU لسرعة قصوى) */}
       <div className="ticker-container first-ticker">
         <div className="ticker-track">
           <div className="ticker-block"><span className="ticker-item">{text1}</span><span className="ticker-item">{text1}</span></div>
@@ -45,7 +45,7 @@ export default function Home({ banner, products }) {
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
             priority={true} 
             sizes="(max-width: 768px) 100vw, 100vw"
-            quality={65} // جودة متوازنة
+            quality={65}
           />
         </div>
       )}
@@ -66,7 +66,7 @@ export default function Home({ banner, products }) {
             priority={true} 
             style={{ objectFit: 'cover' }}
             sizes="100vw"
-            quality={60} // خفيف جداً
+            quality={60}
           />
         </div>
         
@@ -102,7 +102,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 5️⃣ قسم الفيديو (ذكي جداً: لا يحمل إلا عند الضغط) */}
+      {/* 5️⃣ قسم الفيديو (ذكي: لا يحمل إلا عند الضغط) */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '35px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '800px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37' }}>
@@ -113,8 +113,8 @@ export default function Home({ banner, products }) {
             loop 
             muted 
             playsInline 
-            preload="none" // 👈 السر هنا: لن يحمل الفيديو ويبطئ الموقع
-            poster={banner?.imageUrl} // صورة تظهر مكان الفيديو حتى يضغط العميل
+            preload="none" 
+            poster={banner?.imageUrl} 
           >
             <source src="/promo.mp4" type="video/mp4" />
           </video>
@@ -136,9 +136,8 @@ export default function Home({ banner, products }) {
                         alt={product.name} 
                         fill
                         style={{ objectFit: 'cover' }}
-                        sizes="150px"
-                        loading="lazy"
-                        quality={50} // صور خفيفة جداً
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        quality={50}
                       />
                     )}
                   </div>
@@ -162,7 +161,7 @@ export default function Home({ banner, products }) {
         .ticker-container { width: 100%; overflow: hidden; padding: 6px 0; white-space: nowrap; direction: ltr; }
         .first-ticker { background-color: #d4af37; }
         .second-ticker { background-color: #1a1a1a; }
-        /* استخدام GPU للتسريع (transform: translateZ(0)) */
+        /* GPU Acceleration */
         .ticker-track { display: inline-flex; animation: scroll-left 40s linear infinite; will-change: transform; transform: translateZ(0); }
         .ticker-track-reverse { display: inline-flex; animation: scroll-right 40s linear infinite; will-change: transform; transform: translateZ(0); }
         .ticker-block { display: flex; }
@@ -181,6 +180,7 @@ export default function Home({ banner, products }) {
   );
 }
 
+// السيرفر
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{
     title, 
@@ -201,6 +201,7 @@ export async function getStaticProps() {
   };
 }
 
+// المكونات الصغيرة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
@@ -216,5 +217,6 @@ function CategoryCircle({ href, emoji, label }) {
   );
 }
 
+// الستايلات الثابتة
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' };
 const productCardStyle = { width: '150px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', cursor: 'pointer' };
