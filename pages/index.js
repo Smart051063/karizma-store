@@ -8,8 +8,8 @@ export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 50% على جميع العطور ✨ ";
-  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
