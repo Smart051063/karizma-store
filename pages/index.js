@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // 👈 أضفنا useState للقائمة
+import React, { useState } from 'react'; // 👈 أضفنا useState للتحكم في القائمة
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -50,7 +50,7 @@ export default function Home({ banner, products }) {
           <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
             <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🛒</span>
             <span style={{ cursor: 'pointer', fontSize: '1.2rem' }}>🔍</span>
-            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>English</button>
+            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
             
             {/* زر الهامبرغر (يظهر فقط في الموبايل) */}
             <button 
@@ -63,7 +63,7 @@ export default function Home({ banner, products }) {
           </div>
         </div>
 
-        {/* القائمة المنسدلة للموبايل (تظهر عند الضغط) */}
+        {/* القائمة المنسدلة للموبايل (تظهر عند الضغط فقط) */}
         {isMenuOpen && (
           <div className="mobile-nav-list fade-in">
             <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
@@ -113,7 +113,7 @@ export default function Home({ banner, products }) {
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            priority={true} 
+            priority={true} // ✅ أبقينا الأولوية كما اتفقنا للسرعة
             style={{ objectFit: 'cover' }}
             sizes="100vw"
             quality={60}
