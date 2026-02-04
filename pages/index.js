@@ -34,7 +34,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* 2️⃣ قسم البانر (الأولوية القصوى هنا فقط) */}
+      {/* 2️⃣ قسم البانر */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto' }}>
           <Image 
@@ -43,14 +43,14 @@ export default function Home({ banner, products }) {
             width={1400} 
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
-            priority={true} // ✅ أولوية للبانر لأنه أول ما يراه العميل
+            priority={true} // ✅ ضروري للسرعة
             sizes="(max-width: 768px) 100vw, 100vw"
             quality={65}
           />
         </div>
       )}
 
-      {/* 3️⃣ الشاشة الترحيبية (تم تخفيفها) */}
+      {/* 3️⃣ الشاشة الترحيبية (تم إعادة الأولوية لها) */}
       <div style={{ 
         position: 'relative', 
         height: '60vh', 
@@ -63,8 +63,7 @@ export default function Home({ banner, products }) {
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'}
             alt="Karizma Background"
             fill
-            // ❌ حذفنا priority من هنا لتسريع الموقع
-            loading="lazy" // ✅ تحميل ذكي (فقط عند الحاجة)
+            priority={true} // 🚀 رجعنا هذا السطر لأنه سبب المشكلة
             style={{ objectFit: 'cover' }}
             sizes="100vw"
             quality={60}
