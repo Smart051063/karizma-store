@@ -6,8 +6,12 @@ import { client } from '../src/sanity/lib/client';
 
 export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على بعض العطور ✨ ";
-  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات اكثر 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+
+  // 👇 هذا هو السطر الذي كان ناقصاً وسبب المشكلة!
+  const topStatusText = " 🚀 التحديث وصل! القائمة الجانبية والبحث يعملان بنجاح 🚀 ";
+  
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
@@ -113,7 +117,7 @@ export default function Home({ banner, products }) {
             width={1400} 
             height={400}
             style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }}
-            priority={true} // ✅ أولوية قصوى للتحميل السريع
+            priority={true} 
             sizes="(max-width: 768px) 100vw, 100vw"
           />
         </div>
