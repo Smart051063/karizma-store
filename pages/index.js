@@ -15,7 +15,7 @@ export default function Home({ banner, products }) {
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
       <Head>
-        <title>كاريزما للعطور | Karizma Fragrances</title>
+        <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية في مصر. عطور رجالية ونسائية، عود، وبخور بجودة عالية وثبات ممتاز." />
         <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
@@ -96,6 +96,7 @@ export default function Home({ banner, products }) {
       <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          
           <CategoryCircle href="/offers" emoji="🔥" label="العروض والتخفيضات" />
           <CategoryCircle href="/men" emoji="🤵" label="العطور الرجالية الفاخرة" />
           <CategoryCircle href="/women" emoji="💃" label="العطور النسائية الجذابة" />
@@ -110,6 +111,7 @@ export default function Home({ banner, products }) {
           <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات الجو" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="مستحضرات التجميل" />
           <CategoryCircle href="/detergents" emoji="🧼" label="المنظفات والمطهرات" />
+
         </div>
       </div>
 
@@ -148,91 +150,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 8. الفوتر الجديد (Premium) ==================== */}
-      <footer style={{ backgroundColor: 'black', color: 'white', padding: '60px 20px 20px', borderTop: '5px solid #d4af37' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'space-between', textAlign: 'right' }}>
-          
-          <div style={{ flex: '1 1 300px' }}>
-            <h3 style={{ color: '#d4af37', fontSize: '1.5rem', marginBottom: '20px' }}>✨ Karizma</h3>
-            <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-              نحن لا نبيع مجرد عطور، بل نصنع ذكريات لا تُنسى. تشكيلة فاخرة من العطور الفرنسية والشرقية المستوحاة بأعلى جودة.
-            </p>
-          </div>
-
-          <div style={{ flex: '1 1 200px' }}>
-            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>روابط تهمك</h4>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
-              <li style={{ marginBottom: '10px' }}><Link href="/offers" style={{ color: '#fff', textDecoration: 'none' }}>🔥 العروض والخصومات</Link></li>
-              <li style={{ marginBottom: '10px' }}><Link href="/men" style={{ color: '#fff', textDecoration: 'none' }}>🤵 عطور رجالية</Link></li>
-              <li style={{ marginBottom: '10px' }}><Link href="/women" style={{ color: '#fff', textDecoration: 'none' }}>💃 عطور نسائية</Link></li>
-              <li style={{ marginBottom: '10px' }}><Link href="/blog" style={{ color: '#fff', textDecoration: 'none' }}>📝 نصائح وجمال</Link></li>
-            </ul>
-          </div>
-
-          <div style={{ flex: '1 1 300px' }}>
-            <h4 style={{ color: '#d4af37', marginBottom: '20px', fontSize: '1.2rem' }}>تواصل معنا</h4>
-            <p style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              📍 <span>28WM+22W، شارع إبن الرومي<br/>الحديقة الدولية، مدينة نصر</span>
-            </p>
-            <a 
-              href="https://maps.app.goo.gl/your-link" 
-              target="_blank" 
-              style={{ display: 'inline-block', marginBottom: '15px', padding: '5px 15px', backgroundColor: '#d4af37', color: 'black', borderRadius: '5px', textDecoration: 'none', fontWeight: 'bold', fontSize: '0.8rem' }}
-            >
-               🗺️ عرض الموقع على الخريطة
-            </a>
-            <p style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
-              📞 01002410037
-            </p>
-            
-            <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
-              <div style={socialIconStyle}>f</div>
-              <div style={socialIconStyle}>📷</div>
-              <div style={socialIconStyle}>♪</div>
-              <div style={socialIconStyle}>👻</div>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #333', fontSize: '0.9rem', color: '#777' }}>
-          © 2024 Karizma Perfumes. جميع الحقوق محفوظة.
-        </div>
-      </footer>
-
-      {/* ==================== 9. الأزرار العائمة (سلة + واتساب) ==================== */}
-      
-      {/* 🛒 زر السلة العائم (جديد) */}
-      <Link href="/cart" style={{
-          position: 'fixed', bottom: '90px', right: '20px', // يظهر فوق زر الواتساب
-          backgroundColor: 'white', color: 'black', border: '2px solid #d4af37',
-          width: '60px', height: '60px', borderRadius: '50%',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-          zIndex: 9999, cursor: 'pointer', textDecoration: 'none'
-        }}
-        className="floating-btn"
-      >
-        🛒
-      </Link>
-
-      {/* 💬 زر الواتساب العائم */}
-      <a 
-        href="https://wa.me/201002410037" 
-        target="_blank"
-        style={{
-          position: 'fixed', bottom: '20px', right: '20px',
-          backgroundColor: '#25D366', color: 'white',
-          width: '60px', height: '60px', borderRadius: '50%',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '35px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-          zIndex: 9999, transition: '0.3s', textDecoration: 'none'
-        }}
-        className="whatsapp-btn floating-btn"
-      >
-        💬
-      </a>
-
-      {/* Styles */}
+      {/* Styles (تم حذف الفوتر والأزرار العائمة من هنا لأننا نقلناها) */}
       <style jsx global>{`
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
@@ -255,7 +173,6 @@ export default function Home({ banner, products }) {
         
         .product-card, .category-circle { transition: transform 0.3s ease; }
         .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
-        .floating-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important; }
         
         .fade-in { animation: fadeIn 0.5s; }
         .fade-in-up { animation: fadeInUp 1s ease-out; }
@@ -266,14 +183,12 @@ export default function Home({ banner, products }) {
   );
 }
 
-// السيرفر
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
-// المكونات الصغيرة
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
@@ -294,4 +209,3 @@ const linkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold' };
 const mobileLinkStyle = { textDecoration: 'none', color: '#333', fontWeight: 'bold', padding: '15px 20px', borderBottom: '1px solid #f9f9f9' };
 const ctaButtonStyle = { padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem' };
 const productCardStyle = { width: '160px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.08)', overflow: 'hidden', border: '1px solid #eee' };
-const socialIconStyle = { width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#d4af37', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', cursor: 'pointer' };
