@@ -8,19 +8,16 @@ export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلىئ20% على جميع العطور ✨ ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
   const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
       <Head>
-        <title>كاريزما للعطور | Karizma Perfumes</title>
+        <title>كاريزما للعطور | Karizma Fragrances</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* ✅ تحسين SEO: إضافة وصف للموقع */}
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية في مصر. عطور رجالية ونسائية، عود، وبخور بجودة عالية وثبات ممتاز." />
-        <meta name="keywords" content="عطور, برفان, عطور مستوحاة, كاريزما, عود, بخور, عطور مصر" />
-        {/* إضافة خط عربي جميل */}
         <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
       </Head>
 
@@ -75,31 +72,17 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 3. البانر (تحسين الأداء: إزالة priority) ==================== */}
+      {/* ==================== 3. البانر ==================== */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
-          <Image 
-            src={banner.imageUrl} 
-            alt={banner.title || 'Ramadan Offer'} 
-            width={1400} 
-            height={400} 
-            style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} 
-            loading="lazy" // ✅ تحميل كسول لتحسين السرعة
-            sizes="(max-width: 768px) 100vw, 100vw" 
-          />
+          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} loading="lazy" sizes="(max-width: 768px) 100vw, 100vw" />
         </div>
       )}
 
-      {/* ==================== 4. الهيرو (هذه الصورة الوحيدة المهمة للسرعة) ==================== */}
+      {/* ==================== 4. الهيرو ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image 
-            src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} 
-            alt="Hero Background" 
-            fill 
-            priority={true} // ✅ مبقين عليها لأنها أول ما يراه العميل (LCP)
-            style={{ objectFit: 'cover' }} 
-          />
+          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
@@ -113,7 +96,6 @@ export default function Home({ banner, products }) {
       <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-          
           <CategoryCircle href="/offers" emoji="🔥" label="العروض والتخفيضات" />
           <CategoryCircle href="/men" emoji="🤵" label="العطور الرجالية الفاخرة" />
           <CategoryCircle href="/women" emoji="💃" label="العطور النسائية الجذابة" />
@@ -128,7 +110,6 @@ export default function Home({ banner, products }) {
           <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات الجو" /> 
           <CategoryCircle href="/makeup" emoji="💄" label="مستحضرات التجميل" />
           <CategoryCircle href="/detergents" emoji="🧼" label="المنظفات والمطهرات" />
-
         </div>
       </div>
 
@@ -157,28 +138,17 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 7. الفيديو (تم التحسين للسرعة ⚡) ==================== */}
+      {/* ==================== 7. الفيديو ==================== */}
       <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
-          <video 
-            width="100%" 
-            height="auto" 
-            controls 
-            loop 
-            muted 
-            playsInline 
-            preload="none" /* 👈 هذا هو السطر السحري الذي سيحل مشكلة السرعة */
-            poster={banner?.imageUrl} /* عرض صورة البانر كغلاف حتى يتم تشغيل الفيديو */
-            src="/promo.mp4" 
-            style={{ display: 'block' }}
-          >
+          <video width="100%" height="auto" controls loop muted playsInline preload="none" poster={banner?.imageUrl} src="/promo.mp4" style={{ display: 'block' }}>
             متصفحك لا يدعم الفيديو.
           </video>
         </div>
       </div>
 
-      {/* ==================== 8. الفوتر ==================== */}
+      {/* ==================== 8. الفوتر الجديد (Premium) ==================== */}
       <footer style={{ backgroundColor: 'black', color: 'white', padding: '60px 20px 20px', borderTop: '5px solid #d4af37' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '40px', justifyContent: 'space-between', textAlign: 'right' }}>
           
@@ -229,7 +199,23 @@ export default function Home({ banner, products }) {
         </div>
       </footer>
 
-      {/* ==================== 9. زر الواتساب العائم ==================== */}
+      {/* ==================== 9. الأزرار العائمة (سلة + واتساب) ==================== */}
+      
+      {/* 🛒 زر السلة العائم (جديد) */}
+      <Link href="/cart" style={{
+          position: 'fixed', bottom: '90px', right: '20px', // يظهر فوق زر الواتساب
+          backgroundColor: 'white', color: 'black', border: '2px solid #d4af37',
+          width: '60px', height: '60px', borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          zIndex: 9999, cursor: 'pointer', textDecoration: 'none'
+        }}
+        className="floating-btn"
+      >
+        🛒
+      </Link>
+
+      {/* 💬 زر الواتساب العائم */}
       <a 
         href="https://wa.me/201002410037" 
         target="_blank"
@@ -241,14 +227,13 @@ export default function Home({ banner, products }) {
           fontSize: '35px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
           zIndex: 9999, transition: '0.3s', textDecoration: 'none'
         }}
-        className="whatsapp-btn"
+        className="whatsapp-btn floating-btn"
       >
         💬
       </a>
 
       {/* Styles */}
       <style jsx global>{`
-        /* ... الأنماط السابقة ... */
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
         .mobile-nav-list { display: none; }
@@ -270,7 +255,7 @@ export default function Home({ banner, products }) {
         
         .product-card, .category-circle { transition: transform 0.3s ease; }
         .product-card:hover, .category-circle:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important; }
-        .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5) !important; }
+        .floating-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important; }
         
         .fade-in { animation: fadeIn 0.5s; }
         .fade-in-up { animation: fadeInUp 1s ease-out; }
