@@ -5,12 +5,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io', // للسماح بصور Sanity (منتجاتك)
+        hostname: 'cdn.sanity.io',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // 👈 هذا هو السطر الجديد المطلوب
-      },
+        hostname: 'images.unsplash.com',
+      }
     ],
   },
 };
