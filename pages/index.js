@@ -8,8 +8,8 @@ export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
-  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 50% على جميع العطور ✨ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 500 جنيه - دفع عند الاستلام متاح 🛡️ ";
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
@@ -77,7 +77,7 @@ export default function Home({ banner, products }) {
         </div>
       )}
 
-      {/* ==================== 4. الهيرو (الشاشة الترحيبية) ==================== */}
+      {/* ==================== 4. الهيرو ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
@@ -90,20 +90,26 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 5. تصفح مجموعاتنا (تمت إعادتها ✅) ==================== */}
+      {/* ==================== 5. تصفح مجموعاتنا (بالمسميات الفاخرة الجديدة) ==================== */}
       <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-          <CategoryCircle href="/offers" emoji="🔥" label="العروض" />
-          <CategoryCircle href="/men" emoji="🤵" label="رجالي" />
-          <CategoryCircle href="/women" emoji="💃" label="نسائي" />
-          <CategoryCircle href="/unisex" emoji="👫" label="جنسين" />
-          <CategoryCircle href="/niche" emoji="💎" label="نيش" />
-          <CategoryCircle href="/oud" emoji="🪵" label="أعواد" />
-          <CategoryCircle href="/gulf" emoji="🕌" label="خليجي" />
-          <CategoryCircle href="/bakhoor" emoji="🪔" label="بخور" />
-          <CategoryCircle href="/burners" emoji="♨️" label="فوحات" />
-          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات" /> 
+          
+          <CategoryCircle href="/offers" emoji="🔥" label="العروض والتخفيضات" />
+          <CategoryCircle href="/men" emoji="🤵" label="العطور الرجالية الفاخرة" />
+          <CategoryCircle href="/women" emoji="💃" label="العطور النسائية الجذابة" />
+          <CategoryCircle href="/unisex" emoji="👫" label="عطور النيش (للجنسين)" />
+          <CategoryCircle href="/niche" emoji="💎" label="عطور النيش الحصرية" />
+          <CategoryCircle href="/oud" emoji="🪵" label="دهن العود والبخور" />
+          <CategoryCircle href="/gulf" emoji="🕌" label="العطور الخليجية والمخلطات" />
+          <CategoryCircle href="/mixes" emoji="⚗️" label="ميكسات كاريزما الخاصة" />
+          <CategoryCircle href="/musks" emoji="🧴" label="المسك والروائح الهادئة" />
+          <CategoryCircle href="/bakhoor" emoji="🪔" label="البخور والمعمول" />
+          <CategoryCircle href="/burners" emoji="♨️" label="الفوحات والإكسسوارات" />
+          <CategoryCircle href="/fresheners" emoji="🌸" label="معطرات الجو" /> 
+          <CategoryCircle href="/makeup" emoji="💄" label="مستحضرات التجميل" />
+          <CategoryCircle href="/detergents" emoji="🧼" label="المنظفات والمطهرات" />
+
         </div>
       </div>
 
@@ -191,17 +197,18 @@ export async function getStaticProps() {
   return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
 }
 
-// المكونات الصغيرة
+// المكونات الصغيرة (تم تكبير الدوائر قليلاً لتناسب النص الطويل)
 function CategoryCircle({ href, emoji, label }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }}>
       <div className="category-circle" style={{
-        width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white',
+        width: '115px', height: '115px', borderRadius: '50%', backgroundColor: 'white',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer'
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '2px solid #d4af37', cursor: 'pointer',
+        textAlign: 'center', padding: '5px'
       }}>
-        <span style={{ fontSize: '1.8rem' }}>{emoji}</span>
-        <p style={{ marginTop: '5px', fontWeight: 'bold', color: '#333', fontSize: '0.8rem' }}>{label}</p>
+        <span style={{ fontSize: '1.6rem', marginBottom: '2px' }}>{emoji}</span>
+        <p style={{ margin: '0', fontWeight: 'bold', color: '#333', fontSize: '0.65rem', lineHeight: '1.2' }}>{label}</p>
       </div>
     </Link>
   );
