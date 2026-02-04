@@ -7,8 +7,8 @@ import { client } from '../src/sanity/lib/client';
 export default function Home({ banner, products }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 👇 هذا هو السطر الذي كان ناقصاً وسبب المشكلة!
-  const topStatusText = " 🚀 التحديث وصل! القائمة الجانبية والبحث يعملان بنجاح 🚀 ";
+  // 👇 تم تعديل هذه الجملة لتكون ترحيبية بدلاً من جملة الاختبار
+  const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
   
   const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
   const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
