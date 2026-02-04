@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    formats: ['image/avif', 'image/webp'], // 👈 هذا السطر الجديد السحري
     remotePatterns: [
       {
         protocol: 'https',
@@ -13,7 +14,6 @@ const nextConfig = {
       }
     ],
   },
-  // 👇 لاحظ: أبقينا التايب سكريبت وحذفنا eslint
   typescript: {
     ignoreBuildErrors: true,
   },
