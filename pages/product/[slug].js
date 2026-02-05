@@ -5,10 +5,9 @@ import { PortableText } from '@portabletext/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
-import Script from 'next/script'; // لاسترجاع السيو
+import Script from 'next/script'; 
 
 export default function ProductDetails({ product, relatedProducts }) {
-  // استخدام الدالة الصحيحة من الكونتكست
   const { decQty, incQty, qty, onAdd } = useCart();
 
   if (!product) {
@@ -20,19 +19,16 @@ export default function ProductDetails({ product, relatedProducts }) {
     );
   }
 
-  // حساب السعر والخصم
   const originalPrice = product.price;
   const discount = product.discount || 0;
   const finalPrice = discount ? Math.round(originalPrice - (originalPrice * discount / 100)) : originalPrice;
 
-  // دالة الشراء عبر واتساب
   const handleBuyNow = () => {
     const message = `مرحباً، أريد شراء المنتج التالي:\n\n▪️ ${product.name}\n   الكمية: ${qty}\n   السعر الإجمالي: ${finalPrice * qty} ج.م\n\nيرجى تأكيد الطلب.`;
     const whatsappUrl = `https://wa.me/201002410037?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
-  // بيانات السكيما لمحركات البحث (SEO)
   const schemaData = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -58,7 +54,6 @@ export default function ProductDetails({ product, relatedProducts }) {
         <meta name="description" content={`اشتري ${product.name} الآن بسعر ${finalPrice} جنيه. أفضل العطور من كاريزما.`} />
       </Head>
 
-      {/* سكربت السيو ليفهم جوجل المنتج */}
       <Script
         id="product-schema"
         type="application/ld+json"
@@ -67,10 +62,9 @@ export default function ProductDetails({ product, relatedProducts }) {
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
         
-        {/* ================= 1. القسم العلوي (التفاصيل) ================= */}
+        {/* ================= 1. القسم العلوي ================= */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', justifyContent: 'center', backgroundColor: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
           
-          {/* الصورة */}
           <div style={{ flex: '1 1 400px', maxWidth: '500px' }}>
             <div style={{ position: 'relative', height: '500px', backgroundColor: '#f9f9f9', borderRadius: '20px', overflow: 'hidden', border: '1px solid #eee' }}>
               {discount > 0 && (
@@ -90,7 +84,6 @@ export default function ProductDetails({ product, relatedProducts }) {
             </div>
           </div>
 
-          {/* المعلومات والأزرار */}
           <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h1 style={{ fontSize: '2.5rem', color: '#1a1a1a', fontWeight: 'bold' }}>{product.name}</h1>
             
@@ -99,12 +92,10 @@ export default function ProductDetails({ product, relatedProducts }) {
                <span style={{ color: '#d4af37', fontSize: '2rem', fontWeight: 'bold' }}>{finalPrice} ج.م</span>
             </div>
 
-            {/* الوصف (يدعم النصوص الغنية) */}
             <div style={{ color: '#666', lineHeight: '1.8', fontSize: '1.1rem' }}>
               {product.details ? <PortableText value={product.details} /> : <p>{product.description}</p>}
             </div>
 
-            {/* التحكم بالكمية */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '10px' }}>
               <span style={{ fontWeight: 'bold' }}>الكمية:</span>
               <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '30px', overflow: 'hidden' }}>
@@ -114,7 +105,6 @@ export default function ProductDetails({ product, relatedProducts }) {
               </div>
             </div>
 
-            {/* الأزرار */}
             <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
               <button 
                 onClick={() => onAdd(product, qty)}
@@ -133,15 +123,20 @@ export default function ProductDetails({ product, relatedProducts }) {
               </button>
             </div>
 
-             {/* مزايا إضافية */}
-             <div style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px', fontSize: '0.9rem' }}>
-                <p>🚚 شحن سريع لجميع المحافظات</p>
-                <p>🛡️ ضمان استرجاع خلال 14 يوم</p>
+             {/* 👇👇 هنا التعديل: تثبيت الألوان وجعل الخط عريضاً 👇👇
+             */}
+             <div style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px', fontSize: '1rem' }}>
+                <p style={{ color: '#16a085', fontWeight: 'bold', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                   🚚 شحن سريع لجميع المحافظات
+                </p>
+                <p style={{ color: '#2980b9', fontWeight: 'bold', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                   🛡️ ضمان استرجاع خلال 14 يوم
+                </p>
              </div>
           </div>
         </div>
 
-        {/* ================= 2. قسم الفيديو (تمت استعادته) 🎥 ================= */}
+        {/* ================= 2. قسم الفيديو ================= */}
         <div style={{ marginTop: '80px', textAlign: 'center' }}>
             <h2 style={{ fontSize: '2rem', marginBottom: '30px', color: '#333' }}>🎥 اكتشف سحر {product.name}</h2>
             <div style={{ 
@@ -155,7 +150,6 @@ export default function ProductDetails({ product, relatedProducts }) {
                 height="auto" 
                 controls 
                 preload="none"
-                // نستخدم فيديو المنتج إذا وجد، أو الفيديو الافتراضي
                 src={product.videoUrl ? product.videoUrl : "/promo.mp4"}
                 poster={product.imageUrl} 
                 style={{ display: 'block' }}
@@ -165,7 +159,7 @@ export default function ProductDetails({ product, relatedProducts }) {
             </div>
         </div>
 
-        {/* ================= 3. قسم منتجات قد تعجبك (تمت استعادته) ❤️ ================= */}
+        {/* ================= 3. منتجات قد تعجبك ================= */}
         {relatedProducts.length > 0 && (
           <div style={{ marginTop: '80px' }}>
             <h2 style={{ fontSize: '2rem', marginBottom: '40px', textAlign: 'center', color: '#333' }}>منتجات قد تعجبك</h2>
@@ -200,7 +194,6 @@ export default function ProductDetails({ product, relatedProducts }) {
   );
 }
 
-// 4. جلب البيانات (تم الدمج ليعمل بشكل سريع ويجلب كل شيء)
 export const getStaticPaths = async () => {
   const query = `*[_type == "product"] { slug { current } }`;
   const products = await client.fetch(query);
@@ -211,27 +204,18 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  // جلب المنتج + الفيديو
   const queryProduct = `*[_type == "product" && slug.current == '${slug}'][0]{
-    _id,
-    name,
-    details,      // للنصوص الغنية
-    description,  // للنصوص العادية (احتياطي)
-    price,
-    discount,
+    _id, name, details, description, price, discount,
     "imageUrl": image.asset->url,
     "videoUrl": video.asset->url,
     slug
   }`;
-  
   const product = await client.fetch(queryProduct);
 
-  // جلب المنتجات المقترحة (نفس القسم أو عشوائي)
   const queryRelated = `*[_type == "product" && slug.current != '${slug}'] | order(_createdAt desc) [0..3] {
     _id, name, price, slug,
     "imageUrl": image.asset->url
   }`;
-
   const relatedProducts = await client.fetch(queryRelated);
 
   return {
@@ -239,6 +223,6 @@ export const getStaticProps = async ({ params: { slug } }) => {
       product: product || null,
       relatedProducts: relatedProducts || []
     },
-    revalidate: 10 // تحديث الصفحة كل 10 ثواني إذا تغير السعر
+    revalidate: 10
   }
 }
