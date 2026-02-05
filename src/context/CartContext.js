@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 const CartContext = createContext();
@@ -12,12 +12,23 @@ export const CartProvider = ({ children }) => {
   let foundProduct;
   let index;
 
+  // 🧮 دالة مساعدة لحساب السعر الحقيقي (مع الخصم)
+  const getProductPrice = (product) => {
+    // إذا كان هناك خصم، نحسب السعر بعد الخصم، وإلا نأخذ السعر الأصلي
+    if (product.discount) {
+      return Math.round(product.price - (product.price * product.discount / 100));
+    }
+    return product.price;
+  }
+
   // 1. إضافة منتج للسلة
   const onAdd = (product, quantity) => {
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
-    const priceToUse = product.price; 
+    
+    // ✅ هنا التعديل: نستخدم السعر بعد الخصم لحساب الإجمالي
+    const realPrice = getProductPrice(product);
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice + priceToUse * quantity);
+    setTotalPrice((prevTotalPrice) => prevTotalPrice + realPrice * quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
     
     if(checkProductInCart) {
@@ -36,12 +47,15 @@ export const CartProvider = ({ children }) => {
     toast.success(`${quantity} ${product.name} تمت الإضافة للسلة.`);
   } 
 
-  // 2. حذف منتج من السلة (الوظيفة الأساسية لحل المشكلة)
+  // 2. حذف منتج من السلة
   const onRemove = (product) => {
     foundProduct = cartItems.find((item) => item._id === product._id);
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
+    
+    // ✅ هنا التعديل: نخصم السعر الحقيقي (بعد الخصم)
+    const realPrice = getProductPrice(foundProduct);
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
+    setTotalPrice((prevTotalPrice) => prevTotalPrice - realPrice * foundProduct.quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity);
     setCartItems(newCartItems);
   }
@@ -51,17 +65,20 @@ export const CartProvider = ({ children }) => {
     foundProduct = cartItems.find((item) => item._id === id)
     index = cartItems.findIndex((product) => product._id === id);
     const newCartItems = [...cartItems];
+    
+    // ✅ هنا التعديل: نستخدم السعر الحقيقي عند الزيادة أو النقصان
+    const realPrice = getProductPrice(foundProduct);
 
     if(value === 'inc') {
       newCartItems[index] = { ...foundProduct, quantity: foundProduct.quantity + 1 };
       setCartItems(newCartItems);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + realPrice)
       setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1)
     } else if(value === 'dec') {
       if (foundProduct.quantity > 1) {
         newCartItems[index] = { ...foundProduct, quantity: foundProduct.quantity - 1 };
         setCartItems(newCartItems);
-        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
+        setTotalPrice((prevTotalPrice) => prevTotalPrice - realPrice)
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1)
       }
     }
@@ -90,7 +107,7 @@ export const CartProvider = ({ children }) => {
         decQty,
         onAdd,
         toggleCartItemQuanitity,
-        onRemove, // 👈 تأكد أن هذه الكلمة موجودة هنا
+        onRemove,
         setCartItems,
         setTotalPrice,
         setTotalQuantities 
