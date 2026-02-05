@@ -1,126 +1,167 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useCart } from '../src/context/CartContext';
+import { client } from '../src/sanity/lib/client';
+import Image from 'next/image'; // لتحسين عرض الصور
 
 export default function Cart() {
-  const { cartItems, totalPrice, removeFromCart, updateQuantity, checkout } = useCart();
+  const { cartItems, totalPrice, totalQuantities, toggleCartItemQuanitity, onRemove } = useCart();
+  const cartRef = useRef();
 
-  // إذا كانت السلة فارغة
-  if (cartItems.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh' }}>
-        <h2 style={{ fontSize: '2rem', marginBottom: '20px', color: '#333' }}>السلة فارغة 🛒</h2>
-        <p style={{ color: '#777', marginBottom: '30px' }}>لم تضف أي منتجات للسلة بعد.</p>
-        <Link href="/shop" style={{ 
-          backgroundColor: '#d4af37', color: '#000', padding: '12px 30px', 
-          borderRadius: '30px', textDecoration: 'none', fontWeight: 'bold' 
-        }}>
-          تصفح المنتجات
-        </Link>
-        
-        {/* زر العودة للصفحة الرئيسية (في حالة السلة الفارغة) */}
-        <div style={{ marginTop: '30px' }}>
-          <Link href="/" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>
-            🏠 العودة للرئيسية
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // دالة لإرسال الطلب عبر واتساب
+  const handleCheckout = () => {
+    // 1. تجهيز رسالة الطلب
+    let message = `مرحباً، أريد إتمام الطلب التالي من موقع كاريزما:\n\n`;
+    
+    cartItems.forEach((item) => {
+      const finalPrice = item.discount ? (item.price - (item.price * item.discount / 100)) : item.price;
+      message += `▪️ ${item.name} \n   الكمية: ${item.quantity} \n   السعر: ${Math.round(finalPrice)} ج.م\n----------------\n`;
+    });
+
+    message += `\n💰 الإجمالي الكلي: ${totalPrice} ج.م\n`;
+    message += `📍 يرجى تأكيد الطلب والعنوان.`;
+
+    // 2. توجيه العميل لواتساب
+    const whatsappUrl = `https://wa.me/201002410037?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
 
   return (
-    <div style={{ padding: '40px 20px', maxWidth: '1000px', margin: '0 auto', direction: 'rtl', minHeight: '80vh' }}>
+    <div className="cart-wrapper" ref={cartRef} style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', padding: '40px 20px', direction: 'rtl', fontFamily: 'Arial' }}>
       
-      <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#d4af37' }}>🛒 سلة المشتريات</h1>
+      <Head>
+        <title>سلة المشتريات | كاريزما للعطور</title>
+      </Head>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {cartItems.map((item) => (
-          <div key={item._id} style={{ 
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-            backgroundColor: '#fff', padding: '15px', borderRadius: '15px', 
-            boxShadow: '0 4px 10px rgba(0,0,0,0.05)', flexWrap: 'wrap', gap: '15px' 
-          }}>
-            
-            {/* صورة المنتج واسمه */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flex: '1 1 200px' }}>
-              <div style={{ width: '80px', height: '80px', borderRadius: '10px', overflow: 'hidden', backgroundColor: '#f9f9f9' }}>
-                {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>لا توجد صورة</div>
-                )}
-              </div>
-              <div>
-                <h3 style={{ margin: '0 0 5px', fontSize: '1.1rem', color: '#333' }}>{item.name}</h3>
-                <p style={{ margin: 0, color: '#d4af37', fontWeight: 'bold' }}>
-                  {item.price} ج.م 
-                  {item.discount > 0 && <span style={{ fontSize: '0.8rem', color: 'red', marginRight: '5px' }}>(-{item.discount}%)</span>}
-                </p>
-              </div>
-            </div>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        
+        {/* عنوان الصفحة */}
+        <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+          🛒 سلة المشتريات 
+          <span style={{ fontSize: '1rem', color: '#777' }}>({totalQuantities} منتجات)</span>
+        </h2>
 
-            {/* التحكم في الكمية */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: '#f5f5f5', padding: '5px 10px', borderRadius: '20px' }}>
-              <button 
-                onClick={() => updateQuantity(item._id, (item.quantity || 1) + 1)} 
-                style={btnStyle}>+</button>
-              
-              <span style={{ fontWeight: 'bold', minWidth: '20px', textAlign: 'center' }}>{item.quantity || 1}</span>
-              
-              <button 
-                onClick={() => updateQuantity(item._id, (item.quantity || 1) - 1)} 
-                style={btnStyle}>-</button>
-            </div>
-
-            {/* زر الحذف */}
-            <button onClick={() => removeFromCart(item._id)} style={{ color: '#ff4d4d', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem' }} title="حذف من السلة">
-              🗑️
-            </button>
+        {/* حالة السلة فارغة */}
+        {cartItems.length < 1 && (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ fontSize: '5rem', marginBottom: '20px' }}>🛍️</div>
+            <h3>سلتك فارغة حالياً</h3>
+            <Link href="/shop">
+              <button style={{ marginTop: '20px', padding: '12px 30px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}>
+                تصفح المنتجات
+              </button>
+            </Link>
           </div>
-        ))}
-      </div>
+        )}
 
-      {/* ملخص السلة */}
-      <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#fff', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ margin: 0 }}>المجموع الكلي:</h3>
-          <h2 style={{ margin: 0, color: '#d4af37' }}>{totalPrice ? totalPrice.toFixed(0) : 0} ج.م</h2>
+        {/* عرض المنتجات */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {cartItems.length >= 1 && cartItems.map((item) => {
+            
+            // حساب السعر النهائي للقطعة الواحدة للعرض
+            const originalPrice = item.price;
+            const discount = item.discount || 0;
+            const finalPrice = discount ? Math.round(originalPrice - (originalPrice * discount / 100)) : originalPrice;
+
+            return (
+              <div key={item._id} style={{ backgroundColor: 'white', padding: '20px', borderRadius: '15px', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
+                
+                {/* 1. صورة المنتج */}
+                {item?.imageUrl && (
+                   <div style={{ width: '80px', height: '80px', position: 'relative', borderRadius: '10px', overflow: 'hidden', border: '1px solid #eee' }}>
+                     <Image src={item.imageUrl} alt={item.name} fill style={{ objectFit: 'cover' }} />
+                   </div>
+                )}
+
+                {/* 2. تفاصيل الاسم والسعر (الجزء المعدل) */}
+                <div style={{ flex: '1', minWidth: '200px', padding: '0 15px' }}>
+                  <h5 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#333' }}>{item.name}</h5>
+                  
+                  {/* 👇👇 هنا التعديل المطلوب لعرض السعر والخصم 👇👇 */}
+                  {discount > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                      {/* السعر القديم مشطوب */}
+                      <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>
+                        {originalPrice} ج.م
+                      </span>
+                      
+                      {/* السعر الجديد والخصم */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                          {finalPrice} ج.م
+                        </span>
+                        <span style={{ backgroundColor: '#ffebee', color: '#c62828', fontSize: '0.8rem', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+                          خصم {discount}% 🔥
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    // إذا لم يكن هناك خصم
+                    <span style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                      {originalPrice} ج.م
+                    </span>
+                  )}
+                </div>
+
+                {/* 3. التحكم بالكمية */}
+                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '25px', padding: '5px' }}>
+                  <button onClick={() => toggleCartItemQuanitity(item._id, 'dec')} style={{ background: 'none', border: 'none', padding: '5px 12px', cursor: 'pointer', fontSize: '1.2rem', color: '#555' }}>-</button>
+                  <span style={{ padding: '0 10px', fontWeight: 'bold' }}>{item.quantity}</span>
+                  <button onClick={() => toggleCartItemQuanitity(item._id, 'inc')} style={{ background: 'none', border: 'none', padding: '5px 12px', cursor: 'pointer', fontSize: '1.2rem', color: '#555' }}>+</button>
+                </div>
+
+                {/* 4. زر الحذف */}
+                <button
+                  type="button"
+                  onClick={() => onRemove(item)}
+                  style={{ background: 'none', border: 'none', color: '#e74c3c', cursor: 'pointer', fontSize: '1.5rem', padding: '10px' }}
+                  title="حذف المنتج"
+                >
+                  🗑️
+                </button>
+
+              </div>
+            )
+          })}
         </div>
 
-        <button onClick={checkout} className="hover-btn" style={{ 
-          width: '100%', padding: '15px', backgroundColor: '#25D366', color: 'white', 
-          border: 'none', borderRadius: '10px', fontSize: '1.1rem', fontWeight: 'bold', 
-          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' 
-        }}>
-          📱 إتمام الطلب عبر واتساب
-        </button>
+        {/* ملخص الطلب والزر الأخضر */}
+        {cartItems.length >= 1 && (
+          <div style={{ marginTop: '40px', backgroundColor: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', fontSize: '1.3rem', fontWeight: 'bold' }}>
+              <span>المجموع الكلي:</span>
+              <span style={{ color: '#d4af37' }}>{totalPrice} ج.م</span>
+            </div>
+            
+            <div style={{ textAlign: 'center' }}>
+              <button
+                type="button"
+                className="whatsapp-checkout-btn"
+                onClick={handleCheckout}
+                style={{ width: '100%', padding: '18px', backgroundColor: '#25D366', color: 'white', border: 'none', borderRadius: '12px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', boxShadow: '0 4px 15px rgba(37, 211, 102, 0.4)' }}
+              >
+                 📱 إتمام الطلب عبر واتساب
+              </button>
+            </div>
+            
+             {/* زر العودة */}
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <Link href="/">
+                    <button style={{ background: 'black', color: 'white', border: 'none', padding: '12px 25px', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+                        🏠 العودة للصفحة الرئيسية
+                    </button>
+                </Link>
+            </div>
+
+          </div>
+        )}
       </div>
 
-      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا للتوحيد) */}
-      <div style={{ marginTop: '40px', marginBottom: '20px', textAlign: 'center' }}>
-        <Link href="/" style={{ 
-          display: 'inline-block', 
-          padding: '12px 30px', 
-          backgroundColor: '#1a1a1a', 
-          color: '#d4af37', 
-          textDecoration: 'none', 
-          borderRadius: '8px', 
-          fontWeight: 'bold',
-          fontSize: '1.1rem',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-          transition: 'transform 0.2s'
-        }}>
-          🏠 العودة للصفحة الرئيسية
-        </Link>
-      </div>
-
+      <style jsx>{`
+        .whatsapp-checkout-btn:hover { background-color: #1ebc57 !important; transform: scale(1.02); transition: 0.3s; }
+      `}</style>
     </div>
-  );
+  )
 }
-
-// تنسيق بسيط للأزرار
-const btnStyle = {
-  width: '30px', height: '30px', borderRadius: '50%', border: 'none', 
-  backgroundColor: '#fff', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-  fontWeight: 'bold', color: '#333'
-};
