@@ -2,8 +2,7 @@ import React, { useRef } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useCart } from '../src/context/CartContext';
-import { client } from '../src/sanity/lib/client';
-import Image from 'next/image'; // لتحسين عرض الصور
+import Image from 'next/image';
 
 export default function Cart() {
   const { cartItems, totalPrice, totalQuantities, toggleCartItemQuanitity, onRemove } = useCart();
@@ -15,6 +14,7 @@ export default function Cart() {
     let message = `مرحباً، أريد إتمام الطلب التالي من موقع كاريزما:\n\n`;
     
     cartItems.forEach((item) => {
+      // حساب السعر الفعلي لكل قطعة في الرسالة
       const finalPrice = item.discount ? (item.price - (item.price * item.discount / 100)) : item.price;
       message += `▪️ ${item.name} \n   الكمية: ${item.quantity} \n   السعر: ${Math.round(finalPrice)} ج.م\n----------------\n`;
     });
@@ -67,18 +67,26 @@ export default function Cart() {
             return (
               <div key={item._id} style={{ backgroundColor: 'white', padding: '20px', borderRadius: '15px', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
                 
-                {/* 1. صورة المنتج */}
-                {item?.imageUrl && (
-                   <div style={{ width: '80px', height: '80px', position: 'relative', borderRadius: '10px', overflow: 'hidden', border: '1px solid #eee' }}>
-                     <Image src={item.imageUrl} alt={item.name} fill style={{ objectFit: 'cover' }} />
-                   </div>
-                )}
+                {/* 1. صورة المنتج (مع إصلاح مشكلة اختفاء الصورة) */}
+                <div style={{ width: '80px', height: '80px', position: 'relative', borderRadius: '10px', overflow: 'hidden', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', flexShrink: 0 }}>
+                  {item.imageUrl ? (
+                    <Image 
+                      src={item.imageUrl} 
+                      alt={item.name} 
+                      fill 
+                      style={{ objectFit: 'contain', padding: '5px' }} 
+                      sizes="80px"
+                    />
+                  ) : (
+                    // 🧴 أيقونة تظهر في حالة عدم وجود صورة
+                    <span style={{ fontSize: '2rem' }}>🧴</span> 
+                  )}
+                </div>
 
-                {/* 2. تفاصيل الاسم والسعر (الجزء المعدل) */}
+                {/* 2. تفاصيل الاسم والسعر */}
                 <div style={{ flex: '1', minWidth: '200px', padding: '0 15px' }}>
                   <h5 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#333' }}>{item.name}</h5>
                   
-                  {/* 👇👇 هنا التعديل المطلوب لعرض السعر والخصم 👇👇 */}
                   {discount > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
                       {/* السعر القديم مشطوب */}
