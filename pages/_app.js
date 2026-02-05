@@ -3,7 +3,7 @@ import { CartProvider, useCart } from '../src/context/CartContext';
 import Link from 'next/link';
 import Script from 'next/script';
 
-// مكون العناصر العامة (الفوتر والأزرار العائمة)
+// مكون العناصر العامة (الفوتر والأزرار العائمة وزر العودة)
 const GlobalElements = ({ children }) => {
   const { totalQuantities } = useCart(); // لجلب عدد المنتجات للعداد الأحمر
 
@@ -13,6 +13,28 @@ const GlobalElements = ({ children }) => {
       {/* محتوى الصفحة الحالية */}
       <main style={{ flex: 1 }}>
         {children}
+        
+        {/* ✅ زر العودة للصفحة الرئيسية (يظهر في أسفل كل الصفحات قبل الفوتر) */}
+        <div style={{ textAlign: 'center', margin: '40px 0 20px' }}>
+            <Link href="/">
+                <button style={{ 
+                  background: 'black', 
+                  color: '#d4af37', 
+                  border: '2px solid #d4af37', 
+                  padding: '12px 30px', 
+                  borderRadius: '10px', 
+                  cursor: 'pointer', 
+                  fontWeight: 'bold', 
+                  fontSize: '1rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.1)' 
+                }}>
+                    🏠 العودة للصفحة الرئيسية
+                </button>
+            </Link>
+        </div>
       </main>
 
       {/* ==================== الفوتر الموحد ==================== */}
@@ -61,7 +83,7 @@ const GlobalElements = ({ children }) => {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid #333', fontSize: '0.9rem', color: '#777' }}>
-          © 2024 Karizma Fragrances. جميع الحقوق محفوظة.
+          © 2024 Karizma Perfumes. جميع الحقوق محفوظة.
         </div>
       </footer>
 
@@ -113,7 +135,7 @@ export default function App({ Component, pageProps }) {
   return (
     <CartProvider>
       
-      {/* 🔵 1. إعدادات فيسبوك بيكسل */}
+      {/* 🔵 1. إعدادات فيسبوك بيكسل (آمنة ✅) */}
       <Script id="facebook-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
@@ -130,7 +152,7 @@ export default function App({ Component, pageProps }) {
         `}
       </Script>
 
-      {/* ⚫ 2. إعدادات تيك توك بيكسل (تم وضع رقمك الجديد ✅) */}
+      {/* ⚫ 2. إعدادات تيك توك بيكسل (آمنة ✅) */}
       <Script id="tiktok-pixel" strategy="afterInteractive">
         {`
           !function (w, d, t) {
@@ -144,7 +166,6 @@ export default function App({ Component, pageProps }) {
             var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
             var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
 
-            // 👇 رقمك الجديد من الصورة
             ttq.load('D5R8HEBC77UDQTF87QVG');
             ttq.page();
           }(window, document, 'ttq');
