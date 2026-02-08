@@ -52,18 +52,7 @@ export default function BakhoorPage() {
         )}
       </div>
 
-      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
-        <Link href="/" style={{ 
-          display: 'inline-block', padding: '12px 30px', backgroundColor: '#1a1a1a', 
-          color: '#d4af37', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold'
-        }}>
-          🏠 العودة للرئيسية
-        </Link>
-      </div>
-    </div>
-  );
-}
-
+      
 // التنسيقات
 const cardStyle = {
   border: '1px solid #ddd', padding: '15px', borderRadius: '10px',
