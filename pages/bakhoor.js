@@ -51,8 +51,6 @@ export default function BakhoorPage() {
           </div>
         )}
       </div>
-
-      
 // التنسيقات
 const cardStyle = {
   border: '1px solid #ddd', padding: '15px', borderRadius: '10px',
