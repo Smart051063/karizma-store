@@ -57,24 +57,6 @@ export default function MakeupPage() {
           </div>
         )}
       </div>
-
-      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه في المكان الصحيح هنا) */}
-      <div style={{ marginTop: '50px', textAlign: 'center', paddingBottom: '20px' }}>
-        <Link href="/" style={{ 
-          display: 'inline-block', 
-          padding: '12px 25px', 
-          backgroundColor: '#1a1a1a', 
-          color: '#d4af37', 
-          textDecoration: 'none', 
-          borderRadius: '8px', 
-          fontWeight: 'bold',
-          fontSize: '1.1rem',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-        }}>
-          🏠 العودة للصفحة الرئيسية
-        </Link>
-      </div>
-
     </div>
   );
 }
