@@ -1,100 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
+import Head from 'next/head';
+import Image from 'next/image';
 
-export default function MenPage() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // 👇 الكويري البسيط لجلب منتجات الرجال
-    const query = `*[_type == "product" && category == "men"]{
-      _id,
-      name,
-      price,
-      "imageUrl": image.asset->url,
-      slug 
-    }`;
-
-    client.fetch(query).then((data) => setProducts(data));
-  }, []);
-
+export default function Men({ products }) {
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
-      
-      {/* عنوان القسم */}
-      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🤵 قسم عطور الرجال</h1>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f4f4f4', padding: '40px 20px', direction: 'rtl', fontFamily: 'Arial' }}>
+      <Head>
+        <title>عطور رجالية | كاريزما للعطور</title>
+      </Head>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
-        {products.length > 0 ? (
-          products.map((product) => (
-            <Link key={product._id} href={`/product/${product.slug?.current}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div style={cardStyle}>
-                 {product.imageUrl && (
-                   <img 
-                      src={product.imageUrl} 
-                      alt={product.name} 
-                      style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
-                   />
-                 )}
-                 
-                 <h3 style={{ fontSize: '18px', margin: '10px 0' }}>{product.name}</h3>
-                 <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '16px' }}>
-                    {product.price ? product.price : '---'} جنيه
-                 </p>
-                 
-                 <button style={detailsButtonStyle}>عرض التفاصيل 📄</button>
+      <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>🤵 عطور رجالية</h1>
+
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
+        {products.map((product) => (
+          <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
+            <div className="product-card" style={{ width: '250px', backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 10px rgba(0,0,0,0.05)', transition: '0.3s' }}>
+              <div style={{ position: 'relative', height: '250px', backgroundColor: '#fff' }}>
+                 {product.discount > 0 && (
+                  <span style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: '#e74c3c', color: 'white', padding: '5px 10px', borderRadius: '15px', fontSize: '0.8rem', fontWeight: 'bold', zIndex: 2 }}>
+                    خصم {product.discount}%
+                  </span>
+                )}
+                {product.imageUrl && (
+                  <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain' }} sizes="250px" />
+                )}
               </div>
-            </Link>
-          ))
-        ) : (
-          <div style={{ marginTop: '50px', width: '100%' }}>
-            <p>جاري تحميل العطور... ⏳</p>
-          </div>
-        )}
+              <div style={{ padding: '20px', textAlign: 'center' }}>
+                <h3 style={{ fontSize: '1.1rem', color: '#333', marginBottom: '10px' }}>{product.name}</h3>
+                <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price} ج.م</p>
+                <button style={{ marginTop: '10px', padding: '10px 20px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '20px', cursor: 'pointer' }}>
+                  عرض التفاصيل
+                </button>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
 
-      {/* 👇 زر العودة للصفحة الرئيسية (تم وضعه هنا بشكل صحيح) */}
-      <div style={{ marginTop: '60px', marginBottom: '30px', textAlign: 'center' }}>
-        <Link href="/" style={{ 
-          display: 'inline-block', 
-          padding: '12px 30px', 
-          backgroundColor: '#1a1a1a', 
-          color: '#d4af37', 
-          textDecoration: 'none', 
-          borderRadius: '8px', 
-          fontWeight: 'bold',
-          fontSize: '1.1rem',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-          transition: 'transform 0.2s'
-        }}>
-          🏠 العودة للصفحة الرئيسية
-        </Link>
-      </div>
+       {/* ❌ تم حذف زر العودة المكرر */}
 
+      <style jsx global>{`
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+      `}</style>
     </div>
   );
 }
 
-// --- التنسيقات ---
-const cardStyle = {
-  border: '1px solid #ddd',
-  padding: '15px',
-  borderRadius: '10px',
-  width: '250px',
-  textAlign: 'center',
-  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  backgroundColor: 'white'
-};
+export const getStaticProps = async () => {
+  const query = `*[_type == "product" && category == 'men'] | order(_createdAt desc) {
+    _id, name, price, discount, slug,
+    "imageUrl": image.asset->url
+  }`;
+  const products = await client.fetch(query);
 
-const detailsButtonStyle = {
-  backgroundColor: '#1a1a1a',
-  color: 'white',
-  border: 'none',
-  padding: '10px 15px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  width: '100%',
-  marginTop: '10px'
+  return { props: { products }, revalidate: 10 };
 };
