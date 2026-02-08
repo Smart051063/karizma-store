@@ -58,29 +58,6 @@ export default function Detergents() {
           ))}
         </div>
       )}
-
-      {/* 👇 زر العودة للصفحة الرئيسية (تمت إضافته هنا) */}
-      <div style={{ textAlign: 'center', marginTop: '60px', paddingBottom: '20px' }}>
-        <Link href="/">
-          <button style={{ 
-            padding: '12px 30px', 
-            backgroundColor: '#111', 
-            color: '#d4af37', 
-            border: 'none', 
-            borderRadius: '8px', 
-            fontSize: '1rem', 
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '10px',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
-          }}>
-            العودة للصفحة الرئيسية 🏠
-          </button>
-        </Link>
-      </div>
-
     </div>
   );
 }
