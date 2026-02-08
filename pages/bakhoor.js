@@ -1,65 +1,93 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { client } from '../src/sanity/lib/client';
 import Link from 'next/link';
+import Head from 'next/head';
+import Image from 'next/image';
 
-export default function BakhoorPage() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // 👇 هنا السر: نغير الكلمة إلى "bakhoor"
-    const query = `*[_type == "product" && category == "bakhoor"]{
-      _id,
-      name,
-      price,
-      "imageUrl": image.asset->url,
-      slug 
-    }`;
-
-    client.fetch(query).then((data) => setProducts(data));
-  }, []);
-
+export default function Bakhoor({ products }) {
   return (
-    <div style={{ padding: '20px', direction: 'rtl', textAlign: 'center', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
-      
-      <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>💨 قسم البخور والعود</h1>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', padding: '40px 20px', direction: 'rtl', fontFamily: 'Arial' }}>
+      <Head>
+        <title>قسم البخور والعود | كاريزما للعطور</title>
+      </Head>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#d4af37' }}>💨 قسم البخور والعود</h1>
+
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '30px', justifyContent: 'center' }}>
         {products.length > 0 ? (
           products.map((product) => (
-            <Link key={product._id} href={`/product/${product.slug?.current}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
               <div style={cardStyle}>
-                 {product.imageUrl && (
-                   <img 
-                      src={product.imageUrl} 
-                      alt={product.name} 
-                      style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '10px' }} 
-                   />
-                 )}
-                 
-                 <h3 style={{ fontSize: '18px', margin: '10px 0' }}>{product.name}</h3>
-                 <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '16px' }}>
-                    {product.price ? product.price : '---'} جنيه
-                 </p>
-                 
-                 <button style={detailsButtonStyle}>عرض التفاصيل 📄</button>
+                
+                {/* صورة المنتج */}
+                <div style={{ position: 'relative', height: '220px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
+                   {product.imageUrl && (
+                    <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain' }} sizes="250px" />
+                   )}
+                </div>
+
+                {/* التفاصيل */}
+                <div style={{ padding: '15px', textAlign: 'center' }}>
+                  <h3 style={{ fontSize: '1.1rem', color: '#333', marginBottom: '10px' }}>{product.name}</h3>
+                  <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                    {product.price ? product.price + ' ج.م' : '---'}
+                  </p>
+                  <button style={detailsButtonStyle}>
+                    عرض التفاصيل 📄
+                  </button>
+                </div>
               </div>
             </Link>
           ))
         ) : (
-          <div style={{ marginTop: '50px', width: '100%' }}>
-            <p>لا توجد منتجات بخور حالياً... ⏳</p>
+          <div style={{ textAlign: 'center', width: '100%', marginTop: '50px' }}>
+             <h3>لا توجد منتجات في هذا القسم حالياً ⏳</h3>
           </div>
         )}
       </div>
-// التنسيقات
+      
+      {/* ملاحظة: لا يوجد زر عودة هنا لأنه موجود تلقائياً في _app.js */}
+
+    </div>
+  );
+}
+
+// ✅ الحل: تعريف الستايل خارج الدالة (في الأسفل)
 const cardStyle = {
-  border: '1px solid #ddd', padding: '15px', borderRadius: '10px',
-  width: '250px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  cursor: 'pointer', transition: 'transform 0.2s', backgroundColor: 'white'
+  width: '250px', 
+  backgroundColor: 'white', 
+  borderRadius: '15px', 
+  overflow: 'hidden', 
+  boxShadow: '0 4px 10px rgba(0,0,0,0.05)', 
+  transition: '0.3s',
+  cursor: 'pointer',
+  border: '1px solid #eee'
 };
 
 const detailsButtonStyle = {
-  backgroundColor: '#1a1a1a', color: 'white', border: 'none',
-  padding: '10px 15px', borderRadius: '5px', cursor: 'pointer',
-  width: '100%', marginTop: '10px'
+  marginTop: '10px', 
+  padding: '10px 20px', 
+  backgroundColor: 'black', 
+  color: 'white', 
+  border: 'none', 
+  borderRadius: '20px', 
+  cursor: 'pointer',
+  width: '100%'
+};
+
+// جلب البيانات بطريقة سريعة (مثل باقي الصفحات)
+export const getStaticProps = async () => {
+  const query = `*[_type == "product" && category == "bakhoor"] | order(_createdAt desc) {
+    _id,
+    name,
+    price,
+    slug,
+    "imageUrl": image.asset->url
+  }`;
+  const products = await client.fetch(query);
+
+  return {
+    props: { products },
+    revalidate: 10
+  };
 };
