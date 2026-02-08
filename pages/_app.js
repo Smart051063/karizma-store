@@ -74,10 +74,10 @@ const GlobalElements = ({ children }) => {
             <h4 style={{ color: '#d4af37', marginTop: '20px', marginBottom: '15px', fontSize: '1rem' }}>تابعنا على:</h4>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <a href="https://www.facebook.com/" target="_blank" style={socialIconStyle} title="Facebook">f</a>
-              <a href="https://www.instagram.com/" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
-              <a href="https://www.tiktok.com/" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
+              <a href="https://www.facebook.com/profile.php?id=61561267272083&rdid=gegDMCqFiId602Va&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2F#" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
+              <a href="https://www.tiktok.com/@karizma.fragrance?_r=1&_t=ZS-93kSwuEYpST" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
               <a href="https://www.youtube.com/" target="_blank" style={socialIconStyle} title="YouTube">▶️</a>
-              <a href="https://t.me/" target="_blank" style={socialIconStyle} title="Telegram">✈️</a>
+              <a href="https://t.me/Karizma00Frigrances" target="_blank" style={socialIconStyle} title="Telegram">✈️</a>
               <a href="https://wa.me/201002410037" target="_blank" style={socialIconStyle} title="WhatsApp">💬</a>
             </div>
           </div>
