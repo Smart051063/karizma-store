@@ -14,10 +14,10 @@ const GlobalElements = ({ children }) => {
       <main style={{ flex: 1 }}>
         {children}
         
-        {/* ✅ زر العودة للصفحة الرئيسية (يظهر في أسفل كل الصفحات قبل الفوتر) */}
+        {/* ✅ زر العودة للصفحة الرئيسية */}
         <div style={{ textAlign: 'center', margin: '40px 0 20px' }}>
-            <Link href="/">
-                <button style={{ 
+            <Link href="/" style={{ textDecoration: 'none' }}>
+                <div style={{ 
                   background: 'black', 
                   color: '#d4af37', 
                   border: '2px solid #d4af37', 
@@ -32,7 +32,7 @@ const GlobalElements = ({ children }) => {
                   boxShadow: '0 4px 10px rgba(0,0,0,0.1)' 
                 }}>
                     🏠 العودة للصفحة الرئيسية
-                </button>
+                </div>
             </Link>
         </div>
       </main>
@@ -73,8 +73,11 @@ const GlobalElements = ({ children }) => {
             {/* أزرار السوشيال ميديا */}
             <h4 style={{ color: '#d4af37', marginTop: '20px', marginBottom: '15px', fontSize: '1rem' }}>تابعنا على:</h4>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <a href="https://www.facebook.com/" target="_blank" style={socialIconStyle} title="Facebook">f</a>
-              <a href="https://www.facebook.com/profile.php?id=61561267272083&rdid=gegDMCqFiId602Va&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2F#" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
+              
+              {/* ✅ تم تصحيح هذا السطر (إزالة التكرار) */}
+              <a href="https://www.facebook.com/profile.php?id=61561267272083&rdid=gegDMCqFiId602Va&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2F#" target="_blank" style={socialIconStyle} title="Facebook">f</a>
+              
+              <a href="https://www.instagram.com/karizma.fragrances?utm_source=qr&igsh=MWJhbzk0czJ6M2Qzag%3D%3D" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
               <a href="https://www.tiktok.com/@karizma.fragrance?_r=1&_t=ZS-93kSwuEYpST" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
               <a href="https://www.youtube.com/" target="_blank" style={socialIconStyle} title="YouTube">▶️</a>
               <a href="https://t.me/Karizma00Frigrances" target="_blank" style={socialIconStyle} title="Telegram">✈️</a>
@@ -135,7 +138,7 @@ export default function App({ Component, pageProps }) {
   return (
     <CartProvider>
       
-      {/* 🔵 1. إعدادات فيسبوك بيكسل (آمنة ✅) */}
+      {/* 🔵 1. إعدادات فيسبوك بيكسل (تم الحفاظ عليها ✅) */}
       <Script id="facebook-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
@@ -152,7 +155,7 @@ export default function App({ Component, pageProps }) {
         `}
       </Script>
 
-      {/* ⚫ 2. إعدادات تيك توك بيكسل (آمنة ✅) */}
+      {/* ⚫ 2. إعدادات تيك توك بيكسل (تم الحفاظ عليها ✅) */}
       <Script id="tiktok-pixel" strategy="afterInteractive">
         {`
           !function (w, d, t) {
