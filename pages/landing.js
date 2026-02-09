@@ -75,25 +75,12 @@ export default function LandingPage() {
             احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span> وشحن مجاني!
           </p>
 
-          {/* 🔥🔥 الجديد: قسم الميديا (فيديو أو صورة) 🔥🔥 */}
-          <div style={{ margin: '40px auto', maxWidth: '600px', borderRadius: '20px', overflow: 'hidden', border: '3px solid #d4af37', boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' }}>
-            
-            {/* 🎥 الخيار الأول: فيديو (إذا كنت تريد فيديو، اترك هذا وعطل الصورة) */}
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              style={{ width: '100%', display: 'block' }}
-              // 👇 ضع رابط الفيديو الخاص بك هنا (يمكنك تغييره لاحقاً)
-              src="/promo.mp4" 
-            />
-
-            {/* 📸 الخيار الثاني: صورة (إذا كنت تريد صورة، الغِ تعليق السطر التالي وعطل الفيديو) */}
-            {/* <img src="https://via.placeholder.com/600x400" alt="عرض خاص" style={{ width: '100%', display: 'block' }} /> */}
-            
-          </div>
-
+{/* 📸 صورة العرض الخاص */}
+<img 
+  src="/landing-img.jpg" 
+  alt="عرض كاريزما الحصري" 
+  style={{ width: '100%', display: 'block' }} 
+/>
           {/* العداد التنازلي */}
           {mounted && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', direction: 'ltr' }}>
