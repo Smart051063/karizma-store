@@ -32,6 +32,19 @@ export default {
       title: '🎥 رابط فيديو العرض (اختياري - من ملفات public)',
       type: 'string',
       description: 'مثال: /offer.mp4'
+    },
+    // 👇👇 هذا هو القسم الجديد لإضافة المنتجات 👇👇
+    {
+      name: 'selectedProducts',
+      title: '📦 منتجات العرض (اختر يدوياً)',
+      type: 'array',
+      description: 'أضف هنا المنتجات التي تريد ظهورها في صفحة الهبوط',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'product' }] // ربط مع قسم المنتجات
+        }
+      ]
     }
   ]
 }

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { client } from '../src/sanity/lib/client'; // استدعاء العميل
+import { client } from '../src/sanity/lib/client';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image'; // لاستخدام صور Next.js
+import Image from 'next/image';
 
 export default function LandingPage({ landingData }) {
   
-  // الحالة الافتراضية للبيانات (في حال لم يتم إدخال شيء في لوحة التحكم)
+  // البيانات الافتراضية
   const defaultImage = "/landing-img.jpg";
   const defaultVideo = "/offer.mp4";
   
-  // قراءة البيانات القادمة من Sanity
   const offerEndTime = landingData?.offerEndTime; 
   const imageUrl = landingData?.imageUrl || defaultImage;
   const videoUrl = landingData?.videoUrl || defaultVideo;
+  const products = landingData?.selectedProducts || []; // المنتجات المختارة
   
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
@@ -21,8 +21,6 @@ export default function LandingPage({ landingData }) {
   useEffect(() => {
     setMounted(true);
 
-    // 👇 هنا السحر: نستخدم التاريخ القادم من قاعدة البيانات
-    // إذا لم يحدد المدير تاريخاً، نضع تاريخاً افتراضياً (بعد 24 ساعة)
     const targetDate = offerEndTime ? new Date(offerEndTime) : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     const interval = setInterval(() => {
@@ -45,8 +43,8 @@ export default function LandingPage({ landingData }) {
     return () => clearInterval(interval);
   }, [offerEndTime]);
 
-  const handleQuickOrder = () => {
-    const message = "مرحباً، أريد الاستفادة من العرض الخاص (بكج كاريزما الفاخر) قبل انتهاء العداد. يرجى التفاصيل.";
+  const handleQuickOrder = (productName = "العرض الخاص") => {
+    const message = `مرحباً، أريد طلب المنتج (${productName}) من عرض صفحة الهبوط. يرجى التفاصيل.`;
     window.open(`https://wa.me/201002410037?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -81,32 +79,16 @@ export default function LandingPage({ landingData }) {
             احصل على عطرك المفضل بخصم حصري وشحن مجاني!
           </p>
 
-          {/* 🔥🔥 قسم الميديا الديناميكي 🔥🔥 */}
-          <div style={{ 
-            margin: '30px auto', 
-            maxWidth: '600px', 
-            borderRadius: '20px', 
-            overflow: 'hidden', 
-            border: '3px solid #d4af37', 
-            boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' 
-          }}>
-             {/* إذا حددت صورة في لوحة التحكم ستظهر هنا، وإلا سيظهر الفيديو */}
+          {/* قسم الميديا */}
+          <div style={{ margin: '30px auto', maxWidth: '600px', borderRadius: '20px', overflow: 'hidden', border: '3px solid #d4af37', boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' }}>
              {landingData?.imageUrl ? (
-                <img 
-                  src={imageUrl} 
-                  alt="عرض كاريزما" 
-                  style={{ width: '100%', display: 'block' }} 
-                />
+                <img src={imageUrl} alt="عرض كاريزما" style={{ width: '100%', display: 'block' }} />
              ) : (
-               <video 
-                 autoPlay loop muted playsInline controls 
-                 style={{ width: '100%', display: 'block' }}
-                 src={videoUrl} 
-               />
+               <video autoPlay loop muted playsInline controls style={{ width: '100%', display: 'block' }} src={videoUrl} />
              )}
           </div>
 
-          {/* العداد التنازلي */}
+          {/* العداد */}
           {mounted && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', direction: 'ltr' }}>
               <div style={timerBoxStyle}><span style={timerNumberStyle}>{timeLeft.seconds}</span><span style={timerLabelStyle}>ثانية</span></div>
@@ -120,15 +102,43 @@ export default function LandingPage({ landingData }) {
             ⚠️ ينتهي العرض بانتهاء العداد!
           </p>
           
-          <button onClick={handleQuickOrder} className="pulse-button" style={mainBtnStyle}>
+          <button onClick={() => handleQuickOrder("بكج العرض الكامل")} className="pulse-button" style={mainBtnStyle}>
             🔥 اطلب العرض الآن
           </button>
           
         </div>
       </div>
 
-      {/* باقي الأقسام كما هي... (المميزات، الآراء، الخ) */}
-      <div style={{ padding: '60px 20px', backgroundColor: '#111', textAlign: 'center' }}>
+      {/* ==================== 2. منتجات العرض (القسم الجديد) ==================== */}
+      {products.length > 0 && (
+        <div style={{ padding: '80px 20px', backgroundColor: '#111', textAlign: 'center' }}>
+          <h2 style={{ color: '#d4af37', marginBottom: '50px', fontSize: '2.5rem' }}>✨ منتجات العرض المختارة</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '30px' }}>
+            {products.map((product) => (
+              <div key={product._id} className="product-card" style={{ backgroundColor: '#222', borderRadius: '15px', width: '250px', overflow: 'hidden', border: '1px solid #333', transition: '0.3s' }}>
+                <Link href={`/product/${product.slug.current}`} style={{ textDecoration: 'none' }}>
+                  <div style={{ position: 'relative', height: '250px', backgroundColor: '#fff' }}>
+                    {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain' }} />}
+                  </div>
+                </Link>
+                <div style={{ padding: '20px' }}>
+                  <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '10px' }}>{product.name}</h3>
+                  <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '15px' }}>{product.price} ج.م</p>
+                  <button 
+                    onClick={() => handleQuickOrder(product.name)}
+                    style={{ width: '100%', padding: '10px', backgroundColor: '#d4af37', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+                  >
+                    🛒 اطلب الآن
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 3. المميزات ==================== */}
+      <div style={{ padding: '60px 20px', backgroundColor: '#000', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '50px', fontSize: '2.5rem' }}>لماذا كاريزما؟</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px' }}>
            <div style={featureBoxStyle}><div style={{ fontSize: '3rem', marginBottom: '15px' }}>💎</div><h3>جودة أصلية</h3></div>
@@ -142,27 +152,32 @@ export default function LandingPage({ landingData }) {
         @keyframes blink { 50% { opacity: 0.5; } }
         .pulse-button { animation: pulse 2s infinite; }
         .pulse-button:hover { background-color: #c49f27 !important; }
+        .product-card:hover { transform: translateY(-10px); border-color: #d4af37 !important; }
       `}</style>
     </div>
   );
 }
 
-// دالة جلب البيانات من Sanity
+// دالة جلب البيانات (محدثة لجلب المنتجات)
 export const getStaticProps = async () => {
-  // جلب أول مستند من نوع landingPage
   const query = `*[_type == "landingPage"][0]{
     offerEndTime,
     videoUrl,
-    "imageUrl": heroImage.asset->url
+    "imageUrl": heroImage.asset->url,
+    selectedProducts[]->{
+      _id,
+      name,
+      price,
+      "imageUrl": image.asset->url,
+      slug
+    }
   }`;
   
   const landingData = await client.fetch(query);
 
   return {
-    props: { 
-      landingData: landingData || null 
-    },
-    revalidate: 60 // تحديث الصفحة كل 60 ثانية للتحقق من التغييرات
+    props: { landingData: landingData || null },
+    revalidate: 60
   };
 }
 
