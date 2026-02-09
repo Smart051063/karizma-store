@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function LandingPage() {
   
@@ -13,16 +12,13 @@ export default function LandingPage() {
     seconds: 0,
   });
 
-  // حالة للتأكد من أن الكود يعمل داخل المتصفح فقط
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
-    // 👇 حدد تاريخ انتهاء العرض هنا (مثلاً: بعد 3 أيام من الآن)
-    // يمكنك تغيير التاريخ للصيغة التي تريدها: "YYYY-MM-DD"
     const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 3); // العرض ينتهي بعد 3 أيام تلقائياً
+    targetDate.setDate(targetDate.getDate() + 3); 
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -43,7 +39,6 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // دالة الشراء السريع
   const handleQuickOrder = () => {
     const message = "مرحباً، أريد الاستفادة من العرض الخاص (بكج كاريزما الفاخر) قبل انتهاء العداد. يرجى التفاصيل.";
     window.open(`https://wa.me/201002410037?text=${encodeURIComponent(message)}`, '_blank');
@@ -60,15 +55,15 @@ export default function LandingPage() {
       {/* ==================== 1. قسم الهيرو (الرئيسي) ==================== */}
       <div style={{ 
         position: 'relative', 
-        minHeight: '100vh', // زيادة الطول ليشمل العداد بشكل مريح
+        minHeight: '100vh', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center', 
         textAlign: 'center',
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?q=80&w=1920&auto=format&fit=crop")',
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url("https://images.unsplash.com/photo-1615634260167-c8cdede054de?q=80&w=1920&auto=format&fit=crop")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        padding: '20px'
+        padding: '40px 20px'
       }}>
         <div style={{ maxWidth: '800px', zIndex: 2 }}>
           
@@ -80,34 +75,32 @@ export default function LandingPage() {
             احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span> وشحن مجاني!
           </p>
 
-          {/* 🔥🔥 العداد التنازلي الجديد 🔥🔥 */}
+          {/* 🔥🔥 الجديد: قسم الميديا (فيديو أو صورة) 🔥🔥 */}
+          <div style={{ margin: '40px auto', maxWidth: '600px', borderRadius: '20px', overflow: 'hidden', border: '3px solid #d4af37', boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' }}>
+            
+            {/* 🎥 الخيار الأول: فيديو (إذا كنت تريد فيديو، اترك هذا وعطل الصورة) */}
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              style={{ width: '100%', display: 'block' }}
+              // 👇 ضع رابط الفيديو الخاص بك هنا (يمكنك تغييره لاحقاً)
+              src="/promo.mp4" 
+            />
+
+            {/* 📸 الخيار الثاني: صورة (إذا كنت تريد صورة، الغِ تعليق السطر التالي وعطل الفيديو) */}
+            {/* <img src="https://via.placeholder.com/600x400" alt="عرض خاص" style={{ width: '100%', display: 'block' }} /> */}
+            
+          </div>
+
+          {/* العداد التنازلي */}
           {mounted && (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '40px', direction: 'ltr' }}>
-              
-              {/* ثواني */}
-              <div style={timerBoxStyle}>
-                <span style={timerNumberStyle}>{timeLeft.seconds}</span>
-                <span style={timerLabelStyle}>ثانية</span>
-              </div>
-
-              {/* دقائق */}
-              <div style={timerBoxStyle}>
-                <span style={timerNumberStyle}>{timeLeft.minutes}</span>
-                <span style={timerLabelStyle}>دقيقة</span>
-              </div>
-
-              {/* ساعات */}
-              <div style={timerBoxStyle}>
-                <span style={timerNumberStyle}>{timeLeft.hours}</span>
-                <span style={timerLabelStyle}>ساعة</span>
-              </div>
-
-              {/* أيام */}
-              <div style={timerBoxStyle}>
-                <span style={timerNumberStyle}>{timeLeft.days}</span>
-                <span style={timerLabelStyle}>يوم</span>
-              </div>
-
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', direction: 'ltr' }}>
+              <div style={timerBoxStyle}><span style={timerNumberStyle}>{timeLeft.seconds}</span><span style={timerLabelStyle}>ثانية</span></div>
+              <div style={timerBoxStyle}><span style={timerNumberStyle}>{timeLeft.minutes}</span><span style={timerLabelStyle}>دقيقة</span></div>
+              <div style={timerBoxStyle}><span style={timerNumberStyle}>{timeLeft.hours}</span><span style={timerLabelStyle}>ساعة</span></div>
+              <div style={timerBoxStyle}><span style={timerNumberStyle}>{timeLeft.days}</span><span style={timerLabelStyle}>يوم</span></div>
             </div>
           )}
 
@@ -137,29 +130,25 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ==================== 2. لماذا تختارنا؟ ==================== */}
+      {/* ==================== 2. المميزات ==================== */}
       <div style={{ padding: '60px 20px', backgroundColor: '#111', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '50px', fontSize: '2.5rem' }}>لماذا كاريزما؟</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px' }}>
-          
           <div style={featureBoxStyle}>
             <div style={{ fontSize: '3rem', marginBottom: '15px' }}>💎</div>
             <h3 style={{ marginBottom: '10px' }}>جودة أصلية</h3>
             <p style={{ color: '#bbb' }}>زيوت عطرية فرنسية وشرقية مركزة تدوم طويلاً.</p>
           </div>
-
           <div style={featureBoxStyle}>
             <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🚚</div>
             <h3 style={{ marginBottom: '10px' }}>شحن صاروخي</h3>
             <p style={{ color: '#bbb' }}>توصيل سريع لباب بيتك في جميع محافظات مصر.</p>
           </div>
-
           <div style={featureBoxStyle}>
             <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🛡️</div>
             <h3 style={{ marginBottom: '10px' }}>ضمان ذهبي</h3>
             <p style={{ color: '#bbb' }}>إذا لم يعجبك العطر، يمكنك استرجاعه خلال 14 يوم.</p>
           </div>
-
         </div>
       </div>
 
@@ -220,7 +209,7 @@ export default function LandingPage() {
   );
 }
 
-// ==================== ستايلات العداد والتصميم ====================
+// ==================== التنسيقات ====================
 
 const timerBoxStyle = {
   display: 'flex',
@@ -230,19 +219,19 @@ const timerBoxStyle = {
   backgroundColor: 'rgba(0,0,0,0.7)',
   border: '2px solid #d4af37',
   borderRadius: '10px',
-  width: '80px',
-  height: '80px',
+  width: '70px',
+  height: '70px',
   backdropFilter: 'blur(5px)'
 };
 
 const timerNumberStyle = {
-  fontSize: '2rem',
+  fontSize: '1.5rem',
   fontWeight: 'bold',
   color: '#d4af37'
 };
 
 const timerLabelStyle = {
-  fontSize: '0.8rem',
+  fontSize: '0.7rem',
   color: '#fff',
   textTransform: 'uppercase'
 };
