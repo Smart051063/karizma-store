@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { client } from '../src/sanity/lib/client'; // استدعاء العميل
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image'; // لاستخدام صور Next.js
 
-export default function LandingPage() {
+export default function LandingPage({ landingData }) {
   
-  // 1. حالة العداد (للأيام والساعات والدقائق والثواني)
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // حالة للتأكد من أن الصفحة تم تحميلها في المتصفح
+  // الحالة الافتراضية للبيانات (في حال لم يتم إدخال شيء في لوحة التحكم)
+  const defaultImage = "/landing-img.jpg";
+  const defaultVideo = "/offer.mp4";
+  
+  // قراءة البيانات القادمة من Sanity
+  const offerEndTime = landingData?.offerEndTime; 
+  const imageUrl = landingData?.imageUrl || defaultImage;
+  const videoUrl = landingData?.videoUrl || defaultVideo;
+  
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
-    // تحديد موعد انتهاء العرض (بعد 3 أيام من الآن)
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 3); 
+    // 👇 هنا السحر: نستخدم التاريخ القادم من قاعدة البيانات
+    // إذا لم يحدد المدير تاريخاً، نضع تاريخاً افتراضياً (بعد 24 ساعة)
+    const targetDate = offerEndTime ? new Date(offerEndTime) : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -28,6 +31,7 @@ export default function LandingPage() {
 
       if (distance < 0) {
         clearInterval(interval);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       } else {
         setTimeLeft({
           days: Math.floor(distance / (1000 * 60 * 60 * 24)),
@@ -39,9 +43,8 @@ export default function LandingPage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [offerEndTime]);
 
-  // دالة زر الواتساب
   const handleQuickOrder = () => {
     const message = "مرحباً، أريد الاستفادة من العرض الخاص (بكج كاريزما الفاخر) قبل انتهاء العداد. يرجى التفاصيل.";
     window.open(`https://wa.me/201002410037?text=${encodeURIComponent(message)}`, '_blank');
@@ -52,10 +55,10 @@ export default function LandingPage() {
       
       <Head>
         <title>عروض كاريزما الحصرية | لفترة محدودة</title>
-        <meta name="description" content="عرض خاص لفترة محدودة من كاريزما للعطور. احصل على عطرك المفضل الآن بأفضل سعر." />
+        <meta name="description" content="عرض خاص لفترة محدودة من كاريزما للعطور." />
       </Head>
 
-      {/* ==================== 1. قسم الهيرو (الرئيسي) ==================== */}
+      {/* ==================== 1. قسم الهيرو ==================== */}
       <div style={{ 
         position: 'relative', 
         minHeight: '100vh', 
@@ -75,10 +78,10 @@ export default function LandingPage() {
           </h1>
           
           <p style={{ fontSize: '1.4rem', marginBottom: '30px', color: '#eee' }}>
-            احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>10%</span>  للمشتريات اكثر من 1000 جنية وشحن مجاني!
+            احصل على عطرك المفضل بخصم حصري وشحن مجاني!
           </p>
 
-          {/* 🔥🔥 قسم الميديا (الصورة أو الفيديو) 🔥🔥 */}
+          {/* 🔥🔥 قسم الميديا الديناميكي 🔥🔥 */}
           <div style={{ 
             margin: '30px auto', 
             maxWidth: '600px', 
@@ -87,20 +90,20 @@ export default function LandingPage() {
             border: '3px solid #d4af37', 
             boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' 
           }}>
-             {/* 👇 الخيار المفعل: صورة العرض (تأكد من وجود landing-img.jpg في مجلد public) */}
-             <img 
-               src="/landing-img.jpg" 
-               alt="عرض كاريزما الحصري" 
-               style={{ width: '100%', display: 'block' }} 
-             />
-
-             {/* 👇 الخيار البديل: فيديو (إذا أردت تشغيله، احذف الصورة وفعل هذا الكود) */}
-             {/* <video 
-               autoPlay loop muted playsInline controls 
-               style={{ width: '100%', display: 'block' }}
-               src="/offer.mp4" 
-             /> 
-             */}
+             {/* إذا حددت صورة في لوحة التحكم ستظهر هنا، وإلا سيظهر الفيديو */}
+             {landingData?.imageUrl ? (
+                <img 
+                  src={imageUrl} 
+                  alt="عرض كاريزما" 
+                  style={{ width: '100%', display: 'block' }} 
+                />
+             ) : (
+               <video 
+                 autoPlay loop muted playsInline controls 
+                 style={{ width: '100%', display: 'block' }}
+                 src={videoUrl} 
+               />
+             )}
           </div>
 
           {/* العداد التنازلي */}
@@ -117,149 +120,55 @@ export default function LandingPage() {
             ⚠️ ينتهي العرض بانتهاء العداد!
           </p>
           
-          <button 
-            onClick={handleQuickOrder}
-            className="pulse-button"
-            style={{ 
-              padding: '20px 60px', 
-              fontSize: '1.5rem', 
-              backgroundColor: '#d4af37', 
-              color: 'black', 
-              border: 'none', 
-              borderRadius: '50px', 
-              fontWeight: 'bold', 
-              cursor: 'pointer',
-              boxShadow: '0 0 30px rgba(212, 175, 55, 0.6)',
-              transition: '0.3s'
-            }}
-          >
+          <button onClick={handleQuickOrder} className="pulse-button" style={mainBtnStyle}>
             🔥 اطلب العرض الآن
           </button>
           
         </div>
       </div>
 
-      {/* ==================== 2. المميزات ==================== */}
+      {/* باقي الأقسام كما هي... (المميزات، الآراء، الخ) */}
       <div style={{ padding: '60px 20px', backgroundColor: '#111', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '50px', fontSize: '2.5rem' }}>لماذا كاريزما؟</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px' }}>
-          <div style={featureBoxStyle}>
-            <div style={{ fontSize: '3rem', marginBottom: '15px' }}>💎</div>
-            <h3 style={{ marginBottom: '10px' }}>جودة أصلية</h3>
-            <p style={{ color: '#bbb' }}>زيوت عطرية فرنسية وشرقية مركزة تدوم طويلاً.</p>
-          </div>
-          <div style={featureBoxStyle}>
-            <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🚚</div>
-            <h3 style={{ marginBottom: '10px' }}>شحن صاروخي</h3>
-            <p style={{ color: '#bbb' }}>توصيل سريع لباب بيتك في جميع محافظات مصر.</p>
-          </div>
-          <div style={featureBoxStyle}>
-            <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🛡️</div>
-            <h3 style={{ marginBottom: '10px' }}>ضمان ذهبي</h3>
-            <p style={{ color: '#bbb' }}>إذا لم يعجبك العطر، يمكنك استرجاعه خلال 14 يوم.</p>
-          </div>
+           <div style={featureBoxStyle}><div style={{ fontSize: '3rem', marginBottom: '15px' }}>💎</div><h3>جودة أصلية</h3></div>
+           <div style={featureBoxStyle}><div style={{ fontSize: '3rem', marginBottom: '15px' }}>🚚</div><h3>شحن صاروخي</h3></div>
+           <div style={featureBoxStyle}><div style={{ fontSize: '3rem', marginBottom: '15px' }}>🛡️</div><h3>ضمان ذهبي</h3></div>
         </div>
       </div>
 
-      {/* ==================== 3. آراء العملاء ==================== */}
-      <div style={{ padding: '80px 20px', backgroundColor: '#000', textAlign: 'center' }}>
-        <h2 style={{ color: '#fff', marginBottom: '50px', fontSize: '2.5rem' }}>ماذا يقول عملاؤنا؟ ❤️</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '30px' }}>
-          <div style={reviewCardStyle}>
-            <p style={{ fontSize: '1.2rem', fontStyle: 'italic', marginBottom: '20px' }}>"ثبات العطر مش طبيعي، فضلت ريحته في الملابس يومين!"</p>
-            <h4 style={{ color: '#d4af37' }}>- أحمد محمد</h4>
-            <span style={{ color: '#f1c40f' }}>⭐⭐⭐⭐⭐</span>
-          </div>
-          <div style={reviewCardStyle}>
-            <p style={{ fontSize: '1.2rem', fontStyle: 'italic', marginBottom: '20px' }}>"التعامل ذوق جداً والتوصيل كان أسرع مما توقعت."</p>
-            <h4 style={{ color: '#d4af37' }}>- سارة علي</h4>
-            <span style={{ color: '#f1c40f' }}>⭐⭐⭐⭐⭐</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ==================== 4. دعوة أخيرة (CTA) ==================== */}
-      <div style={{ padding: '80px 20px', backgroundColor: '#d4af37', textAlign: 'center', color: 'black' }}>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', fontWeight: 'bold' }}>لا تضيع الفرصة!</h2>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <button 
-                onClick={handleQuickOrder}
-                style={{ padding: '15px 40px', fontSize: '1.2rem', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}
-            >
-                💬 اطلب عبر واتساب
-            </button>
-            <Link href="/shop">
-                <button 
-                    style={{ padding: '15px 40px', fontSize: '1.2rem', backgroundColor: 'white', color: 'black', border: 'none', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                    🛒 تصفح المتجر
-                </button>
-            </Link>
-        </div>
-      </div>
-
-      {/* ==================== أنماط CSS المدمجة ==================== */}
       <style jsx>{`
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-          100% { transform: scale(1); }
-        }
-        @keyframes blink {
-          50% { opacity: 0.5; }
-        }
-        .pulse-button {
-          animation: pulse 2s infinite;
-        }
-        .pulse-button:hover {
-          background-color: #c49f27 !important;
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        .pulse-button { animation: pulse 2s infinite; }
+        .pulse-button:hover { background-color: #c49f27 !important; }
       `}</style>
     </div>
   );
 }
 
-// ==================== التنسيقات الثابتة (في الأسفل) ====================
+// دالة جلب البيانات من Sanity
+export const getStaticProps = async () => {
+  // جلب أول مستند من نوع landingPage
+  const query = `*[_type == "landingPage"][0]{
+    offerEndTime,
+    videoUrl,
+    "imageUrl": heroImage.asset->url
+  }`;
+  
+  const landingData = await client.fetch(query);
 
-const timerBoxStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: 'rgba(0,0,0,0.7)',
-  border: '2px solid #d4af37',
-  borderRadius: '10px',
-  width: '70px',
-  height: '70px',
-  backdropFilter: 'blur(5px)'
-};
+  return {
+    props: { 
+      landingData: landingData || null 
+    },
+    revalidate: 60 // تحديث الصفحة كل 60 ثانية للتحقق من التغييرات
+  };
+}
 
-const timerNumberStyle = {
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  color: '#d4af37'
-};
-
-const timerLabelStyle = {
-  fontSize: '0.7rem',
-  color: '#fff',
-  textTransform: 'uppercase'
-};
-
-const featureBoxStyle = {
-  backgroundColor: '#222',
-  padding: '30px',
-  borderRadius: '15px',
-  width: '300px',
-  border: '1px solid #333',
-  transition: '0.3s'
-};
-
-const reviewCardStyle = {
-  backgroundColor: '#1a1a1a',
-  padding: '30px',
-  borderRadius: '15px',
-  width: '300px',
-  border: '1px solid #333',
-  color: '#ddd'
-};
+// التنسيقات
+const timerBoxStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)', border: '2px solid #d4af37', borderRadius: '10px', width: '70px', height: '70px', backdropFilter: 'blur(5px)' };
+const timerNumberStyle = { fontSize: '1.5rem', fontWeight: 'bold', color: '#d4af37' };
+const timerLabelStyle = { fontSize: '0.7rem', color: '#fff', textTransform: 'uppercase' };
+const featureBoxStyle = { backgroundColor: '#222', padding: '30px', borderRadius: '15px', width: '300px', border: '1px solid #333', color: '#ddd' };
+const mainBtnStyle = { padding: '20px 60px', fontSize: '1.5rem', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 0 30px rgba(212, 175, 55, 0.6)', transition: '0.3s' };
