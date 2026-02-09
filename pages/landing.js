@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function LandingPage() {
   
-  // حالة العداد
+  // 1. حالة العداد (للأيام والساعات والدقائق والثواني)
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -12,11 +12,13 @@ export default function LandingPage() {
     seconds: 0,
   });
 
+  // حالة للتأكد من أن الصفحة تم تحميلها في المتصفح
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
+    // تحديد موعد انتهاء العرض (بعد 3 أيام من الآن)
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 3); 
 
@@ -39,6 +41,7 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // دالة زر الواتساب
   const handleQuickOrder = () => {
     const message = "مرحباً، أريد الاستفادة من العرض الخاص (بكج كاريزما الفاخر) قبل انتهاء العداد. يرجى التفاصيل.";
     window.open(`https://wa.me/201002410037?text=${encodeURIComponent(message)}`, '_blank');
@@ -72,10 +75,10 @@ export default function LandingPage() {
           </h1>
           
           <p style={{ fontSize: '1.4rem', marginBottom: '30px', color: '#eee' }}>
-            احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span> وشحن مجاني!
+            احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span>  للمشتريات اكثر من 1000 جنية وشحن مجاني!
           </p>
 
-          {/* 🔥🔥 قسم الميديا (فيديو أو صورة) 🔥🔥 */}
+          {/* 🔥🔥 قسم الميديا (الصورة أو الفيديو) 🔥🔥 */}
           <div style={{ 
             margin: '30px auto', 
             maxWidth: '600px', 
@@ -84,22 +87,20 @@ export default function LandingPage() {
             border: '3px solid #d4af37', 
             boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' 
           }}>
-             {/* 👇 يمكنك التبديل بين الفيديو والصورة هنا */}
-             
-             {/* 🎥 الخيار 1: فيديو */}
-             <video 
-               autoPlay 
-               loop 
-               muted 
-               playsInline 
-               controls 
-               style={{ width: '100%', display: 'block' }}
-               src="/offer.mp4" 
+             {/* 👇 الخيار المفعل: صورة العرض (تأكد من وجود landing-img.jpg في مجلد public) */}
+             <img 
+               src="/landing-img.jpg" 
+               alt="عرض كاريزما الحصري" 
+               style={{ width: '100%', display: 'block' }} 
              />
 
-             {/* 📸 الخيار 2: صورة (إذا أردت صورة، احذف الفيديو وفعل السطر التالي) */}
-             {/* <img src="/landing-img.jpg" alt="عرض خاص" style={{ width: '100%', display: 'block' }} /> */}
-
+             {/* 👇 الخيار البديل: فيديو (إذا أردت تشغيله، احذف الصورة وفعل هذا الكود) */}
+             {/* <video 
+               autoPlay loop muted playsInline controls 
+               style={{ width: '100%', display: 'block' }}
+               src="/offer.mp4" 
+             /> 
+             */}
           </div>
 
           {/* العداد التنازلي */}
@@ -197,6 +198,7 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* ==================== أنماط CSS المدمجة ==================== */}
       <style jsx>{`
         @keyframes pulse {
           0% { transform: scale(1); }
@@ -217,7 +219,7 @@ export default function LandingPage() {
   );
 }
 
-// ==================== التنسيقات ====================
+// ==================== التنسيقات الثابتة (في الأسفل) ====================
 
 const timerBoxStyle = {
   display: 'flex',
