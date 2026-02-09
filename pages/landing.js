@@ -74,22 +74,34 @@ export default function LandingPage() {
           <p style={{ fontSize: '1.4rem', marginBottom: '30px', color: '#eee' }}>
             احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span> وشحن مجاني!
           </p>
-{/* 🔥🔥 قسم الصورة الفخم 🔥🔥 */}
-<div style={{ 
-  margin: '40px auto', 
-  maxWidth: '600px', 
-  borderRadius: '20px', 
-  overflow: 'hidden', 
-  border: '3px solid #d4af37', // إطار ذهبي
-  boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' // توهج خفيف
-}}>
-  <img 
-    src="/landing-img.jpg" 
-    alt="عرض كاريزما الحصري" 
-    style={{ width: '100%', display: 'block' }} 
-  />
-</div>
-/>
+
+          {/* 🔥🔥 قسم الميديا (فيديو أو صورة) 🔥🔥 */}
+          <div style={{ 
+            margin: '30px auto', 
+            maxWidth: '600px', 
+            borderRadius: '20px', 
+            overflow: 'hidden', 
+            border: '3px solid #d4af37', 
+            boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' 
+          }}>
+             {/* 👇 يمكنك التبديل بين الفيديو والصورة هنا */}
+             
+             {/* 🎥 الخيار 1: فيديو */}
+             <video 
+               autoPlay 
+               loop 
+               muted 
+               playsInline 
+               controls 
+               style={{ width: '100%', display: 'block' }}
+               src="/offer.mp4" 
+             />
+
+             {/* 📸 الخيار 2: صورة (إذا أردت صورة، احذف الفيديو وفعل السطر التالي) */}
+             {/* <img src="/landing-img.jpg" alt="عرض خاص" style={{ width: '100%', display: 'block' }} /> */}
+
+          </div>
+
           {/* العداد التنازلي */}
           {mounted && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', direction: 'ltr' }}>
