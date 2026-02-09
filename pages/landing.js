@@ -74,12 +74,21 @@ export default function LandingPage() {
           <p style={{ fontSize: '1.4rem', marginBottom: '30px', color: '#eee' }}>
             احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span> وشحن مجاني!
           </p>
-
-{/* 📸 صورة العرض الخاص */}
-<img 
-  src="/landing-img.jpg" 
-  alt="عرض كاريزما الحصري" 
-  style={{ width: '100%', display: 'block' }} 
+{/* 🔥🔥 قسم الصورة الفخم 🔥🔥 */}
+<div style={{ 
+  margin: '40px auto', 
+  maxWidth: '600px', 
+  borderRadius: '20px', 
+  overflow: 'hidden', 
+  border: '3px solid #d4af37', // إطار ذهبي
+  boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)' // توهج خفيف
+}}>
+  <img 
+    src="/landing-img.jpg" 
+    alt="عرض كاريزما الحصري" 
+    style={{ width: '100%', display: 'block' }} 
+  />
+</div>
 />
           {/* العداد التنازلي */}
           {mounted && (
