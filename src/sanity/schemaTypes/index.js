@@ -1,9 +1,10 @@
-// استيراد الملف الجديد (المدونة)
-import post from './post'
+import { product } from './product'
+import { banner } from './banner'
+import { post } from './post'
+// 👇 1. استدعاء الملف الجديد
+import landingPage from './landingPage' 
 
-// استيراد ملفاتك القديمة (المنتجات والبانر)
-import product from './product'
-import banner from './banner'
-
-// تصدير القائمة الكاملة (لاحظ أننا أضفنا post للقائمة)
-export const schemaTypes = [product, banner, post]
+export const schema = {
+  // 👇 2. إضافته للقائمة
+  types: [product, banner, post, landingPage], 
+}
