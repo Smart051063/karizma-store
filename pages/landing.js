@@ -75,7 +75,7 @@ export default function LandingPage() {
           </h1>
           
           <p style={{ fontSize: '1.4rem', marginBottom: '30px', color: '#eee' }}>
-            احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>25%</span>  للمشتريات اكثر من 1000 جنية وشحن مجاني!
+            احصل على عطرك المفضل بخصم حصري <span style={{ color: '#e74c3c', fontWeight: 'bold' }}>10%</span>  للمشتريات اكثر من 1000 جنية وشحن مجاني!
           </p>
 
           {/* 🔥🔥 قسم الميديا (الصورة أو الفيديو) 🔥🔥 */}
