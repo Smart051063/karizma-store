@@ -14,6 +14,7 @@ export default function Home({ banner, products }) {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
+      {/* إعدادات السيو (كما هي بدون تغيير) */}
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -150,7 +151,7 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* Styles (تم حذف الفوتر والأزرار العائمة من هنا لأننا نقلناها) */}
+      {/* Styles */}
       <style jsx global>{`
         .desktop-nav { display: flex; gap: 20px; }
         .mobile-menu-btn { display: none; }
