@@ -104,7 +104,13 @@ export default function Search() {
           </p>
         )}
       </div>
+
+      
+
     </div>
+  );
+}
+
 // --- التنسيقات ---
 const productCardStyle = { 
   width: '180px', backgroundColor: 'white', borderRadius: '10px', 
