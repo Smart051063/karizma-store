@@ -1,126 +1,136 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { client } from '../src/sanity/lib/client';
+import Link from 'next/link';
+import Image from 'next/image';
+import Head from 'next/head';
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-
-  useEffect(() => {
-    // جلب المنتجات
-    client.fetch(`*[_type == "product"]{_id, name, price, discount, "imageUrl": image.asset->url, slug}`).then((data) => {
-      setProducts(data);
-      setFilteredProducts(data);
-    });
-  }, []);
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false); // لمعرفة هل تم البحث أم لا
 
   // دالة البحث
-  const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    
-    const filtered = products.filter(product => 
-      product.name && product.name.toLowerCase().includes(term)
-    );
-    setFilteredProducts(filtered);
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchTerm.trim()) return;
+
+    setLoading(true);
+    setHasSearched(true);
+
+    // البحث في الاسم أو الوصف
+    const query = `*[_type == "product" && (name match "${searchTerm}*" || description match "${searchTerm}*")] | order(_createdAt desc) {
+      _id,
+      name,
+      price,
+      "imageUrl": image.asset->url,
+      slug
+    }`;
+
+    try {
+      const results = await client.fetch(query);
+      setSearchResults(results);
+    } catch (error) {
+      console.error("خطأ في البحث:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{ minHeight: '80vh', direction: 'rtl', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      
-      {/* عنوان وحقل البحث */}
-      <div style={{ textAlign: 'center', marginBottom: '40px', marginTop: '20px' }}>
-        <h1 style={{ color: '#d4af37', fontSize: '2rem', marginBottom: '20px' }}>🔍 ابحث عن عطرك المفضل</h1>
-        
-        <input 
-          type="text" 
-          placeholder="اكتب اسم العطر هنا..." 
-          value={searchTerm}
-          onChange={handleSearch}
-          style={{
-            width: '100%', maxWidth: '500px', padding: '15px', borderRadius: '30px',
-            border: '2px solid #d4af37', fontSize: '1.1rem', textAlign: 'center', outline: 'none'
-          }}
-        />
-      </div>
+    <div style={{ minHeight: '100vh', direction: 'rtl', padding: '40px 20px', backgroundColor: '#f9f9f9', fontFamily: 'Arial' }}>
+      <Head>
+        <title>البحث | كاريزما للعطور</title>
+      </Head>
 
-      {/* شبكة النتائج */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center' }}>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => {
-            
-            // 🛑 فحص أمان هام جداً: إذا لم يكن للمنتج رابط، لا تعرضه
-            if (!product.slug || !product.slug.current) return null;
+      <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+        <h1 style={{ color: '#d4af37', marginBottom: '30px' }}>🔍 البحث عن عطر</h1>
 
-            // حساب السعر والخصم
-            const hasDiscount = product.discount > 0;
-            const originalPrice = product.price;
-            const finalPrice = hasDiscount 
-              ? Math.round(originalPrice - (originalPrice * product.discount / 100)) 
-              : originalPrice;
+        {/* نموذج البحث */}
+        <form onSubmit={handleSearch} style={{ marginBottom: '50px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+          <input
+            type="text"
+            placeholder="اكتب اسم العطر..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={inputStyle}
+          />
+          <button type="submit" style={searchButtonStyle}>
+            {loading ? '...' : 'بحث'}
+          </button>
+        </form>
 
-            return (
+        {/* عرض النتائج */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+          {searchResults.length > 0 ? (
+            searchResults.map((product) => (
               <Link href={`/product/${product.slug.current}`} key={product._id} style={{ textDecoration: 'none' }}>
                 <div style={productCardStyle}>
                   
-                  {/* الصورة + شريط الخصم */}
-                  <div style={{ height: '150px', overflow: 'hidden', borderRadius: '10px 10px 0 0', position: 'relative' }}>
-                      {hasDiscount && (
-                        <div style={{ 
-                          position: 'absolute', top: 0, left: 0, 
-                          backgroundColor: '#e74c3c', color: 'white', 
-                          fontSize: '0.8rem', padding: '4px 8px', 
-                          borderRadius: '0 0 10px 0', fontWeight: 'bold', zIndex: 2
-                        }}>
-                          خصم {product.discount}%
-                        </div>
-                      )}
-                      
-                      {product.imageUrl && <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                  </div>
-
-                  {/* التفاصيل */}
-                  <div style={{ padding: '10px', textAlign: 'center' }}>
-                    <h3 style={productNameStyle}>{product.name}</h3>
-                    
-                    {hasDiscount ? (
-                      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.9rem', color: '#999', textDecoration: 'line-through' }}>{originalPrice}</span>
-                        <p style={{ color: '#e74c3c', fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{finalPrice} ج.م</p>
-                      </div>
+                  {/* صورة المنتج */}
+                  <div style={{ position: 'relative', height: '180px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
+                    {product.imageUrl ? (
+                      <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '10px' }} sizes="200px" />
                     ) : (
-                      <p style={productPriceStyle}>{originalPrice} ج.م</p>
+                       <span style={{ fontSize: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>🧴</span>
                     )}
                   </div>
 
+                  {/* تفاصيل المنتج */}
+                  <div style={{ padding: '15px' }}>
+                    <h3 style={{ fontSize: '1rem', color: '#333', margin: '10px 0' }}>{product.name}</h3>
+                    <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.1rem' }}>{product.price} ج.م</p>
+                  </div>
                 </div>
               </Link>
-            );
-          })
-        ) : (
-          <p style={{ textAlign: 'center', marginTop: '30px', color: '#777', fontSize: '1.2rem' }}>
-            لا توجد نتائج تطابق بحثك.. 🧐
-          </p>
-        )}
+            ))
+          ) : (
+            /* رسالة عند عدم وجود نتائج */
+            hasSearched && !loading && (
+              <div style={{ color: '#777', marginTop: '20px' }}>
+                <h3>عذراً، لا توجد نتائج مطابقة لـ "{searchTerm}" 🙁</h3>
+                <p>جرب البحث بكلمة أخرى.</p>
+              </div>
+            )
+          )}
+        </div>
       </div>
-
-      
-
     </div>
   );
-}
+} 
+// 👆 ✅ هذا القوس هو الذي كان ناقصاً وتسبب في المشكلة!
 
-// --- التنسيقات ---
-const productCardStyle = { 
-  width: '180px', backgroundColor: 'white', borderRadius: '10px', 
-  boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid #d4af37', 
-  cursor: 'pointer', transition: 'transform 0.2s', margin: '10px'
+// ---للتنسيقات---
+const inputStyle = {
+  padding: '15px',
+  borderRadius: '30px',
+  border: '1px solid #ddd',
+  width: '70%',
+  maxWidth: '400px',
+  fontSize: '1rem',
+  outline: 'none',
+  boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
 };
 
-const productNameStyle = { 
-  fontSize: '0.9rem', color: '#1a1a1a', margin: '0 0 5px', fontWeight: 'bold',
-  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' 
+const searchButtonStyle = {
+  padding: '15px 30px',
+  borderRadius: '30px',
+  border: 'none',
+  backgroundColor: '#d4af37',
+  color: 'black',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  fontSize: '1rem',
+  boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
 };
 
-const productPriceStyle = { color: '#d4af37', fontWeight: 'bold', fontSize: '1.1rem', margin: 0 };
+const productCardStyle = {
+  width: '200px',
+  backgroundColor: 'white',
+  borderRadius: '15px',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+  transition: '0.3s',
+  border: '1px solid #eee',
+  overflow: 'hidden',
+  cursor: 'pointer'
+};
