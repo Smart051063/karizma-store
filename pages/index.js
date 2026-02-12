@@ -13,7 +13,7 @@ export default function Home({ banner, products, reviews }) {
 
   // دالة لرسم النجوم
   const renderStars = (rating) => {
-    return "⭐".repeat(rating);
+    return "⭐".repeat(rating || 5);
   };
 
   return (
@@ -36,8 +36,8 @@ export default function Home({ banner, products, reviews }) {
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
-            {/* 👇👇 أضف هذا السطر هنا 👇👇 */}
-  <Link href="/loyalty" style={{...linkStyle, color: '#d4af37'}}>💎 نقاطي</Link>
+            {/* 👇👇 رابط نقاطي موجود هنا 👇👇 */}
+            <Link href="/loyalty" style={{...linkStyle, color: '#d4af37'}}>💎 نقاطي</Link>
             <Link href="/blog" style={linkStyle}>المدونة</Link>
             <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
           </nav>
@@ -48,7 +48,6 @@ export default function Home({ banner, products, reviews }) {
             <Link href="/search" style={{ textDecoration: 'none', color: 'inherit' }}>
               <span style={{ cursor: 'pointer', fontSize: '1.3rem', display: 'inline-block', transform: 'translateY(2px)' }}>🔍</span>
             </Link>
-            <button style={{ background: 'none', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.8rem' }}>English</button>
             <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'white', border: '2px solid #d4af37', borderRadius: '8px', color: '#d4af37', fontSize: '1.5rem', cursor: 'pointer', padding: '0px 8px', marginRight: '8px', height: '35px', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {isMenuOpen ? '✕' : '☰'}
             </button>
@@ -58,9 +57,10 @@ export default function Home({ banner, products, reviews }) {
           <div className="mobile-nav-list fade-in">
             <Link href="/" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>الرئيسية</Link>
             <Link href="/shop" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المتجر</Link>
+            {/* رابط نقاطي للموبايل */}
+            <Link href="/loyalty" style={{...mobileLinkStyle, color: '#d4af37'}} onClick={() => setIsMenuOpen(false)}>💎 نقاطي</Link>
             <Link href="/blog" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>المدونة</Link>
             <Link href="/offers" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>العروض 🔥</Link>
-            <Link href="/search" style={mobileLinkStyle} onClick={() => setIsMenuOpen(false)}>🔍 البحث</Link>
           </div>
         )}
       </header>
@@ -79,17 +79,14 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 3. البانر ==================== */}
-      {banner?.imageUrl && (
-        <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px' }}>
-          <Image src={banner.imageUrl} alt={banner.title || 'Ramadan Offer'} width={1400} height={400} style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }} loading="lazy" sizes="(max-width: 768px) 100vw, 100vw" />
-        </div>
-      )}
-
-      {/* ==================== 4. الهيرو ==================== */}
+      {/* ==================== 3. البانر والهيرو ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
+          {banner?.heroImageUrl ? (
+            <Image src={banner.heroImageUrl} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
+          ) : (
+             <div style={{width: '100%', height:'100%', backgroundColor: '#222'}}></div>
+          )}
         </div>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1 }}></div>
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
@@ -99,7 +96,7 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 5. تصفح مجموعاتنا ==================== */}
+      {/* ==================== 4. تصفح مجموعاتنا (الدوائر) ==================== */}
       <div style={{ padding: '50px 10px', textAlign: 'center', backgroundColor: '#fff' }}>
         <h2 style={{ color: '#333', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>تصفح مجموعاتنا</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
@@ -122,7 +119,7 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 6. المنتجات ==================== */}
+      {/* ==================== 5. المنتجات ==================== */}
       <div style={{ padding: '60px 10px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>🌟 وصلنا حديثاً</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
@@ -130,7 +127,7 @@ export default function Home({ banner, products, reviews }) {
             <Link href={`/product/${product.slug?.current}`} key={product._id} style={{ textDecoration: 'none' }}>
               <div className="product-card" style={productCardStyle}>
                 <div style={{ position: 'relative', height: '140px', backgroundColor: '#f9f9f9' }}>
-                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'cover' }} sizes="160px" />}
+                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '10px' }} sizes="160px" />}
                 </div>
                 <div style={{ padding: '10px' }}>
                   <p style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#333', marginBottom: '5px' }}>{product.name}</p>
@@ -147,25 +144,20 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 7. آراء العملاء (القسم الجديد) ==================== */}
+      {/* ==================== 6. آراء العملاء (القسم الجديد) ==================== */}
       {reviews && reviews.length > 0 && (
         <div style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#1a1a1a', color: 'white' }}>
           <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>💬 ماذا يقول عملاؤنا؟</h2>
-          <div style={{ display: 'flex', overflowX: 'auto', gap: '20px', paddingBottom: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
             {reviews.map((review) => (
               <div key={review._id} style={{
                 backgroundColor: '#222', borderRadius: '15px', padding: '20px', minWidth: '280px', maxWidth: '300px',
                 border: '1px solid #333', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', textAlign: 'center'
               }}>
-                <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>{renderStars(review.rating || 5)}</div>
+                <div style={{ fontSize: '1.2rem', marginBottom: '10px', color: '#FFD700' }}>{renderStars(review.rating)}</div>
                 <p style={{ fontStyle: 'italic', marginBottom: '20px', color: '#ddd', minHeight: '60px' }}>"{review.comment}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                   {review.imageUrl && (
-                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', position: 'relative' }}>
-                       <Image src={review.imageUrl} alt={review.name} fill style={{ objectFit: 'cover' }} />
-                     </div>
-                   )}
-                   <h4 style={{ color: '#d4af37', margin: 0 }}>{review.name}</h4>
+                    <h4 style={{ color: '#d4af37', margin: 0 }}>{review.name}</h4>
                 </div>
               </div>
             ))}
@@ -173,7 +165,7 @@ export default function Home({ banner, products, reviews }) {
         </div>
       )}
 
-      {/* ==================== 8. الفيديو ==================== */}
+      {/* ==================== 7. الفيديو ==================== */}
       <div style={{ backgroundColor: 'white', padding: '60px 20px', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
         <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
@@ -216,13 +208,15 @@ export default function Home({ banner, products, reviews }) {
   );
 }
 
-// جلب البيانات (تحديث لجلب التعليقات أيضاً)
+// ==========================================
+// 👇👇 هنا الجزء السحري لإصلاح البيانات 👇👇
+// ==========================================
 export async function getStaticProps() {
-  const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
+  const banner = await client.fetch(`*[_type == "banner"][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
   
-  // 👇 جلب التعليقات
-  const reviews = await client.fetch(`*[_type == "review"] | order(_createdAt desc) [0..5] {
+  // ✅ التعديل: جلب التعليقات فقط إذا كانت تحتوي على نص (ليست فارغة)
+  const reviews = await client.fetch(`*[_type == "review" && defined(comment) && comment != ""] | order(_createdAt desc) [0..5] {
     _id, name, comment, rating, "imageUrl": image.asset->url
   }`);
 
