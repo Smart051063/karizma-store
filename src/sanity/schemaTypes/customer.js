@@ -5,9 +5,9 @@ export default {
   fields: [
     {
       name: 'phoneNumber',
-      title: '📱 رقم الهاتف (هووية العميل)',
+      title: '📱 رقم الهاتف (هوية العميل)',
       type: 'string',
-      validation: Rule => Rule.required().warning('رقم الهاتف ضروري لتمييز العميل')
+      validation: Rule => Rule.required()
     },
     {
       name: 'name',
@@ -16,29 +16,28 @@ export default {
     },
     {
       name: 'points',
-      title: '💎 رصيد النقاط الحالي',
+      title: '💎 رصيد النقاط',
       type: 'number',
-      initialValue: 0,
-      validation: Rule => Rule.min(0)
+      initialValue: 0
     },
+    // 👇👇 هذا هو الحقل الجديد 👇👇
     {
-      name: 'notes',
-      title: 'ملاحظات (طلبات سابقة)',
-      type: 'text'
+      name: 'purchasedProducts',
+      title: '🛍️ المنتجات التي اشتراها (للسماح بالتقييم)',
+      type: 'array',
+      description: 'أضف هنا المنتجات التي اشتراها العميل لكي يتمكن من تقييمها على الموقع',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'product' }]
+        }
+      ]
     }
   ],
   preview: {
     select: {
       title: 'name',
       subtitle: 'phoneNumber',
-      score: 'points'
-    },
-    prepare(selection) {
-      const {title, subtitle, score} = selection
-      return {
-        title: title || 'بدون اسم',
-        subtitle: `${subtitle} - الرصيد: ${score || 0} نقطة 💎`
-      }
     }
   }
 }
