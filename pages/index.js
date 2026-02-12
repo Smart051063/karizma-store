@@ -36,6 +36,8 @@ export default function Home({ banner, products, reviews }) {
           <nav className="desktop-nav">
             <Link href="/" style={linkStyle}>الرئيسية</Link>
             <Link href="/shop" style={linkStyle}>المتجر</Link>
+            {/* 👇👇 أضف هذا السطر هنا 👇👇 */}
+  <Link href="/loyalty" style={{...linkStyle, color: '#d4af37'}}>💎 نقاطي</Link>
             <Link href="/blog" style={linkStyle}>المدونة</Link>
             <Link href="/offers" style={linkStyle}>العروض 🔥</Link>
           </nav>
