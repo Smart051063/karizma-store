@@ -4,17 +4,21 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { client } from '../src/sanity/lib/client';
 
-export default function Home({ banner, products }) {
+export default function Home({ banner, products, reviews }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
   const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
-  const tickerText2 = " 🛡️ جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها    🛡️ ";
+  const tickerText2 = " 🚚 شحن سريع ومجاني للطلبات فوق 2500 جنيه - دفع عند الاستلام متاح 🛡️ ";
+
+  // دالة لرسم النجوم
+  const renderStars = (rating) => {
+    return "⭐".repeat(rating);
+  };
 
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      {/* إعدادات السيو (كما هي بدون تغيير) */}
       <Head>
         <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -141,10 +145,36 @@ export default function Home({ banner, products }) {
         </div>
       </div>
 
-      {/* ==================== 7. الفيديو ==================== */}
-      <div style={{ backgroundColor: '#1a1a1a', padding: '60px 20px', textAlign: 'center', color: 'white' }}>
+      {/* ==================== 7. آراء العملاء (القسم الجديد) ==================== */}
+      {reviews && reviews.length > 0 && (
+        <div style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#1a1a1a', color: 'white' }}>
+          <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>💬 ماذا يقول عملاؤنا؟</h2>
+          <div style={{ display: 'flex', overflowX: 'auto', gap: '20px', paddingBottom: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {reviews.map((review) => (
+              <div key={review._id} style={{
+                backgroundColor: '#222', borderRadius: '15px', padding: '20px', minWidth: '280px', maxWidth: '300px',
+                border: '1px solid #333', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>{renderStars(review.rating || 5)}</div>
+                <p style={{ fontStyle: 'italic', marginBottom: '20px', color: '#ddd', minHeight: '60px' }}>"{review.comment}"</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                   {review.imageUrl && (
+                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', position: 'relative' }}>
+                       <Image src={review.imageUrl} alt={review.name} fill style={{ objectFit: 'cover' }} />
+                     </div>
+                   )}
+                   <h4 style={{ color: '#d4af37', margin: 0 }}>{review.name}</h4>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ==================== 8. الفيديو ==================== */}
+      <div style={{ backgroundColor: 'white', padding: '60px 20px', textAlign: 'center' }}>
         <h2 style={{ color: '#d4af37', marginBottom: '30px', fontSize: '30px', fontWeight: 'bold' }}>🎥 اكتشف عالم كاريزما</h2>
-        <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden', border: '2px solid #d4af37', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
           <video width="100%" height="auto" controls loop muted playsInline preload="none" poster={banner?.imageUrl} src="/promo.mp4" style={{ display: 'block' }}>
             متصفحك لا يدعم الفيديو.
           </video>
@@ -184,10 +214,17 @@ export default function Home({ banner, products }) {
   );
 }
 
+// جلب البيانات (تحديث لجلب التعليقات أيضاً)
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true][0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
-  return { props: { banner: banner || null, products: products || [] }, revalidate: 10 };
+  
+  // 👇 جلب التعليقات
+  const reviews = await client.fetch(`*[_type == "review"] | order(_createdAt desc) [0..5] {
+    _id, name, comment, rating, "imageUrl": image.asset->url
+  }`);
+
+  return { props: { banner: banner || null, products: products || [], reviews: reviews || [] }, revalidate: 10 };
 }
 
 function CategoryCircle({ href, emoji, label }) {
