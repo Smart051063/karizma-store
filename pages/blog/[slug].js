@@ -1,104 +1,121 @@
 import React, { useState } from 'react';
 import { client } from '../../src/sanity/lib/client';
+import { useCart } from '../../src/context/CartContext';
 import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
 
-export default function ProductDetails({ product, reviews }) {
+export default function ProductDetails({ product, reviews, relatedProducts }) {
+  const { onAdd, setShowCart } = useCart();
+  
+  // حالات نظام التقييم
   const [phone, setPhone] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [verifyMessage, setVerifyMessage] = useState('');
-  
-  // بيانات نموذج التعليق
   const [reviewForm, setReviewForm] = useState({ name: '', comment: '', rating: 5 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
-  if (!product) return <div style={{textAlign: 'center', padding: '50px'}}>جاري التحميل...</div>;
+  // ✅ إصلاح مشكلة التعليق: إذا لم يتم العثور على المنتج، اظهر رسالة واضحة بدلاً من التعليق
+  if (!product) {
+    return (
+      <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh' }}>
+        <h2>⚠️ عذراً، هذا المنتج غير متاح حالياً أو تم حذفه.</h2>
+        <Link href="/shop">
+           <button style={{ marginTop: '20px', padding: '10px 20px', background: 'black', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>العودة للمتجر</button>
+        </Link>
+      </div>
+    );
+  }
 
-  // 1. دالة التحقق من الشراء
+  // دالة الإضافة للسلة
+  const handleAddToCart = () => {
+    onAdd(product, 1);
+    setShowCart(true);
+  };
+
+  // دالة التحقق
   const handleVerify = async () => {
     if (!phone) return;
-    setVerifyMessage('جاري التحقق...');
-    
-    // استعلام ذكي: هل يوجد عميل بهذا الرقم ولديه هذا المنتج في قائمة مشترياته؟
+    setVerifyMessage('⏳ جاري التحقق...');
     const query = `*[_type == "customer" && phoneNumber == "${phone}" && "${product._id}" in purchasedProducts[]._ref][0]`;
-    
     const customer = await client.fetch(query);
-
     if (customer) {
       setIsVerified(true);
       setVerifyMessage(`✅ أهلاً بك يا ${customer.name || 'عميلنا العزيز'}، يمكنك تقييم المنتج الآن.`);
-      setReviewForm({ ...reviewForm, name: customer.name || '' }); // تعبئة الاسم تلقائياً
+      setReviewForm({ ...reviewForm, name: customer.name || '' });
     } else {
       setVerifyMessage('❌ عذراً، هذا الرقم لم يقم بشراء هذا المنتج من قبل.');
     }
   };
 
-  // 2. دالة إرسال التعليق
+  // دالة النشر
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       const res = await fetch('/api/submit-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...reviewForm,
-          productId: product._id
-        }),
+        body: JSON.stringify({ ...reviewForm, productId: product._id }),
       });
-
       if (res.ok) {
-        setSubmitMessage('🎉 تم نشر تعليقك بنجاح! شكراً لك.');
-        setIsVerified(false); // إخفاء النموذج
+        setSubmitMessage('🎉 تم نشر تعليقك بنجاح!');
+        setIsVerified(false);
+        setPhone('');
       } else {
         setSubmitMessage('حدث خطأ، حاول مرة أخرى.');
       }
     } catch (err) {
-      setSubmitMessage('حدث خطأ في الاتصال.');
+      setSubmitMessage('خطأ في الاتصال بالسيرفر.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#fff', fontFamily: 'Arial', direction: 'rtl' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#fff', fontFamily: 'Tajawal, Arial', direction: 'rtl' }}>
       <Head>
         <title>{product.name} | كاريزما</title>
       </Head>
 
-      {/* تفاصيل المنتج */}
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px 20px', display: 'flex', flexWrap: 'wrap', gap: '40px' }}>
-        
-        {/* الصورة */}
-        <div style={{ flex: '1', minWidth: '300px', position: 'relative', height: '400px', border: '1px solid #eee', borderRadius: '20px', overflow: 'hidden' }}>
-          {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain' }} />}
+      {/* --- تفاصيل المنتج --- */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
+        <div style={{ flex: '1', minWidth: '300px', position: 'relative', height: '500px', backgroundColor: '#f9f9f9', borderRadius: '20px', overflow: 'hidden' }}>
+          {product.imageUrl ? (
+            <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '20px' }} />
+          ) : (
+             <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>لا توجد صورة</div>
+          )}
         </div>
 
-        {/* المعلومات */}
-        <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '10px', color: '#333' }}>{product.name}</h1>
-          <p style={{ fontSize: '1.2rem', color: '#666', lineHeight: '1.6' }}>{product.description}</p>
-          <h2 style={{ color: '#d4af37', fontSize: '2rem', margin: '20px 0' }}>{product.price} ج.م</h2>
+        <div style={{ flex: '1', minWidth: '300px' }}>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '15px', color: '#222' }}>{product.name}</h1>
+          <p style={{ fontSize: '1.2rem', color: '#666', lineHeight: '1.8', marginBottom: '20px' }}>{product.description}</p>
+          <h2 style={{ color: '#d4af37', fontSize: '2rem', marginBottom: '30px' }}>{product.price} ج.م</h2>
           
-          <button onClick={() => window.open(`https://wa.me/201002410037?text=أريد طلب ${product.name}`, '_blank')} 
-            style={{ padding: '15px', backgroundColor: '#000', color: '#d4af37', border: 'none', borderRadius: '50px', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 'bold' }}>
-            🛒 اطلب الآن عبر واتساب
-          </button>
+          <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+            <button 
+              onClick={handleAddToCart}
+              style={{ flex: 1, padding: '15px', backgroundColor: '#fff', color: '#d4af37', border: '2px solid #d4af37', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
+            >
+              🛒 أضف للسلة
+            </button>
+            <button 
+              onClick={() => window.open(`https://wa.me/201002410037?text=أريد طلب ${product.name}`, '_blank')} 
+              style={{ flex: 1, padding: '15px', backgroundColor: '#000', color: '#d4af37', border: 'none', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              📱 طلب سريع
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* قسم التعليقات */}
-      <div style={{ backgroundColor: '#f9f9f9', padding: '60px 20px' }}>
+      {/* --- التقييمات --- */}
+      <div style={{ backgroundColor: '#f8f8f8', padding: '60px 20px', marginTop: '40px' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          
-          <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>⭐ آراء العملاء عن المنتج</h2>
-
-          {/* عرض التعليقات الموجودة */}
-          <div style={{ marginBottom: '50px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {reviews.length > 0 ? (
+          <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>⭐ تقييمات العملاء</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '40px' }}>
+            {reviews?.length > 0 ? (
               reviews.map((rev) => (
                 <div key={rev._id} style={{ backgroundColor: 'white', padding: '20px', borderRadius: '15px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -109,96 +126,81 @@ export default function ProductDetails({ product, reviews }) {
                 </div>
               ))
             ) : (
-              <p style={{ textAlign: 'center', color: '#888' }}>لا توجد تعليقات بعد. كن أول من يقيم هذا العطر! ✨</p>
+              <p style={{ textAlign: 'center', color: '#777' }}>لا توجد تقييمات بعد.</p>
             )}
           </div>
-
-          <hr style={{ borderColor: '#ddd', margin: '40px 0' }} />
-
-          {/* نموذج التحقق والتقييم */}
-          <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '20px', border: '1px solid #eee' }}>
+          <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '20px' }}>
             <h3 style={{ marginBottom: '20px', color: '#d4af37' }}>✍️ أضف تقييمك (للمشترين فقط)</h3>
-
             {!isVerified ? (
-              // الخطوة 1: التحقق من الرقم
               <div style={{ display: 'flex', gap: '10px' }}>
-                <input 
-                  type="text" 
-                  placeholder="أدخل رقم هاتفك للتحقق..." 
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-                />
+                <input type="text" placeholder="رقم الهاتف..." value={phone} onChange={(e) => setPhone(e.target.value)} style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />
                 <button onClick={handleVerify} style={{ padding: '10px 20px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>تحقق</button>
               </div>
             ) : (
-              // الخطوة 2: نموذج التقييم (يظهر بعد التحقق)
               <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                <input 
-                  type="text" 
-                  placeholder="الاسم" 
-                  value={reviewForm.name}
-                  onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}
-                  required
-                  style={{ padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}
-                />
-                <select 
-                  value={reviewForm.rating} 
-                  onChange={(e) => setReviewForm({...reviewForm, rating: e.target.value})}
-                  style={{ padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}
-                >
-                  <option value="5">⭐⭐⭐⭐⭐ (ممتاز)</option>
-                  <option value="4">⭐⭐⭐⭐ (جيد جداً)</option>
-                  <option value="3">⭐⭐⭐ (جيد)</option>
-                  <option value="2">⭐⭐ (مقبول)</option>
-                  <option value="1">⭐ (سيء)</option>
-                </select>
-                <textarea 
-                  placeholder="اكتب رأيك هنا..." 
-                  value={reviewForm.comment}
-                  onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})}
-                  required
-                  rows="4"
-                  style={{ padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}
-                />
-                <button type="submit" disabled={isSubmitting} style={{ padding: '15px', backgroundColor: '#d4af37', color: 'black', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' }}>
-                  {isSubmitting ? 'جاري النشر...' : 'نشر التقييم 🚀'}
-                </button>
+                <input type="text" placeholder="الاسم" value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})} required style={{ padding: '10px', border: '1px solid #ccc' }} />
+                <textarea placeholder="التعليق..." value={reviewForm.comment} onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})} required style={{ padding: '10px', border: '1px solid #ccc' }} />
+                <button type="submit" disabled={isSubmitting} style={{ padding: '15px', backgroundColor: '#d4af37', border: 'none', cursor: 'pointer' }}>نشر</button>
               </form>
             )}
-
-            {/* رسائل التنبيه */}
-            {verifyMessage && <p style={{ marginTop: '15px', fontWeight: 'bold', color: verifyMessage.includes('✅') ? 'green' : 'red' }}>{verifyMessage}</p>}
-            {submitMessage && <p style={{ marginTop: '15px', fontWeight: 'bold', color: 'green' }}>{submitMessage}</p>}
-
+            {verifyMessage && <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{verifyMessage}</p>}
           </div>
+        </div>
+      </div>
+
+      {/* --- منتجات قد تعجبك --- */}
+      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <h2 style={{ marginBottom: '30px', color: '#333' }}>منتجات قد تعجبك</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
+          {relatedProducts?.map((p) => (
+            <Link href={`/product/${p.slug.current}`} key={p._id} style={{ textDecoration: 'none' }}>
+              <div style={{ width: '200px', border: '1px solid #eee', borderRadius: '15px', padding: '10px' }}>
+                <div style={{ position: 'relative', height: '150px' }}>
+                  {p.imageUrl && <Image src={p.imageUrl} alt={p.name} fill style={{ objectFit: 'contain' }} />}
+                </div>
+                <h3 style={{ fontSize: '1rem', color: '#333', marginTop: '10px' }}>{p.name}</h3>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-// جلب البيانات
+// ✅ التحديث المهم جداً في جلب البيانات
 export const getStaticPaths = async () => {
   const query = `*[_type == "product"] { slug { current } }`;
   const products = await client.fetch(query);
   const paths = products.map((product) => ({ params: { slug: product.slug.current } }));
+  // fallback: 'blocking' تجعل الصفحة تنتظر تحميل البيانات الجديدة بدلاً من إظهار خطأ
   return { paths, fallback: 'blocking' };
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  // جلب المنتج
-  const productQuery = `*[_type == "product" && slug.current == '${slug}'][0]{
-    _id, name, description, price, "imageUrl": image.asset->url
+  // ✅ استخدام المتغيرات ($slug) لمنع الأخطاء في البحث
+  const productQuery = `*[_type == "product" && slug.current == $slug][0]{
+    _id, name, description, price, "imageUrl": image.asset->url, slug
   }`;
-  const product = await client.fetch(productQuery);
+  
+  // نمرر المتغير slug بشكل آمن
+  const product = await client.fetch(productQuery, { slug });
 
-  // جلب التعليقات الخاصة بهذا المنتج فقط
-  const reviewsQuery = `*[_type == "review" && product._ref == '${product?._id}'] | order(_createdAt desc)`;
+  // ⚠️ إذا لم يتم العثور على المنتج، ارجع صفحة 404 بدلاً من التعليق
+  if (!product) {
+    return { notFound: true };
+  }
+
+  const reviewsQuery = `*[_type == "review" && product._ref == '${product._id}'] | order(_createdAt desc)`;
   const reviews = await client.fetch(reviewsQuery);
 
+  const relatedQuery = `*[_type == "product" && _id != '${product._id}'] | order(_createdAt desc)[0...4]{
+    _id, name, price, slug, "imageUrl": image.asset->url
+  }`;
+  const relatedProducts = await client.fetch(relatedQuery);
+
   return {
-    props: { product, reviews },
-    revalidate: 60
+    props: { product, reviews, relatedProducts },
+    revalidate: 10 // تحديث كل 10 ثواني
   };
 };
