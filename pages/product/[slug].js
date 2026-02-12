@@ -33,8 +33,11 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
     ? Math.round(product.price - (product.price * product.discount / 100))
     : product.price;
 
+  // دالة الإضافة للسلة
   const handleAddToCart = () => {
-    onAdd(product, 1); // نرسل المنتج للسلة، والسلة ستقوم بالحساب أيضاً
+    // ⚠️ التعديل هنا: نرسل المنتج كما هو (بالسعر الأصلي)
+    // لا تقم بحساب finalPrice هنا، اترك السلة تقوم بالحساب
+    onAdd(product, 1); 
     setShowCart(true);
   };
 
