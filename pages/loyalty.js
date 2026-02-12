@@ -1,7 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { client } from '../src/sanity/lib/client';
 import Head from 'next/head';
 import Link from 'next/link';
+
+// مكون فرعي للعداد المتحرك
+const AnimatedCounter = ({ target }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const end = parseInt(target, 10);
+    if (start === end) return;
+
+    // مدة الحركة (2 ثانية)
+    const duration = 2000;
+    let startTime = null;
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // معادلة الحركة (يبدأ سريعاً ويتباطأ في النهاية - Ease Out)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      setCount(Math.floor(easeOut * end));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [target]);
+
+  return <span>{count}</span>;
+};
 
 export default function LoyaltyPage() {
   const [phone, setPhone] = useState('');
@@ -18,7 +51,7 @@ export default function LoyaltyPage() {
     setError('');
     setCustomerData(null);
 
-    // البحث في قاعدة البيانات عن العميل بهذا الرقم
+    // البحث في قاعدة البيانات
     const query = `*[_type == "customer" && phoneNumber == "${phone}"][0]{
       name,
       points
@@ -39,7 +72,6 @@ export default function LoyaltyPage() {
     }
   };
 
-  // نظام المكافآت (يمكنك تعديله)
   const rewards = [
     { points: 500, gift: 'توصيل مجاني 🚚' },
     { points: 1000, gift: 'خصم 10% على طلبك القادم 🏷️' },
@@ -55,11 +87,9 @@ export default function LoyaltyPage() {
 
       <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         
-        {/* العنوان */}
         <h1 style={{ color: '#d4af37', fontSize: '2.5rem', marginBottom: '10px' }}>💎 نادي كاريزما</h1>
         <p style={{ color: '#555', marginBottom: '40px', fontSize: '1.2rem' }}>اجمع النقاط مع كل طلب واستبدلها بهدايا قيمة!</p>
 
-        {/* صندوق البحث */}
         <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
           <h3 style={{ marginBottom: '20px' }}>استعلم عن رصيدك</h3>
           <form onSubmit={checkPoints} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -73,26 +103,30 @@ export default function LoyaltyPage() {
             <button 
               type="submit" 
               disabled={loading}
-              style={{ padding: '15px', backgroundColor: 'black', color: '#d4af37', border: 'none', borderRadius: '10px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer' }}
+              style={{ padding: '15px', backgroundColor: 'black', color: '#d4af37', border: 'none', borderRadius: '10px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', transition: '0.3s' }}
             >
               {loading ? 'جاري البحث...' : '🔍 عرض نقاطي'}
             </button>
           </form>
 
-          {/* رسالة الخطأ */}
           {error && <p style={{ color: 'red', marginTop: '20px' }}>{error}</p>}
 
-          {/* نتيجة البحث */}
+          {/* نتيجة البحث مع العداد المتحرك */}
           {customerData && (
-            <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#fff8e1', borderRadius: '10px', border: '2px solid #d4af37' }}>
-              <h2 style={{ margin: '0 0 10px 0' }}>أهلاً، {customerData.name || 'عميلنا العزيز'} 👋</h2>
-              <div style={{ fontSize: '3rem', fontWeight: 'bold', color: '#d4af37' }}>{customerData.points}</div>
-              <p style={{ color: '#555', fontWeight: 'bold' }}>نقطة ولاء 💎</p>
+            <div className="fade-in-up" style={{ marginTop: '30px', padding: '30px', backgroundColor: '#fff8e1', borderRadius: '15px', border: '2px solid #d4af37', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '5rem', opacity: '0.1' }}>💎</div>
+              
+              <h2 style={{ margin: '0 0 15px 0', color: '#333' }}>أهلاً بك يا {customerData.name || 'عميلنا العزيز'} 👋</h2>
+              
+              <div style={{ fontSize: '3.5rem', fontWeight: 'bold', color: '#d4af37', textShadow: '2px 2px 0px #000' }}>
+                <AnimatedCounter target={customerData.points || 0} />
+              </div>
+              
+              <p style={{ color: '#555', fontWeight: 'bold', fontSize: '1.2rem', marginTop: '5px' }}>نقطة ولاء في رصيدك ✨</p>
             </div>
           )}
         </div>
 
-        {/* قائمة المكافآت */}
         <div style={{ marginTop: '50px' }}>
           <h3 style={{ marginBottom: '20px' }}>🎁 جدول المكافآت</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -105,12 +139,19 @@ export default function LoyaltyPage() {
           </div>
         </div>
 
-        {/* زر العودة */}
         <div style={{ marginTop: '40px' }}>
              <Link href="/"><button style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', textDecoration: 'underline' }}>العودة للرئيسية</button></Link>
         </div>
 
       </div>
+
+      <style jsx>{`
+        .fade-in-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
