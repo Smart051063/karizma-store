@@ -1,32 +1,30 @@
 export default {
   name: 'review',
-  title: '💬 آراء العملاء',
+  title: '💬 تقييمات المنتجات',
   type: 'document',
   fields: [
     {
       name: 'name',
       title: 'اسم العميل',
       type: 'string',
-      validation: Rule => Rule.required()
+    },
+    {
+      name: 'product',
+      title: 'المنتج الذي تم تقييمه',
+      type: 'reference',
+      to: [{ type: 'product' }],
+      description: 'اتركه فارغاً إذا كان رأياً عاماً عن الموقع'
     },
     {
       name: 'comment',
       title: 'التعليق',
       type: 'text',
-      validation: Rule => Rule.required()
     },
     {
       name: 'rating',
-      title: 'التقييم (من 1 إلى 5 نجوم)',
+      title: 'التقييم (نجوم)',
       type: 'number',
-      initialValue: 5,
       validation: Rule => Rule.min(1).max(5)
-    },
-    {
-      name: 'image',
-      title: 'صورة العميل (اختياري)',
-      type: 'image',
-      options: { hotspot: true }
     }
   ]
 }
