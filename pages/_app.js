@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { CartProvider, useCart } from '../src/context/CartContext';
+import { Toaster } from 'react-hot-toast'; // ✅ 1. تمت إضافة مكتبة التنبيهات
 import Link from 'next/link';
 import Script from 'next/script';
 
@@ -73,10 +74,7 @@ const GlobalElements = ({ children }) => {
             {/* أزرار السوشيال ميديا */}
             <h4 style={{ color: '#d4af37', marginTop: '20px', marginBottom: '15px', fontSize: '1rem' }}>تابعنا على:</h4>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              
-              {/* ✅ تم تصحيح هذا السطر (إزالة التكرار) */}
               <a href="https://www.facebook.com/profile.php?id=61561267272083&rdid=gegDMCqFiId602Va&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17s7Ue16en%2F#" target="_blank" style={socialIconStyle} title="Facebook">f</a>
-              
               <a href="https://www.instagram.com/karizma.fragrances?utm_source=qr&igsh=MWJhbzk0czJ6M2Qzag%3D%3D" target="_blank" style={socialIconStyle} title="Instagram">📷</a>
               <a href="https://www.tiktok.com/@karizma.fragrance?_r=1&_t=ZS-93kSwuEYpST" target="_blank" style={socialIconStyle} title="TikTok">🎵</a>
               <a href="https://www.youtube.com/" target="_blank" style={socialIconStyle} title="YouTube">▶️</a>
@@ -137,8 +135,9 @@ const GlobalElements = ({ children }) => {
 export default function App({ Component, pageProps }) {
   return (
     <CartProvider>
-      
-      {/* 🔵 1. إعدادات فيسبوك بيكسل (تم الحفاظ عليها ✅) */}
+      <Toaster /> {/* ✅ 2. هنا يظهر مربع التنبيهات الأخضر */}
+
+      {/* 🔵 1. إعدادات فيسبوك بيكسل */}
       <Script id="facebook-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
@@ -155,7 +154,7 @@ export default function App({ Component, pageProps }) {
         `}
       </Script>
 
-      {/* ⚫ 2. إعدادات تيك توك بيكسل (تم الحفاظ عليها ✅) */}
+      {/* ⚫ 2. إعدادات تيك توك بيكسل */}
       <Script id="tiktok-pixel" strategy="afterInteractive">
         {`
           !function (w, d, t) {
