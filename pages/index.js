@@ -77,8 +77,7 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 3. بانر رمضان (تمت استعادته ✅) ==================== */}
-      {/* هذا الجزء هو المسؤول عن عرض صورة العرض الكبيرة في الأعلى */}
+      {/* ==================== 3. بانر رمضان (الصورة العلوية) ==================== */}
       {banner?.imageUrl && (
         <div className="fade-in" style={{ position: 'relative', width: '100%', height: 'auto', marginTop: '0px', borderBottom: '1px solid #eee' }}>
           <Image 
@@ -92,15 +91,20 @@ export default function Home({ banner, products, reviews }) {
         </div>
       )}
 
-      {/* ==================== 4. الهيرو (خلفية الموقع) ==================== */}
+      {/* ==================== 4. الهيرو (خلفية الموقع الرئيسية) ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
+        
+        {/* 👇👇 هنا تم الإصلاح: إعادة الصورة الافتراضية 👇👇 */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          {banner?.heroImageUrl ? (
-            <Image src={banner.heroImageUrl} alt="Hero Background" fill priority={true} style={{ objectFit: 'cover' }} />
-          ) : (
-             <div style={{width: '100%', height:'100%', backgroundColor: '#222'}}></div>
-          )}
+          <Image 
+            src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} 
+            alt="Hero Background" 
+            fill 
+            priority={true} 
+            style={{ objectFit: 'cover' }} 
+          />
         </div>
+
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1 }}></div>
         <div style={{ position: 'relative', zIndex: 2, color: 'white' }} className="fade-in-up">
           <h1 style={{ fontSize: '3.5rem', marginBottom: '10px', color: '#d4af37', fontWeight: 'bold', fontFamily: 'Tajawal, Arial' }}>كاريزما للعطور</h1>
@@ -226,11 +230,9 @@ export default function Home({ banner, products, reviews }) {
 }
 
 // ==========================================
-// 👇👇 هنا كان سبب المشكلة وتم إصلاحه 👇👇
+// جلب البيانات
 // ==========================================
 export async function getStaticProps() {
-  // ✅ الإصلاح: استعادة شرط "&& isActive == true" لضمان جلب البانر الصحيح
-  // وأيضاً استخدام "order" لضمان جلب الأحدث
   const banner = await client.fetch(`*[_type == "banner" && isActive == true] | order(_createdAt desc)[0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
