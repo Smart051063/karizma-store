@@ -9,15 +9,17 @@ export const CartProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantities, setTotalQuantities] = useState(0);
 
-  // دالة الإضافة (تحسب السعر بذكاء: الخصم إن وجد)
   const onAdd = (product, quantity) => {
-    // ✅ نستخدم discountPrice إذا كان موجوداً، وإلا نستخدم price
-    const actualPrice = product.discountPrice ? product.discountPrice : product.price;
+    // ✅ معادلة الحساب داخل السلة:
+    // السعر = السعر الأصلي - (السعر الأصلي * نسبة الخصم / 100)
+    const netPrice = product.discount 
+      ? Math.round(product.price - (product.price * product.discount / 100))
+      : product.price;
 
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
     
-    // تحديث السعر الكلي بناءً على السعر الفعلي
-    setTotalPrice((prevTotalPrice) => prevTotalPrice + actualPrice * quantity);
+    // تحديث الإجمالي بالسعر الصافي (بعد الخصم)
+    setTotalPrice((prevTotalPrice) => prevTotalPrice + netPrice * quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
     
     if (checkProductInCart) {
@@ -30,15 +32,16 @@ export const CartProvider = ({ children }) => {
       })
       setCartItems(updatedCartItems);
     } else {
-      // ✅ نخزن السعر المستخدم (actualPrice) داخل المنتج في السلة
-      const productWithPrice = { ...product, price: actualPrice };
-      productWithPrice.quantity = quantity;
-      setCartItems([...cartItems, productWithPrice]);
+      // ✅ نخزن السعر الصافي (netPrice) داخل المنتج في السلة
+      // هذا يضمن أن صفحة السلة ستعرض السعر الصحيح
+      const productWithNetPrice = { ...product, price: netPrice };
+      productWithNetPrice.quantity = quantity;
+      
+      setCartItems([...cartItems, productWithNetPrice]);
     }
     toast.success(`تم إضافة ${quantity} من ${product.name} للسلة.`);
   } 
 
-  // دالة الحذف
   const onRemove = (product) => {
     const foundProduct = cartItems.find((item) => item._id === product._id);
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
@@ -48,7 +51,6 @@ export const CartProvider = ({ children }) => {
     setCartItems(newCartItems);
   }
 
-  // دالة تعديل الكمية
   const toggleCartItemQuantity = (id, value) => {
     const foundProduct = cartItems.find((item) => item._id === id);
     const index = cartItems.findIndex((product) => product._id === id);

@@ -3,44 +3,35 @@ export default {
   title: 'المنتجات (Products)',
   type: 'document',
   fields: [
-    // 1️⃣ اسم المنتج
     {
       name: 'name',
       title: 'اسم المنتج (Name)',
       type: 'string',
-      validation: Rule => Rule.required().error('يجب إدخال اسم المنتج')
+      validation: Rule => Rule.required()
     },
-    
-    // 2️⃣ الرابط (Slug)
     {
       name: 'slug',
       title: 'رابط المنتج (Slug)',
       type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
+      options: { source: 'name', maxLength: 96 },
       validation: Rule => Rule.required()
     },
-
-    // 3️⃣ السعر الأصلي (قبل الخصم)
     {
       name: 'price',
-      title: 'السعر الأصلي (Original Price)',
+      title: 'السعر الأصلي (Price)',
       type: 'number',
       validation: Rule => Rule.required().min(0)
     },
 
-    // 4️⃣ السعر بعد الخصم (هذا هو التعديل المهم) 🔥
+    // ✅ التعديل هنا: طلب نسبة مئوية بدلاً من سعر ثابت
     {
-      name: 'discountPrice',
-      title: 'السعر بعد الخصم (Discount Price)',
+      name: 'discount',
+      title: 'نسبة الخصم % (Discount Percentage)',
       type: 'number',
-      description: 'اكتب السعر النهائي هنا (مثلاً: 600). اتركه فارغاً إذا لم يكن هناك خصم.',
-      validation: Rule => Rule.min(0)
+      description: 'اكتب النسبة فقط (مثلاً: 20 أو 50). سيقوم الموقع بحساب السعر النهائي تلقائياً.',
+      validation: Rule => Rule.min(0).max(100)
     },
 
-    // 5️⃣ التصنيف
     {
       name: 'category',
       title: 'القسم (Category)',
@@ -64,19 +55,13 @@ export default {
       },
       validation: Rule => Rule.required()
     },
-
-    // 6️⃣ صورة المنتج
     {
       name: 'image',
       title: 'صورة المنتج',
       type: 'image',
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
       validation: Rule => Rule.required()
     },
-
-    // 7️⃣ الوصف
     {
       name: 'description',
       title: 'وصف المنتج',
