@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function ProductDetails({ product, reviews, relatedProducts, error }) {
   const { onAdd, setShowCart } = useCart();
   
-  // ✅ الحفاظ على حالات التقييم من كودك القديم
+  // حالات التقييم والتحقق (من الكود القديم)
   const [phone, setPhone] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [verifyMessage, setVerifyMessage] = useState('');
@@ -16,24 +16,25 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
+  // 1. حالة الخطأ (المنتج غير موجود)
   if (!product) {
     return (
       <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh', fontFamily: 'Arial' }}>
-        <div style={{ fontSize: '5rem', marginBottom: '20px' }}>⚠️</div>
         <h1 style={{ color: 'red' }}>عذراً، المنتج غير موجود!</h1>
-        <p style={{ fontSize: '1.2rem', color: '#555' }}>نحن نبحث عن رابط (Slug): <br/> <b style={{backgroundColor: '#eee', padding: '5px'}}>{error || 'غير معروف'}</b></p>
-        <Link href="/shop"><button style={{ marginTop: '20px', padding: '15px 30px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '50px', cursor: 'pointer' }}>🏠 العودة للمتجر</button></Link>
+        <Link href="/shop">
+           <button style={{ marginTop: '20px', padding: '15px 30px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '50px', cursor: 'pointer' }}>🏠 العودة للمتجر</button>
+        </Link>
       </div>
     );
   }
 
-  // ✅ دالة الإضافة للسلة المحدثة
+  // 2. دالة الإضافة للسلة
   const handleAddToCart = () => {
     onAdd(product, 1);
     setShowCart(true);
   };
 
-  // ✅ الحفاظ على دالة التحقق من رقم الهاتف (المشترين فقط)
+  // 3. دوال التحقق والتقييم
   const handleVerify = async () => {
     if (!phone) return;
     setVerifyMessage('⏳ جاري التحقق...');
@@ -48,7 +49,6 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
     }
   };
 
-  // ✅ الحفاظ على دالة إرسال التقييم
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -79,36 +79,60 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
       </Head>
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
+        {/* صورة المنتج */}
         <div style={{ flex: '1', minWidth: '300px', position: 'relative', height: '500px', backgroundColor: '#f9f9f9', borderRadius: '20px', overflow: 'hidden', border: '1px solid #eee' }}>
-          {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '20px' }} />}
+          {product.imageUrl ? (
+            <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '20px' }} />
+          ) : (
+             <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>لا توجد صورة</div>
+          )}
         </div>
 
+        {/* تفاصيل المنتج */}
         <div style={{ flex: '1', minWidth: '300px' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '15px', color: '#222' }}>{product.name}</h1>
           <p style={{ fontSize: '1.2rem', color: '#666', lineHeight: '1.8', marginBottom: '20px' }}>{product.description}</p>
           
-          {/* ✅ قسم السعر المشطوب المطور */}
-          <div style={{ marginBottom: '30px' }}>
-            {product.discountPrice ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <h2 style={{ color: '#d4af37', fontSize: '2.5rem', margin: 0 }}>{product.discountPrice} ج.م</h2>
-                <span style={{ color: '#999', fontSize: '1.5rem', textDecoration: 'line-through', fontWeight: 'lighter' }}>{product.price} ج.م</span>
-                <span style={{ backgroundColor: '#ff4d4d', color: 'white', padding: '4px 12px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 'bold' }}>خصم حصري 🔥</span>
+          {/* 🔥🔥🔥 قسم السعر (تم الإصلاح) 🔥🔥🔥 */}
+          <div style={{ marginBottom: '30px', padding: '10px 0' }}>
+            {product.discountPrice && product.discountPrice < product.price ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                   {/* السعر الأصلي (مشطوب) */}
+                   <span style={{ color: '#999', fontSize: '1.5rem', textDecoration: 'line-through', fontFamily: 'Arial' }}>
+                     {product.price} ج.م
+                   </span>
+                   {/* نسبة الخصم */}
+                   <span style={{ backgroundColor: '#ff4d4d', color: 'white', padding: '2px 8px', borderRadius: '5px', fontSize: '0.9rem', fontWeight: 'bold' }}>
+                     وفر {Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
+                   </span>
+                </div>
+                {/* السعر الجديد (كبير وواضح) */}
+                <h2 style={{ color: '#d4af37', fontSize: '2.5rem', margin: 0, fontWeight: 'bold' }}>
+                  {product.discountPrice} ج.م
+                </h2>
               </div>
             ) : (
-              <h2 style={{ color: '#d4af37', fontSize: '2.2rem', margin: 0 }}>{product.price} ج.م</h2>
+              // السعر العادي في حالة عدم وجود خصم
+              <h2 style={{ color: '#d4af37', fontSize: '2.5rem', margin: 0 }}>{product.price} ج.م</h2>
             )}
           </div>
           
+          {/* الأزرار */}
           <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-            <button onClick={handleAddToCart} style={{ flex: 1, padding: '15px', backgroundColor: '#fff', color: '#d4af37', border: '2px solid #d4af37', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold' }}>🛒 أضف للسلة</button>
-            <button onClick={() => window.open(`https://wa.me/201002410037?text=أريد طلب ${product.name}`, '_blank')} style={{ flex: 1, padding: '15px', backgroundColor: '#000', color: '#d4af37', border: 'none', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold' }}>📱 طلب سريع</button>
+            <button onClick={handleAddToCart} style={{ flex: 1, padding: '15px', backgroundColor: '#fff', color: '#d4af37', border: '2px solid #d4af37', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold' }}>
+              🛒 أضف للسلة
+            </button>
+            <button onClick={() => window.open(`https://wa.me/201002410037?text=أريد طلب ${product.name}`, '_blank')} style={{ flex: 1, padding: '15px', backgroundColor: '#000', color: '#d4af37', border: 'none', borderRadius: '50px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 'bold' }}>
+              📱 طلب سريع
+            </button>
           </div>
         </div>
       </div>
 
-      {/* التقييمات */}
+      {/* التقييمات والمنتجات المقترحة (نفس الكود السابق) */}
       <div style={{ backgroundColor: '#f8f8f8', padding: '60px 20px', marginTop: '40px' }}>
+        {/* ... (نفس كود التقييمات وعرض النجوم الذي تحبه) ... */}
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>⭐ تقييمات العملاء</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '40px' }}>
@@ -122,6 +146,7 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
               </div>
             )) : <p style={{ textAlign: 'center', color: '#777' }}>لا توجد تقييمات بعد.</p>}
           </div>
+          {/* نموذج إضافة التقييم */}
           <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '20px' }}>
             <h3 style={{ marginBottom: '20px', color: '#d4af37' }}>✍️ أضف تقييمك (للمشترين فقط)</h3>
             {!isVerified ? (
@@ -133,7 +158,7 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
               <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <input type="text" placeholder="الاسم" value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})} required style={{ padding: '10px', border: '1px solid #ccc' }} />
                 <textarea placeholder="التعليق..." value={reviewForm.comment} onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})} required style={{ padding: '10px', border: '1px solid #ccc' }} />
-                <button type="submit" disabled={isSubmitting} style={{ padding: '15px', backgroundColor: '#d4af37', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>نشر التقييم 🚀</button>
+                <button type="submit" disabled={isSubmitting} style={{ padding: '15px', backgroundColor: '#d4af37', border: 'none', cursor: 'pointer' }}>نشر</button>
               </form>
             )}
             {verifyMessage && <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{verifyMessage}</p>}
@@ -144,7 +169,7 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
   );
 }
 
-// استعلامات Sanity الموحدة
+// ⚠️ استعلام البيانات (السر كله هنا)
 export const getStaticPaths = async () => {
   const query = `*[_type == "product"] { slug { current } }`;
   const products = await client.fetch(query);
@@ -153,6 +178,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
+  // ✅ تأكدنا من إضافة discountPrice هنا
   const productQuery = `*[_type == "product" && slug.current == '${slug}'][0]{
     _id, name, description, price, discountPrice, "imageUrl": image.asset->url, slug
   }`;
