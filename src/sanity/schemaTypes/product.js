@@ -11,7 +11,7 @@ export default {
       validation: Rule => Rule.required().error('يجب إدخال اسم المنتج')
     },
     
-    // 2️⃣ الرابط (Slug) - يتم توليده تلقائياً من الاسم
+    // 2️⃣ الرابط (Slug)
     {
       name: 'slug',
       title: 'رابط المنتج (Slug)',
@@ -23,24 +23,24 @@ export default {
       validation: Rule => Rule.required()
     },
 
-    // 3️⃣ السعر
+    // 3️⃣ السعر الأصلي (قبل الخصم)
     {
       name: 'price',
-      title: 'السعر (Price)',
+      title: 'السعر الأصلي (Original Price)',
       type: 'number',
       validation: Rule => Rule.required().min(0)
     },
 
-    // 4️⃣ نسبة الخصم
+    // 4️⃣ السعر بعد الخصم (هذا هو التعديل المهم) 🔥
     {
-      name: 'discount',
-      title: 'نسبة الخصم (%)',
+      name: 'discountPrice',
+      title: 'السعر بعد الخصم (Discount Price)',
       type: 'number',
-      description: 'اكتب نسبة الخصم فقط (مثلاً: 10 أو 20). اتركه فارغاً أو 0 إذا لم يكن هناك عرض.',
-      validation: Rule => Rule.min(0).max(100)
+      description: 'اكتب السعر النهائي هنا (مثلاً: 600). اتركه فارغاً إذا لم يكن هناك خصم.',
+      validation: Rule => Rule.min(0)
     },
 
-    // 5️⃣ التصنيف (قائمة منسدلة لتسهيل الاختيار)
+    // 5️⃣ التصنيف
     {
       name: 'category',
       title: 'القسم (Category)',
@@ -53,14 +53,13 @@ export default {
           { title: 'نيش (Niche)', value: 'niche' },
           { title: 'أعواد (Oud)', value: 'oud' },
           { title: 'خليجي (Gulf)', value: 'gulf' },
-          { title: 'ميكسات (Mixes)', value: 'mixes' },       // ⚗️
-          { title: 'مسكات (Musks)', value: 'musks' },       // 🧴
-          { title: 'بخور (Bakhoor)', value: 'bakhoor' },     // 🪔
-          { title: 'فوحات ومباخر (Burners)', value: 'burners' }, // ♨️
-          { title: 'معطرات (Fresheners)', value: 'fresheners' }, // 🌬️
-          { title: 'تجميل وعناية (Makeup)', value: 'makeup' },   // 💄
-          // 👇 تمت إضافة القسم الجديد هنا
-          { title: 'منظفات ومطهرات (Detergents)', value: 'detergents' }, // 🧼
+          { title: 'ميكسات (Mixes)', value: 'mixes' },
+          { title: 'مسكات (Musks)', value: 'musks' },
+          { title: 'بخور (Bakhoor)', value: 'bakhoor' },
+          { title: 'فوحات ومباخر (Burners)', value: 'burners' },
+          { title: 'معطرات (Fresheners)', value: 'fresheners' },
+          { title: 'تجميل وعناية (Makeup)', value: 'makeup' },
+          { title: 'منظفات ومطهرات (Detergents)', value: 'detergents' },
         ],
       },
       validation: Rule => Rule.required()
