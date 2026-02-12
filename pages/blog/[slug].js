@@ -4,11 +4,13 @@ import { useCart } from '../../src/context/CartContext';
 import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router'; // 👈 إضافة مهمة
 
 export default function ProductDetails({ product, reviews, relatedProducts }) {
   const { onAdd, setShowCart } = useCart();
-  
-  // حالات نظام التقييم
+  const router = useRouter(); // لاستخدام أدوات التوجيه
+
+  // حالات التقييم
   const [phone, setPhone] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [verifyMessage, setVerifyMessage] = useState('');
@@ -16,25 +18,38 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
-  // ✅ إصلاح مشكلة التعليق: إذا لم يتم العثور على المنتج، اظهر رسالة واضحة بدلاً من التعليق
+  // 1️⃣ حالة التحميل (Fallback): تظهر أثناء جلب البيانات الجديدة
+  if (router.isFallback) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <div style={{ fontSize: '2rem', marginBottom: '20px' }}>⏳</div>
+        <h3>جاري تجهيز صفحة المنتج...</h3>
+      </div>
+    );
+  }
+
+  // 2️⃣ حالة عدم العثور على المنتج (404)
   if (!product) {
     return (
-      <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh' }}>
-        <h2>⚠️ عذراً، هذا المنتج غير متاح حالياً أو تم حذفه.</h2>
+      <div style={{ textAlign: 'center', padding: '100px 20px', minHeight: '60vh', fontFamily: 'Tajawal, Arial' }}>
+        <div style={{ fontSize: '4rem', marginBottom: '20px' }}>⚠️</div>
+        <h2 style={{ color: '#333' }}>عذراً، هذا المنتج غير موجود!</h2>
+        <p style={{ color: '#777', marginBottom: '30px' }}>قد يكون تم تغيير الرابط أو حذف المنتج.</p>
         <Link href="/shop">
-           <button style={{ marginTop: '20px', padding: '10px 20px', background: 'black', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>العودة للمتجر</button>
+           <button style={{ padding: '12px 30px', background: 'black', color: '#d4af37', border: 'none', borderRadius: '50px', cursor: 'pointer', fontWeight: 'bold' }}>
+             🏠 العودة للمتجر
+           </button>
         </Link>
       </div>
     );
   }
 
-  // دالة الإضافة للسلة
+  // --- باقي الكود كما هو (دوال السلة والتقييم) ---
   const handleAddToCart = () => {
     onAdd(product, 1);
     setShowCart(true);
   };
 
-  // دالة التحقق
   const handleVerify = async () => {
     if (!phone) return;
     setVerifyMessage('⏳ جاري التحقق...');
@@ -49,7 +64,6 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
     }
   };
 
-  // دالة النشر
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -79,9 +93,9 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
         <title>{product.name} | كاريزما</title>
       </Head>
 
-      {/* --- تفاصيل المنتج --- */}
+      {/* تفاصيل المنتج */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
-        <div style={{ flex: '1', minWidth: '300px', position: 'relative', height: '500px', backgroundColor: '#f9f9f9', borderRadius: '20px', overflow: 'hidden' }}>
+        <div style={{ flex: '1', minWidth: '300px', position: 'relative', height: '500px', backgroundColor: '#f9f9f9', borderRadius: '20px', overflow: 'hidden', border: '1px solid #eee' }}>
           {product.imageUrl ? (
             <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '20px' }} />
           ) : (
@@ -110,7 +124,7 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
         </div>
       </div>
 
-      {/* --- التقييمات --- */}
+      {/* التقييمات */}
       <div style={{ backgroundColor: '#f8f8f8', padding: '60px 20px', marginTop: '40px' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>⭐ تقييمات العملاء</h2>
@@ -148,17 +162,18 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
         </div>
       </div>
 
-      {/* --- منتجات قد تعجبك --- */}
+      {/* منتجات مقترحة */}
       <div style={{ padding: '60px 20px', textAlign: 'center' }}>
         <h2 style={{ marginBottom: '30px', color: '#333' }}>منتجات قد تعجبك</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
           {relatedProducts?.map((p) => (
             <Link href={`/product/${p.slug.current}`} key={p._id} style={{ textDecoration: 'none' }}>
-              <div style={{ width: '200px', border: '1px solid #eee', borderRadius: '15px', padding: '10px' }}>
+              <div style={{ width: '200px', border: '1px solid #eee', borderRadius: '15px', padding: '10px', cursor: 'pointer' }}>
                 <div style={{ position: 'relative', height: '150px' }}>
                   {p.imageUrl && <Image src={p.imageUrl} alt={p.name} fill style={{ objectFit: 'contain' }} />}
                 </div>
                 <h3 style={{ fontSize: '1rem', color: '#333', marginTop: '10px' }}>{p.name}</h3>
+                <p style={{ color: '#d4af37', fontWeight: 'bold' }}>{p.price} ج.م</p>
               </div>
             </Link>
           ))}
@@ -168,25 +183,24 @@ export default function ProductDetails({ product, reviews, relatedProducts }) {
   );
 }
 
-// ✅ التحديث المهم جداً في جلب البيانات
+// ✅ 3️⃣ أهم جزء: تصحيح جلب البيانات
 export const getStaticPaths = async () => {
   const query = `*[_type == "product"] { slug { current } }`;
   const products = await client.fetch(query);
   const paths = products.map((product) => ({ params: { slug: product.slug.current } }));
-  // fallback: 'blocking' تجعل الصفحة تنتظر تحميل البيانات الجديدة بدلاً من إظهار خطأ
-  return { paths, fallback: 'blocking' };
+  // ✅ fallback: true يسمح بتحميل الصفحات الجديدة دون إعادة بناء الموقع بالكامل
+  return { paths, fallback: true };
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  // ✅ استخدام المتغيرات ($slug) لمنع الأخطاء في البحث
-  const productQuery = `*[_type == "product" && slug.current == $slug][0]{
+  // البحث عن المنتج بالـ Slug
+  const productQuery = `*[_type == "product" && slug.current == '${slug}'][0]{
     _id, name, description, price, "imageUrl": image.asset->url, slug
   }`;
   
-  // نمرر المتغير slug بشكل آمن
-  const product = await client.fetch(productQuery, { slug });
+  const product = await client.fetch(productQuery);
 
-  // ⚠️ إذا لم يتم العثور على المنتج، ارجع صفحة 404 بدلاً من التعليق
+  // إذا لم يتم العثور عليه، أعد notFound لكي يظهر الكود في الأعلى رسالة الخطأ
   if (!product) {
     return { notFound: true };
   }
@@ -201,6 +215,6 @@ export const getStaticProps = async ({ params: { slug } }) => {
 
   return {
     props: { product, reviews, relatedProducts },
-    revalidate: 10 // تحديث كل 10 ثواني
+    revalidate: 1, // تحديث فوري
   };
 };
