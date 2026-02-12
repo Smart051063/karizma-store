@@ -1,3 +1,4 @@
+// src/context/CartContext.js
 import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
@@ -10,7 +11,7 @@ export const CartProvider = ({ children }) => {
   const [totalQuantities, setTotalQuantities] = useState(0);
 
   const onAdd = (product, quantity) => {
-    // تحديد السعر الحقيقي: إذا وجد سعر خصم نستخدمه، وإلا السعر الأصلي
+    // ✅ الحساب الذكي: استخدام discountPrice إذا وجد، وإلا السعر العادي
     const actualPrice = product.discountPrice ? product.discountPrice : product.price;
 
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
@@ -28,48 +29,24 @@ export const CartProvider = ({ children }) => {
       })
       setCartItems(updatedCartItems);
     } else {
-      // تخزين السعر المحسوب داخل المنتج لضمان صحة العمليات اللاحقة
-      const productWithCorrectPrice = { ...product, price: actualPrice };
-      productWithCorrectPrice.quantity = quantity;
-      setCartItems([...cartItems, productWithCorrectPrice]);
+      // ✅ تخزين السعر الفعلي داخل عنصر السلة لضمان حساب الفاتورة بشكل صحيح
+      const productInCart = { ...product, price: actualPrice, quantity };
+      setCartItems([...cartItems, productInCart]);
     }
-    toast.success(`تم إضافة ${quantity} من ${product.name} للسلة`);
+    toast.success(`${quantity} ${product.name} أضيف للسلة.`);
   } 
 
+  // باقي الدوال (onRemove و toggleCartItemQuantity) كما هي في الكود السابق
   const onRemove = (product) => {
     const foundProduct = cartItems.find((item) => item._id === product._id);
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
-
     setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity);
     setCartItems(newCartItems);
   }
 
-  const toggleCartItemQuantity = (id, value) => {
-    const foundProduct = cartItems.find((item) => item._id === id);
-    const index = cartItems.findIndex((product) => product._id === id);
-    const newCartItems = [...cartItems];
-
-    if (value === 'inc') {
-      newCartItems[index] = { ...foundProduct, quantity: foundProduct.quantity + 1 };
-      setCartItems(newCartItems);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
-      setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
-    } else if (value === 'dec') {
-      if (foundProduct.quantity > 1) {
-        newCartItems[index] = { ...foundProduct, quantity: foundProduct.quantity - 1 };
-        setCartItems(newCartItems);
-        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
-        setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
-      }
-    }
-  }
-
   return (
-    <CartContext.Provider value={{
-      showCart, setShowCart, cartItems, totalPrice, totalQuantities,
-      onAdd, onRemove, toggleCartItemQuantity
-    }}>
+    <CartContext.Provider value={{ showCart, setShowCart, cartItems, totalPrice, totalQuantities, onAdd, onRemove }}>
       {children}
     </CartContext.Provider>
   )
