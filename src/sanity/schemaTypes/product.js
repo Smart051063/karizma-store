@@ -23,6 +23,23 @@ export default {
       validation: Rule => Rule.required().min(0)
     },
 
+    // 👇👇👇 أضف هذا الحقل الجديد 👇👇👇
+    {
+      name: 'customSizes',
+      title: 'أحجام وأسعار خاصة (اختياري)',
+      description: 'أضف هذا فقط إذا كنت تريد تحديد سعر معين لحجم معين، وإلا سيقوم الموقع بحسابه تلقائياً',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'size', title: 'الحجم (مل)', type: 'number'}, // 50, 30, etc
+            {name: 'price', title: 'السعر', type: 'number'}
+          ]
+        }
+      ]
+    },
+    // ... باقي الحقول ...
     // ✅ التعديل هنا: طلب نسبة مئوية بدلاً من سعر ثابت
     {
       name: 'discount',
