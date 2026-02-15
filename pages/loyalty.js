@@ -12,17 +12,13 @@ const AnimatedCounter = ({ target }) => {
     const end = parseInt(target, 10);
     if (start === end) return;
 
-    // مدة الحركة (2 ثانية)
     const duration = 2000;
     let startTime = null;
 
     const animate = (currentTime) => {
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
-      
-      // معادلة الحركة (يبدأ سريعاً ويتباطأ في النهاية - Ease Out)
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      
       setCount(Math.floor(easeOut * end));
 
       if (progress < 1) {
@@ -42,7 +38,6 @@ export default function LoyaltyPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // دالة البحث عن النقاط
   const checkPoints = async (e) => {
     e.preventDefault();
     if (!phone) return;
@@ -51,7 +46,6 @@ export default function LoyaltyPage() {
     setError('');
     setCustomerData(null);
 
-    // البحث في قاعدة البيانات
     const query = `*[_type == "customer" && phoneNumber == "${phone}"][0]{
       name,
       points
@@ -93,17 +87,32 @@ export default function LoyaltyPage() {
         <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
           <h3 style={{ marginBottom: '20px' }}>استعلم عن رصيدك</h3>
           <form onSubmit={checkPoints} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            
+            {/* 🔥🔥🔥 هذا هو التعديل الجديد: خانة واضحة جداً 🔥🔥🔥 */}
             <input 
-              type="text" 
-              placeholder="أدخل رقم هاتفك (مثال: 010xxxx)" 
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              style={{ padding: '15px', borderRadius: '10px', border: '1px solid #ddd', fontSize: '1.1rem', textAlign: 'center' }}
+              type="tel" 
+              placeholder="أدخل رقم هاتفك هنا..." 
+              value={phone} 
+              onChange={(e) => setPhone(e.target.value)} 
+              style={{ 
+                width: '100%', 
+                padding: '15px', 
+                borderRadius: '50px', 
+                border: '2px solid #d4af37', // إطار ذهبي سميك قليلاً
+                backgroundColor: '#f5f5f5', // خلفية رمادية لتمييزها عن الأبيض
+                color: '#000000', // لون أسود صريح للكتابة
+                fontSize: '1.3rem', 
+                fontWeight: 'bold', // خط عريض للأرقام
+                textAlign: 'center', 
+                outline: 'none',
+                boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.05)'
+              }} 
             />
+
             <button 
               type="submit" 
               disabled={loading}
-              style={{ padding: '15px', backgroundColor: 'black', color: '#d4af37', border: 'none', borderRadius: '10px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', transition: '0.3s' }}
+              style={{ padding: '15px', backgroundColor: 'black', color: '#d4af37', border: 'none', borderRadius: '50px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', transition: '0.3s' }}
             >
               {loading ? 'جاري البحث...' : '🔍 عرض نقاطي'}
             </button>
@@ -111,7 +120,6 @@ export default function LoyaltyPage() {
 
           {error && <p style={{ color: 'red', marginTop: '20px' }}>{error}</p>}
 
-          {/* نتيجة البحث مع العداد المتحرك */}
           {customerData && (
             <div className="fade-in-up" style={{ marginTop: '30px', padding: '30px', backgroundColor: '#fff8e1', borderRadius: '15px', border: '2px solid #d4af37', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '5rem', opacity: '0.1' }}>💎</div>
