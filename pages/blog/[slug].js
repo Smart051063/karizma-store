@@ -9,12 +9,12 @@ import { useRouter } from 'next/router';
 export default function BlogPost({ post }) {
   const router = useRouter();
 
-  // حالة التحميل
+  // 1. حالة التحميل
   if (router.isFallback) {
     return <div style={{ padding: '50px', textAlign: 'center' }}>⏳ جاري تحميل المقال...</div>;
   }
 
-  // حالة الخطأ 404
+  // 2. حالة عدم وجود المقال
   if (!post) {
     return (
       <div style={{ textAlign: 'center', padding: '100px 20px' }}>
@@ -32,6 +32,7 @@ export default function BlogPost({ post }) {
         <title>{post.title} | مدونة كاريزما</title>
       </Head>
 
+      {/* زر العودة للمدونة */}
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
         <Link href="/blog" style={{ textDecoration: 'none', color: '#d4af37', fontWeight: 'bold' }}>
            ← العودة للمدونة
@@ -39,14 +40,22 @@ export default function BlogPost({ post }) {
       </div>
 
       <article style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+        {/* العنوان */}
         <h1 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '20px' }}>{post.title}</h1>
 
+        {/* الصورة */}
         {post.imageUrl && (
           <div style={{ position: 'relative', width: '100%', height: '400px', marginBottom: '30px', borderRadius: '15px', overflow: 'hidden' }}>
-            <Image src={post.imageUrl} alt={post.title} fill style={{ objectFit: 'cover' }} />
+            <Image 
+              src={post.imageUrl} 
+              alt={post.title} 
+              fill 
+              style={{ objectFit: 'cover' }} 
+            />
           </div>
         )}
 
+        {/* المحتوى */}
         <div style={{ fontSize: '1.2rem', lineHeight: '1.8', color: '#444' }}>
           <PortableText 
             value={post.body} 
@@ -76,6 +85,7 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params: { slug } }) => {
+  // لاحظ هنا نبحث عن post وليس product
   const query = `*[_type == "post" && slug.current == '${slug}'][0]{
     title, body, publishedAt, "imageUrl": mainImage.asset->url
   }`;
