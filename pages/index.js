@@ -94,7 +94,6 @@ export default function Home({ banner, products, reviews }) {
       {/* ==================== 4. الهيرو (خلفية الموقع الرئيسية) ==================== */}
       <div style={{ position: 'relative', height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', overflow: 'hidden' }}>
         
-        {/* 👇👇 هنا تم الإصلاح: إعادة الصورة الافتراضية 👇👇 */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <Image 
             src={banner?.heroImageUrl || 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'} 
@@ -143,13 +142,13 @@ export default function Home({ banner, products, reviews }) {
               <div className="product-card" style={productCardStyle}>
                 <div style={{ position: 'relative', height: '180px', backgroundColor: '#fff' }}>
                   {product.imageUrl ? (
-                     <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '10px' }} sizes="200px" />
+                      <Image src={product.imageUrl} alt={product.name} fill style={{ objectFit: 'contain', padding: '10px' }} sizes="200px" />
                   ) : (
-                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ccc' }}>No Image</div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ccc' }}>No Image</div>
                   )}
                 </div>
                 <div style={{ padding: '15px' }}>
-                  <p style={{ fontWeight: 'bold', fontSize: '1rem', color: '#333', marginBottom: '5px' }}>{product.name}</p>
+                  <h3 style={{ fontWeight: 'bold', fontSize: '1rem', color: '#333', marginBottom: '5px', height: '40px', overflow: 'hidden' }}>{product.name}</h3>
                   <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.1rem' }}>{product.price} ج.م</p>
                 </div>
               </div>
@@ -163,28 +162,40 @@ export default function Home({ banner, products, reviews }) {
         </div>
       </div>
 
-      {/* ==================== 7. آراء العملاء ==================== */}
-      {reviews && reviews.length > 0 && (
-        <div style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#1a1a1a', color: 'white' }}>
-          <h2 style={{ color: '#d4af37', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>💬 ماذا يقول عملاؤنا؟</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-            {reviews.map((review) => (
-              <div key={review._id} style={{
-                backgroundColor: '#222', borderRadius: '15px', padding: '25px', width: '300px',
-                border: '1px solid #333', boxShadow: '0 4px 15px rgba(0,0,0,0.5)', textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '1.2rem', marginBottom: '15px', color: '#FFD700' }}>{renderStars(review.rating)}</div>
-                <p style={{ fontStyle: 'italic', marginBottom: '20px', color: '#eee', lineHeight: '1.6' }}>
-                  "{review.comment}"
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '15px' }}>
-                   <h4 style={{ color: '#d4af37', margin: 0 }}>{review.name}</h4>
+      {/* ==================== 7. آراء العملاء (التعديل الجديد) ==================== */}
+      <div style={{ backgroundColor: '#fff', padding: '60px 20px', marginTop: '0' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ color: '#333', marginBottom: '40px', fontSize: '30px', fontWeight: 'bold' }}>⭐ آراء عملائنا</h2>
+          
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
+            {reviews?.length > 0 ? (
+              reviews.map((review) => (
+                <div key={review._id} style={{ 
+                    flex: '1 1 300px', maxWidth: '350px', 
+                    backgroundColor: '#f9f9f9', padding: '25px', 
+                    borderRadius: '15px', textAlign: 'right',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.03)',
+                    border: '1px solid #eee'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <h4 style={{ margin: 0, color: '#333' }}>{review.name}</h4>
+                    <div style={{ color: '#FFD700' }}>{renderStars(review.rating)}</div>
+                  </div>
+                  <p style={{ color: '#555', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '15px' }}>
+                    "{review.comment}"
+                  </p>
+                  <div style={{ borderTop: '1px solid #eee', paddingTop: '10px' }}>
+                    <small style={{ color: '#999' }}>عن منتج: </small>
+                    <small style={{ color: '#d4af37', fontWeight: 'bold' }}>{review.productName}</small>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p style={{ color: '#777' }}>لا توجد تقييمات حتى الآن. كن أول من يشاركنا رأيه!</p>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       {/* ==================== 8. الفيديو ==================== */}
       <div style={{ backgroundColor: 'white', padding: '60px 20px', textAlign: 'center' }}>
@@ -230,15 +241,16 @@ export default function Home({ banner, products, reviews }) {
 }
 
 // ==========================================
-// جلب البيانات
+// جلب البيانات (getStaticProps - مع التعديل الجديد)
 // ==========================================
 export async function getStaticProps() {
   const banner = await client.fetch(`*[_type == "banner" && isActive == true] | order(_createdAt desc)[0]{ "imageUrl": image.asset->url, "heroImageUrl": heroImage.asset->url }`);
   
   const products = await client.fetch(`*[_type == "product"] | order(_createdAt desc) [0..6] { _id, name, price, "imageUrl": image.asset->url, slug }`);
   
+  // ✅✅ التعديل هنا: جلبنا اسم المنتج المرتبط بالتقييم ✅✅
   const reviews = await client.fetch(`*[_type == "review" && defined(comment) && comment != ""] | order(_createdAt desc) [0..5] {
-    _id, name, comment, rating, "imageUrl": image.asset->url
+    _id, name, comment, rating, "productName": product->name
   }`);
 
   return { props: { banner: banner || null, products: products || [], reviews: reviews || [] }, revalidate: 10 };
