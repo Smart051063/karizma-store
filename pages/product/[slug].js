@@ -134,7 +134,7 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
         </div>
       </div>
 
-      {/* --- قسم التقييمات (الكود الكامل) --- */}
+      {/* --- قسم التقييمات --- */}
       <div style={{ backgroundColor: '#f8f8f8', padding: '60px 20px', marginTop: '40px' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>⭐ تقييمات العملاء</h2>
@@ -163,13 +163,24 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
             {!isVerified ? (
               // خطوة 1: التحقق من رقم الهاتف
               <div style={{ display: 'flex', gap: '10px' }}>
+                
+                {/* 🔥🔥🔥 تم تعديل الستايل هنا ليكون واضحاً 🔥🔥🔥 */}
                 <input 
-                  type="text" 
+                  type="tel" 
                   placeholder="رقم الهاتف المستخدم في الشراء..." 
                   value={phone} 
                   onChange={(e) => setPhone(e.target.value)} 
-                  style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} 
+                  style={{ 
+                    flex: 1, 
+                    padding: '12px', 
+                    borderRadius: '8px', 
+                    border: '2px solid #d4af37', // إطار ذهبي واضح
+                    backgroundColor: '#fff',
+                    color: '#000', // نص أسود واضح
+                    fontWeight: 'bold'
+                  }} 
                 />
+
                 <button 
                   onClick={handleVerify} 
                   style={{ padding: '10px 25px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
@@ -187,12 +198,12 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
                       value={reviewForm.name} 
                       onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})} 
                       required 
-                      style={{ flex:1, padding: '12px', border: '1px solid #ddd', borderRadius: '8px' }} 
+                      style={{ flex:1, padding: '12px', border: '1px solid #ddd', borderRadius: '8px', color: '#000' }} 
                     />
                     <select 
                         value={reviewForm.rating} 
                         onChange={(e) => setReviewForm({...reviewForm, rating: parseInt(e.target.value)})}
-                        style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '8px', marginRight: '10px' }}
+                        style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '8px', marginRight: '10px', color: '#000' }}
                     >
                         <option value="5">⭐⭐⭐⭐⭐ (5)</option>
                         <option value="4">⭐⭐⭐⭐ (4)</option>
@@ -207,7 +218,7 @@ export default function ProductDetails({ product, reviews, relatedProducts, erro
                   onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})} 
                   required 
                   rows="3"
-                  style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '8px', resize: 'vertical' }} 
+                  style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '8px', resize: 'vertical', color: '#000' }} 
                 />
                 <button 
                   type="submit" 
