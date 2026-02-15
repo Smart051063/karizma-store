@@ -311,4 +311,4 @@ export const getStaticProps = async ({ params: { slug } }) => {
     props: { product, reviews, relatedProducts }, 
     revalidate: 1 
   };
-};
+}; 
