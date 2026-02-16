@@ -6,7 +6,7 @@ const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   useCdn: false, // ⚠️ يجب أن يكون false للكتابة الفورية
-  token: process.env.SANITY_API_TOKEN, // 🔑 هذا هو المفتاح الذي يجب إضافته في .env
+  token: process.env.SANITY_API_TOKEN,// 🔑 هذا هو المفتاح الذي يجب إضافته في .env
   apiVersion: '2024-01-01',
 });
 
