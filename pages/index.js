@@ -19,13 +19,15 @@ export default function Home({ banner, products, reviews }) {
   return (
     <div style={{ minHeight: '100vh', direction: 'rtl', backgroundColor: 'white', fontFamily: 'Arial, sans-serif' }}>
       
-      <Head>
+     <Head>
         <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية في مصر. عطور رجالية ونسائية، عود، وبخور بجودة عالية وثبات ممتاز." />
         <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+        
+        {/* كود التحقق الخاص بفيسبوك - تمت إضافته هنا 👇 */}
+        <meta name="facebook-domain-verification" content="vvcpivll3l81gzutv645dwjck2i6vz" />
       </Head>
-
       {/* ==================== 1. الهيدر ==================== */}
       <header style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
         <div style={{ backgroundColor: 'black', color: '#d4af37', fontSize: '12px', padding: '5px', textAlign: 'center', fontWeight: 'bold' }}>
