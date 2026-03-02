@@ -28,7 +28,9 @@ currency: 'EGP'
 }
 
     const whatsappUrl = `https://wa.me/201002410037?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+setTimeout(() => {
+window.open(whatsappUrl, '_blank');
+}, 800);
   };
 
   return (
