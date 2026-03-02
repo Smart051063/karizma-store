@@ -19,6 +19,13 @@ export default function Cart() {
 
     message += `\n💰 الإجمالي الكلي: ${totalPrice} ج.م\n`;
     message += `📍 يرجى تأكيد الطلب والعنوان.`;
+    
+if (typeof window !== 'undefined' && window.fbq) {
+window.fbq('track', 'Purchase', {
+value: totalPrice,
+currency: 'EGP'
+});
+}
 
     const whatsappUrl = `https://wa.me/201002410037?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
