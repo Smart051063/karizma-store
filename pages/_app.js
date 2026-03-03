@@ -6,13 +6,34 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-// ==================== مكون العناصر العامة (الفوتر والأزرار) ====================
+// ==================== مكون العناصر العامة (الفوتر والأزرار والشريط العلوي) ====================
 const GlobalElements = ({ children }) => {
   const { totalQuantities } = useCart(); // لجلب عدد المنتجات للعداد الأحمر
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       
+      {/* 🔥🔥🔥 شريط الإعلانات العلوي (الجديد) 🔥🔥🔥 */}
+      <div style={{ 
+        backgroundColor: '#d4af37', // لون كاريزما الذهبي
+        color: 'black', 
+        textAlign: 'center', 
+        padding: '10px', 
+        fontWeight: 'bold', 
+        fontSize: '1rem',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+        position: 'sticky', // ليبقى ثابتاً في الأعلى عند النزول
+        top: 0,
+        zIndex: 1000,
+        direction: 'rtl'
+      }}>
+        <Link href="/landing" style={{ textDecoration: 'none', color: 'black', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+          <span style={{ animation: 'pulse 2s infinite', fontSize: '1.2rem' }}>🔥</span>
+          عرض حصري لفترة محدودة! اضغط هنا لاكتشاف بوكس كاريزما الموفر
+          <span style={{ animation: 'pulse 2s infinite', fontSize: '1.2rem' }}>🔥</span>
+        </Link>
+      </div>
+
       {/* محتوى الصفحة الحالية */}
       <main style={{ flex: 1 }}>
         {children}
@@ -127,8 +148,14 @@ const GlobalElements = ({ children }) => {
         💬
       </a>
       
+      {/* أنيميشن الأزرار والشريط العلوي */}
       <style jsx global>{`
         .floating-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important; }
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.2); opacity: 0.8; }
+          100% { transform: scale(1); opacity: 1; }
+        }
       `}</style>
     </div>
   );
@@ -199,7 +226,7 @@ export default function App({ Component, pageProps }) {
         }}
       />
 
-      {/* 🔴 3. Google Analytics (GA4) - الكود الجديد */}
+      {/* 🔴 3. Google Analytics (GA4) */}
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-TR0K3GN7JB"
