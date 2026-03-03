@@ -23,7 +23,6 @@ export default function Home({ banner, products, reviews }) {
         <title>كاريزما للعطور | Karizma Perfumes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="تسوق أفضل العطور المستوحاة من الماركات العالمية بأسعار تنافسية في مصر. عطور رجالية ونسائية، عود، وبخور بجودة عالية وثبات ممتاز." />
-        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
         
         {/* كود التحقق الخاص بفيسبوك - تمت إضافته هنا 👇 */}
         <meta name="facebook-domain-verification" content="vvcpivll3l81gzutv645dwjck2i6vz" />
