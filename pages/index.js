@@ -8,7 +8,7 @@ export default function Home({ banner, products, reviews }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const topStatusText = "✨ أهلاً بكم في كاريزما للعطور - خصومات حصرية وشحن سريع لجميع المحافظات 🚚";
-  const tickerText1 = " ✨ عروض شهر رمضان المبارك - خصومات تصل إلى 20% على جميع العطور ✨ ";
+  const tickerText1 = " ✨ عروض عيد الفطر السعيد - خصومات تصل إلى 20% على جميع العطور ✨ ";
   const tickerText2 = " 🛡️ جميع عطورنا مستوحاة من أرقى الماركات العالمية.. بعبواتنا الخاصة وجودة نراهن عليها    🛡️ ";
 
   // دالة لرسم النجوم
